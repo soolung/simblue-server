@@ -1,4 +1,4 @@
-package com.bamdoliro.simblue;
+package com.soogung.simblue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
