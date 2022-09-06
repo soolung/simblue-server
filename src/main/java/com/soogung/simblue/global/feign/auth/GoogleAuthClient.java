@@ -1,7 +1,7 @@
 package com.soogung.simblue.global.feign.auth;
 
 import com.soogung.simblue.global.feign.auth.dto.request.GoogleAuthRequest;
-import com.soogung.simblue.global.feign.auth.dto.response.TokenResponse;
+import com.soogung.simblue.global.feign.auth.dto.response.GoogleTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface GoogleAuthClient {
 
     @PostMapping
-    public TokenResponse getAccessToken(GoogleAuthRequest request);
+    public GoogleTokenResponse getAccessToken(GoogleAuthRequest request);
 }
