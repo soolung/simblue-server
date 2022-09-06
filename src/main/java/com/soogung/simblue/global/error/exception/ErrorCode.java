@@ -12,6 +12,10 @@ public enum ErrorCode {
 
     USER_ALREADY_EXISTS(422, "사용자가 이미 존재합니다."),
     USER_NOT_FOUND(404, "사용자가 없습니다."),
+    NOT_SCHOOL_MEMBER(422, "부산소프트웨어마이스터고등학교 구성원만 가입할 수 있습니다."),
+
+    EXPIRED_TOKEN(401, "만료된 토큰입니다."),
+    INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
     ;
 
     private final int status;
