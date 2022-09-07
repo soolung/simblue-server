@@ -12,13 +12,12 @@ import com.soogung.simblue.global.feign.auth.GoogleInformationClient;
 import com.soogung.simblue.global.feign.auth.dto.request.GoogleAuthRequest;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class JoinWithGoogleService {
+public class GoogleAuthService {
 
     private final AuthProperties authProperties;
     private final GoogleAuthClient googleAuthClient;
@@ -32,15 +31,17 @@ public class JoinWithGoogleService {
         String accessToken = googleAuthClient.getAccessToken(
                 createGoogleAuthRequest(code)).getAccessToken();
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
-        userFacade.validateExistsByEmail(email);
-        Authority authority = validateEmailAndGetAuthority(email);
 
-        userRepository.save(
-                User.builder()
-                        .email(email)
-                        .authority(authority)
-                        .build()
-        );
+
+        if (!userRepository.existsByEmail(email)) {
+            Authority authority = validateEmailAndGetAuthority(email);
+            userRepository.save(
+                    User.builder()
+                            .email(email)
+                            .authority(authority)
+                            .build()
+            );
+        }
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(email))
