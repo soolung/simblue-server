@@ -1,6 +1,7 @@
 package com.soogung.simblue.domain.user.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,11 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
+
+    @Builder
+    public Student(String studentNumber, Integer admissionYear, User user) {
+        this.studentNumber = studentNumber;
+        this.admissionYear = admissionYear;
+        this.user = user;
+    }
 }
