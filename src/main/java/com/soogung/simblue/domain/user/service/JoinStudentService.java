@@ -21,7 +21,7 @@ public class JoinStudentService {
     @Transactional
     public void execute(JoinStudentRequest request) {
         User user = userFacade.getCurrentUser();
-        user.updateInformation(request.getName(), passwordEncoder.encode(request.getPassword());
+        user.updateInformation(request.getName(), passwordEncoder.encode(request.getPassword()));
 
         studentRepository.save(
                 Student.builder()
