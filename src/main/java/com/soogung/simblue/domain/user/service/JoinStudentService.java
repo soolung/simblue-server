@@ -4,7 +4,7 @@ import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.StudentRepository;
 import com.soogung.simblue.domain.user.facade.UserFacade;
-import com.soogung.simblue.domain.user.presentation.dto.request.JoinStudentRequest;
+import com.soogung.simblue.domain.user.presentation.dto.request.StudentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class JoinStudentService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void execute(JoinStudentRequest request) {
+    public void execute(StudentRequest request) {
         User user = userFacade.getCurrentUser();
         user.updateInformation(request.getName(), passwordEncoder.encode(request.getPassword()));
 

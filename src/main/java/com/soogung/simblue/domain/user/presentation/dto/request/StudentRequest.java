@@ -7,11 +7,17 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
-public class JoinTeacherRequest {
+public class StudentRequest {
 
     @NotNull
     private String name;
 
     @NotNull
     private String password;
+
+    @NotNull
+    private String studentNumber;
+
+    @NotNull
+    private Integer admissionYear;
 }

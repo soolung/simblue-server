@@ -34,4 +34,9 @@ public class Student {
         this.admissionYear = admissionYear;
         this.user = user;
     }
+
+    public void updateInformation(String studentNumber, Integer admissionYear) {
+        this.studentNumber = studentNumber;
+        this.admissionYear = admissionYear;
+    }
 }
