@@ -1,6 +1,6 @@
 package com.soogung.simblue.domain.application.domain;
 
-import com.soogung.simblue.domain.application.domain.type.ApplicationQuestionType;
+import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table("application_answer_tbl")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ApplicationAnswer {
+public class ApplicationAnswer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class ApplicationAnswer {
     private String answer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(value = "application_question_id", nullable = false)
+    @JoinColumn(name = "application_question_id", nullable = false)
     private ApplicationQuestion applicationQuestion;
 
     @Builder
