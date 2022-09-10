@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table("application_question_tbl")
+@Table(name = "application_question_tbl")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ApplicationQuestion extends BaseTimeEntity {
