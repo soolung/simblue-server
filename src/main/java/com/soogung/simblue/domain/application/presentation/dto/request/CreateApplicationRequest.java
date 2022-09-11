@@ -32,6 +32,9 @@ public class CreateApplicationRequest {
     private String emoji;
 
     @NotNull
+    private Boolean isAlways;
+
+    @NotNull
     private List<ApplicationQuestionRequest> applicationQuestions;
 
     public Application toEntity() {
@@ -41,6 +44,7 @@ public class CreateApplicationRequest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .emoji(emoji)
+                .isAlways(isAlways)
                 .build();
     }
 }

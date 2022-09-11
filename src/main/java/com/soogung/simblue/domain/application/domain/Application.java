@@ -35,12 +35,16 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false, length = 1)
     private String emoji;
 
+    @Column(nullable = false)
+    private Boolean isAlways;
+
     @Builder
-    public Application(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String emoji) {
+    public Application(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String emoji, Boolean isAlways) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
+        this.isAlways = isAlways;
     }
 }

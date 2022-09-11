@@ -7,7 +7,6 @@ import com.soogung.simblue.domain.application.domain.repository.ApplicationAnswe
 import com.soogung.simblue.domain.application.domain.repository.ApplicationOwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationQuestionRepository;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRepository;
-import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationAnswerRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationQuestionRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
 import com.soogung.simblue.domain.user.domain.Teacher;
