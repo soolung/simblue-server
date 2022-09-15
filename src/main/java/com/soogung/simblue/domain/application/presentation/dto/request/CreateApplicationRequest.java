@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -22,10 +22,10 @@ public class CreateApplicationRequest {
     private String description;
 
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @NotNull
     @Size(min = 1, max = 1)

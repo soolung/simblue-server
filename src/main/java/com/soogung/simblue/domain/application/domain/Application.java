@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "application_tbl")
@@ -27,10 +30,10 @@ public class Application extends BaseTimeEntity {
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false, length = 1)
     private String emoji;
@@ -38,8 +41,11 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean isAlways;
 
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
+
     @Builder
-    public Application(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String emoji, Boolean isAlways) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
