@@ -17,6 +17,8 @@ public enum ErrorCode {
 
     EXPIRED_TOKEN(401, "만료된 토큰입니다."),
     INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
+
+    APPLICATION_NOT_FOUND(404, "신청이 없습니다."),
     ;
 
     private final int status;
