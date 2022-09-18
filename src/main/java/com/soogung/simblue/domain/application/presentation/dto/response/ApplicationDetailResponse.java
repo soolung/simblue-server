@@ -10,28 +10,28 @@ import java.util.stream.Collectors;
 
 @Getter
 @Builder
-public class ApplicationResponse {
+public class ApplicationDetailResponse {
 
-    private Long id;
     private String title;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
     private String emoji;
     private Boolean isAlways;
-    private List<ApplicationQuestionResponse> applicationQuestions;
+    private List<ApplicationQuestionResponse> applicationQuestionResponses;
 
-    public static ApplicationResponse of(Application application) {
-        return ApplicationResponse.builder()
-                .id(application.getId())
+    public static ApplicationDetailResponse of(Application application) {
+        return ApplicationDetailResponse.builder()
                 .title(application.getTitle())
                 .description(application.getDescription())
                 .startDate(application.getStartDate())
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
-                .applicationQuestions(application.getApplicationQuestions().stream()
-                        .map(ApplicationQuestionResponse::of).collect(Collectors.toList()))
+                .applicationQuestionResponses(
+                        application.getApplicationQuestions().stream()
+                                .map(ApplicationQuestionResponse::of)
+                                .collect(Collectors.toList()))
                 .build();
     }
 }

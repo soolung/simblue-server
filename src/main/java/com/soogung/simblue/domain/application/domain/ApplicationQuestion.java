@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "application_question_tbl")
@@ -30,6 +32,9 @@ public class ApplicationQuestion extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
+
+    @OneToMany(mappedBy = "applicationQuestion", cascade = CascadeType.ALL)
+    private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
 
     @Builder
     public ApplicationQuestion(String question, ApplicationQuestionType type, Application application) {

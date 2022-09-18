@@ -4,12 +4,14 @@ import com.soogung.simblue.domain.application.domain.ApplicationAnswer;
 import com.soogung.simblue.domain.application.domain.ApplicationQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationAnswerRequest {
 
     @NotNull

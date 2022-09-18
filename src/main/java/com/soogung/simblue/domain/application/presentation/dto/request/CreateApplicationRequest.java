@@ -3,6 +3,7 @@ package com.soogung.simblue.domain.application.presentation.dto.request;
 import com.soogung.simblue.domain.application.domain.Application;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateApplicationRequest {
 
     @NotNull
@@ -28,7 +30,7 @@ public class CreateApplicationRequest {
     private LocalDate endDate;
 
     @NotNull
-    @Size(min = 1, max = 1)
+    @Size(min = 1, max = 2)
     private String emoji;
 
     @NotNull
