@@ -15,7 +15,7 @@ public class ApplicationNoticeFacade {
 
     @Transactional(readOnly = true)
     public ApplicationNotice findApplicationNoticeById(Long id) {
-        applicationNoticeRepository.findById(id)
-                .orElseThrow(() -> ApplicationNoticeNotFoundException.EXCEPTION)
+        return applicationNoticeRepository.findById(id)
+                .orElseThrow(() -> ApplicationNoticeNotFoundException.EXCEPTION);
     }
 }
