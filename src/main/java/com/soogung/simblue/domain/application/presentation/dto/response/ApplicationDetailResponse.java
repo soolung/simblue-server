@@ -1,6 +1,7 @@
 package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
+import com.soogung.simblue.domain.application.domain.ApplicationNotice;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +20,7 @@ public class ApplicationDetailResponse {
     private String emoji;
     private Boolean isAlways;
     private List<ApplicationQuestionResponse> applicationQuestionResponses;
+    private List<ApplicationNoticeResponse> applicationNotices;
 
     public static ApplicationDetailResponse of(Application application) {
         return ApplicationDetailResponse.builder()
@@ -32,6 +34,11 @@ public class ApplicationDetailResponse {
                         application.getApplicationQuestions().stream()
                                 .map(ApplicationQuestionResponse::of)
                                 .collect(Collectors.toList()))
+                .applicationNotices(
+                        application.getApplicationNotices().stream()
+                                .map(ApplicationNoticeResponse::of)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 }
