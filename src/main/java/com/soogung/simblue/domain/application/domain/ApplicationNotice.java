@@ -41,4 +41,8 @@ public class ApplicationNotice extends BaseTimeEntity {
         this.application = application;
         this.teacher = teacher;
     }
+
+    public void updateNotice(String notice) {
+        this.notice = notice;
+    }
 }
