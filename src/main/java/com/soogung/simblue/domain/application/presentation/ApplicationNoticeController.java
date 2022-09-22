@@ -3,6 +3,7 @@ package com.soogung.simblue.domain.application.presentation;
 import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationNoticeRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.UpdateApplicationNoticeRequest;
 import com.soogung.simblue.domain.application.service.CreateApplicationNoticeService;
+import com.soogung.simblue.domain.application.service.DeleteApplicationNoticeService;
 import com.soogung.simblue.domain.application.service.UpdateApplicationNoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class ApplicationNoticeController {
 
     private final CreateApplicationNoticeService createApplicationNoticeService;
     private final UpdateApplicationNoticeService updateApplicationNoticeService;
+    private final DeleteApplicationNoticeService deleteApplicationNoticeService;
 
     @PostMapping
     public void createApplicationNotice(@RequestBody @Valid CreateApplicationNoticeRequest request) {
@@ -32,7 +34,7 @@ public class ApplicationNoticeController {
 
     @DeleteMapping("/{id}")
     public void deleteApplicationNotice(@PathVariable Long id) {
-
+        deleteApplicationNoticeService.execute(id);
     }
 
     @PutMapping("/{id}/pinned")
