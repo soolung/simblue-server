@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.ApplicationNotice;
 import lombok.Builder;
 import lombok.Getter;
 
