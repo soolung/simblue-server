@@ -19,6 +19,7 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
 
     APPLICATION_NOT_FOUND(404, "신청이 없습니다."),
+    APPLICATION_NOTICE_NOT_FOUND(404, "공지사항이 없습니다."),
     ;
 
     private final int status;
