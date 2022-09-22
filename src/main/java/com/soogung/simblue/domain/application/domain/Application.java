@@ -43,6 +43,9 @@ public class Application extends BaseTimeEntity {
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
+    private List<ApplicationNotice> applicationNotices = new ArrayList<>();
+
     @Builder
     public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways) {
         this.title = title;
