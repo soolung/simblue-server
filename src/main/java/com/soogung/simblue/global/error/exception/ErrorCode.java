@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     APPLICATION_NOT_FOUND(404, "신청이 없습니다."),
     APPLICATION_NOTICE_NOT_FOUND(404, "공지사항이 없습니다."),
+    APPLICATION_QUESTION_NOT_FOUND(404, "해당 질문이 없습니다."),
     ;
 
     private final int status;
