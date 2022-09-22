@@ -45,4 +45,8 @@ public class ApplicationNotice extends BaseTimeEntity {
     public void updateNotice(String notice) {
         this.notice = notice;
     }
+
+    public void toggleIsPinned() {
+        this.isPinned = !isPinned;
+    }
 }

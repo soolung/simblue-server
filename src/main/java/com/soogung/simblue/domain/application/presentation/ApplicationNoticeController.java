@@ -4,6 +4,7 @@ import com.soogung.simblue.domain.application.presentation.dto.request.CreateApp
 import com.soogung.simblue.domain.application.presentation.dto.request.UpdateApplicationNoticeRequest;
 import com.soogung.simblue.domain.application.service.CreateApplicationNoticeService;
 import com.soogung.simblue.domain.application.service.DeleteApplicationNoticeService;
+import com.soogung.simblue.domain.application.service.ToggleApplicationNoticePinService;
 import com.soogung.simblue.domain.application.service.UpdateApplicationNoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class ApplicationNoticeController {
     private final CreateApplicationNoticeService createApplicationNoticeService;
     private final UpdateApplicationNoticeService updateApplicationNoticeService;
     private final DeleteApplicationNoticeService deleteApplicationNoticeService;
+    private final ToggleApplicationNoticePinService toggleApplicationNoticePinService;
 
     @PostMapping
     public void createApplicationNotice(@RequestBody @Valid CreateApplicationNoticeRequest request) {
@@ -39,6 +41,6 @@ public class ApplicationNoticeController {
 
     @PutMapping("/{id}/pinned")
     public void toggleApplicationNoticePin(@PathVariable Long id) {
-
+        toggleApplicationNoticePinService.execute(id);
     }
 }
