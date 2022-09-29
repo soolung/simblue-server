@@ -12,6 +12,7 @@ spring:
     password: soogung
 
   jpa:
+    database: mysql
     show-sql: true
     generate-ddl: true
     hibernate:
