@@ -11,14 +11,16 @@ import java.time.LocalDateTime;
 public class ApplicationNoticeResponse {
 
     private String notice;
-    private String name;
+    private String author;
     private LocalDateTime createdAt;
+    private Boolean isPinned;
 
     public static ApplicationNoticeResponse of(ApplicationNotice notice) {
         return ApplicationNoticeResponse.builder()
                 .notice(notice.getNotice())
-                .name(notice.getTeacher().getUser().getName())
+                .author(notice.getTeacher().getUser().getName())
                 .createdAt(notice.getCreatedAt())
+                .isPinned(notice.getIsPinned())
                 .build();
     }
 }
