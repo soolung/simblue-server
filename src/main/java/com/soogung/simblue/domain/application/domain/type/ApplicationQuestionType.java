@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum ApplicationQuestionType {
     TEXT(false),
     TEXTAREA(false),
-    DROPDOWN(true),
+    LINK(false),
     RADIO(true),
     CHECKBOX(true),
     ;
