@@ -29,7 +29,7 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public List<ApplicationResponse> getApplications(@RequestParam(name = "type", required = true)String applicationType) {
+    public List<ApplicationResponse> getApplications(@RequestParam(name = "type", required = true) String applicationType) {
         if (applicationType.equals("deadline")) {
             return queryDeadlineApplicationService.execute();
         } else if (applicationType.equals("latest")) {

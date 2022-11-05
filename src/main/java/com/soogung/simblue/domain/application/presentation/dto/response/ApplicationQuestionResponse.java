@@ -12,12 +12,14 @@ import java.util.stream.Collectors;
 @Builder
 public class ApplicationQuestionResponse {
 
+    private Long id;
     private String question;
     private ApplicationQuestionType type;
     private List<ApplicationAnswerResponse> applicationAnswers;
 
     public static ApplicationQuestionResponse of(ApplicationQuestion applicationQuestion) {
         return ApplicationQuestionResponse.builder()
+                .id(applicationQuestion.getId())
                 .question(applicationQuestion.getQuestion())
                 .type(applicationQuestion.getType())
                 .applicationAnswers(
