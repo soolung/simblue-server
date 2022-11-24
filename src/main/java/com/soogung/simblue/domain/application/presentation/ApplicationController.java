@@ -2,6 +2,7 @@ package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
@@ -22,6 +23,7 @@ public class ApplicationController {
     private final QueryLatestApplicationService queryLatestApplicationService;
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
     private final QueryApplicationDetailService queryApplicationDetailService;
+    private final QueryMyApplicationService queryMyApplicationService;
 
     @PostMapping
     public void createApplication(@RequestBody @Valid CreateApplicationRequest request) {
@@ -44,5 +46,10 @@ public class ApplicationController {
     @GetMapping("/{id}")
     public ApplicationDetailResponse getApplicationDetail(@PathVariable Long id) {
         return queryApplicationDetailService.execute(id);
+    }
+
+    @GetMapping("/my")
+    public ApplicationListResponse getMyApplication() {
+        return queryMyApplicationService.execute();
     }
 }
