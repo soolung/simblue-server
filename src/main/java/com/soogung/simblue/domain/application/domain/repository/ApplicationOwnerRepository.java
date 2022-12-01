@@ -11,4 +11,6 @@ public interface ApplicationOwnerRepository extends JpaRepository<ApplicationOwn
 
     @Query("SELECT o FROM ApplicationOwner o JOIN FETCH o.application WHERE o.teacher = :teacher")
     List<ApplicationOwner> findAllByTeacher(Teacher teacher);
+
+    boolean existsByApplicationIdAndTeacherId(Long application, Long teacher);
 }
