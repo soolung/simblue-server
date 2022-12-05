@@ -6,14 +6,14 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
+    url: jdbc:mysql://0.0.0.0:${DB_PORT}/${DB_NAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: soogung
-    password: soogung
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     database: mysql
-#    show-sql: true
+#    show-sql: ㄹtrue
     generate-ddl: true
     hibernate:
       ddl-auto: update
