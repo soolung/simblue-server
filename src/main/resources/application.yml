@@ -6,7 +6,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    url: jdbc:mysql://0.0.0.0:${DB_PORT}/${DB_NAME}
+    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_NAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
