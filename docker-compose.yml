@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  simblue-application:
+    build: .
+    env_file:
+      - .env
