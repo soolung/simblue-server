@@ -1,19 +1,25 @@
 spring:
   profiles:
     active: local
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
   datasource:
-    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_NAME}
+    url: jdbc:mysql://simblue-database:${DB_PORT}/${DB_NAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   jpa:
-    database: mysql
-#    show-sql: ㄹtrue
     generate-ddl: true
     hibernate:
       ddl-auto: update

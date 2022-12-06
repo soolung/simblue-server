@@ -1,7 +1,48 @@
 version: "3"
 
 services:
+  simblue-web:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - simblue-application
+    environment:
+      - TZ="Asia/Seoul"
+  
+  simblue-database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      TZ: "Asia/Seoul"
+    expose:
+      - 3306
+    volumes:
+      - simblue-volume:/var/lib/mysql
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+  
+  
   simblue-application:
     build: .
+    expose:
+      - 8080
+    ports:
+      - "9090:9090"
     env_file:
       - .env
+    depends_on:
+      - simblue-database
+    environment:
+      - TZ="Asia/Seoul"
+
+volumes:
+  simblue-volume: {}
