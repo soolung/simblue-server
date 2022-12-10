@@ -19,12 +19,10 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://simblue-database:${DB_PORT}/${DB_NAME}
+    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
-debug: true
+    username: soogung
+    password: soogung
 
 auth:
   google:
@@ -38,3 +36,16 @@ jwt:
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}
+
+debug: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://simblue-database:${DB_PORT}/${DB_NAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
