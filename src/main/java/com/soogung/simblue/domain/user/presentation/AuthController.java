@@ -24,7 +24,7 @@ public class AuthController {
         return googleAuthLinkService.execute();
     }
 
-    @GetMapping("/google/callback")
+    @PostMapping("/google/callback")
     public TokenResponse authGoogle(@RequestParam String code) {
         return googleAuthService.execute(code);
     }

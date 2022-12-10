@@ -24,6 +24,7 @@ public class LoginService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
+                .authority(user.getAuthority())
                 .build();
     }
 

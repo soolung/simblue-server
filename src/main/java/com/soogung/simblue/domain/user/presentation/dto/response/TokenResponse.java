@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.user.presentation.dto.response;
 
+import com.soogung.simblue.domain.user.domain.type.Authority;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,4 +9,5 @@ import lombok.Getter;
 public class TokenResponse {
 
     private String accessToken;
+    private Authority authority;
 }

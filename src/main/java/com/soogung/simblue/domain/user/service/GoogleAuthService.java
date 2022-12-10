@@ -31,10 +31,10 @@ public class GoogleAuthService {
         String accessToken = googleAuthClient.getAccessToken(
                 createGoogleAuthRequest(code)).getAccessToken();
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
+        Authority authority = validateEmailAndGetAuthority(email);
 
 
         if (!userRepository.existsByEmail(email)) {
-            Authority authority = validateEmailAndGetAuthority(email);
             userRepository.save(
                     User.builder()
                             .email(email)
@@ -45,6 +45,7 @@ public class GoogleAuthService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(email))
+                .authority(authority)
                 .build();
     }
 
