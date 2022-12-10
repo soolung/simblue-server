@@ -46,6 +46,7 @@ public class GoogleAuthService {
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(email))
                 .authority(authority)
+                .email(email)
                 .build();
     }
 

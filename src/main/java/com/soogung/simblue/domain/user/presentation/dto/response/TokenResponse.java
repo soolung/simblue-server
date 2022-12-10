@@ -10,4 +10,7 @@ public class TokenResponse {
 
     private String accessToken;
     private Authority authority;
+    private String name;
+    private String email;
 }
+
