@@ -44,7 +44,7 @@ public class QueryApplicationResultService {
 
         Application application = applicationFacade.findApplicationById(id);
 
-        List< ApplicationNoticeResponse> noticeList = applicationNoticeRepository.findAllByApplicationOrderByIsPinnedDesc(application)
+        List< ApplicationNoticeResponse> noticeList = applicationNoticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(ApplicationNoticeResponse::of)
                 .collect(Collectors.toList());
 

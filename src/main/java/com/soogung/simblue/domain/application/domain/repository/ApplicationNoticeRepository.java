@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ApplicationNoticeRepository extends JpaRepository<ApplicationNotice, Long> {
 
-    List<ApplicationNotice> findAllByApplicationOrderByIsPinnedDesc(Application application);
+    List<ApplicationNotice> findAllByApplicationIdOrderByIsPinnedDesc(Long applicationId);
 }

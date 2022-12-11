@@ -19,10 +19,10 @@ public class ApplicationDetailResponse {
     private LocalDate endDate;
     private String emoji;
     private Boolean isAlways;
-    private List<ApplicationQuestionResponse> applicationQuestions;
-    private List<ApplicationNoticeResponse> applicationNotices;
+    private List<ApplicationQuestionResponse> questionList;
+    private List<ApplicationNoticeResponse> noticeList;
 
-    public static ApplicationDetailResponse of(Application application) {
+    public static ApplicationDetailResponse of(Application application, List<ApplicationNoticeResponse> noticeList) {
         return ApplicationDetailResponse.builder()
                 .id(application.getId())
                 .title(application.getTitle())
@@ -31,15 +31,11 @@ public class ApplicationDetailResponse {
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
-                .applicationQuestions(
+                .questionList(
                         application.getApplicationQuestions().stream()
                                 .map(ApplicationQuestionResponse::of)
                                 .collect(Collectors.toList()))
-                .applicationNotices(
-                        application.getApplicationNotices().stream()
-                                .map(ApplicationNoticeResponse::of)
-                                .collect(Collectors.toList())
-                )
+                .noticeList(noticeList)
                 .build();
     }
 }
