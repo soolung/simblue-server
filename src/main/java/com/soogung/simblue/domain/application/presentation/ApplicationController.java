@@ -8,6 +8,8 @@ import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +24,7 @@ public class ApplicationController {
     private final QueryDeadlineApplicationService queryDeadlineApplicationService;
     private final QueryLatestApplicationService queryLatestApplicationService;
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
+    private final QueryFourLatestApplication queryFourLatestApplication;
     private final QueryApplicationDetailService queryApplicationDetailService;
     private final QueryMyApplicationService queryMyApplicationService;
 
@@ -41,6 +44,11 @@ public class ApplicationController {
         } else {
             throw new SimblueException(ErrorCode.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/four")
+    public ApplicationListResponse getFourLatestApplication(@PageableDefault(size = 4) Pageable pageable) {
+        return queryFourLatestApplication.execute(pageable);
     }
 
     @GetMapping("/{id}")
