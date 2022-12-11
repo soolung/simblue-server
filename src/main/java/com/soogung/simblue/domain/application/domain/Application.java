@@ -28,13 +28,13 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = true, length = 200)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate endDate;
 
-    @Column(nullable = false, length = 1)
+    @Column(nullable = false, length = 10)
     private String emoji;
 
     @Column(nullable = false)

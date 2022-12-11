@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -23,20 +24,21 @@ public class CreateApplicationRequest {
     @Nullable
     private String description;
 
-    @NotNull
+    @Nullable
     private LocalDate startDate;
 
-    @NotNull
+    @Nullable
     private LocalDate endDate;
 
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 10)
     private String emoji;
 
     @NotNull
     private Boolean isAlways;
 
     @NotNull
+    @Valid
     private List<ApplicationQuestionRequest> applicationQuestions;
 
     public Application toEntity() {
