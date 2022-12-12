@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ApplicationOwnerRepository extends JpaRepository<ApplicationOwner, Long> {
 
-    @Query("SELECT o FROM ApplicationOwner o JOIN FETCH o.application WHERE o.teacher = :teacher")
+    @Query("SELECT o FROM ApplicationOwner o JOIN FETCH o.application WHERE o.teacher = :teacher ORDER BY o.id DESC")
     List<ApplicationOwner> findAllByTeacher(Teacher teacher);
 
     boolean existsByApplicationIdAndTeacherId(Long application, Long teacher);

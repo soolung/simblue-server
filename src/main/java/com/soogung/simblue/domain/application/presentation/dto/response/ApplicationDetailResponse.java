@@ -32,7 +32,7 @@ public class ApplicationDetailResponse {
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
                 .questionList(
-                        application.getApplicationQuestions().stream()
+                        application.getQuestionList().stream()
                                 .map(ApplicationQuestionResponse::of)
                                 .collect(Collectors.toList()))
                 .noticeList(noticeList)

@@ -16,10 +16,10 @@ import java.util.List;
 public class ApplicationRequestRequest {
 
     @NotNull
-    private Long applicationQuestionId;
+    private Long id;
 
     @NotNull
-    private List<String> answer;
+    private List<String> userResponseList;
 
     public ApplicationRequest toEntity(ApplicationQuestion question, ApplicationRequestBlock block, String a) {
         return ApplicationRequest.builder()

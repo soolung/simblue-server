@@ -13,5 +13,5 @@ import java.util.List;
 public class ApplicationRequestBlockRequest {
 
     @Valid
-    List<ApplicationRequestRequest> applicationRequestRequests;
+    List<ApplicationRequestRequest> requestRequestList;
 }

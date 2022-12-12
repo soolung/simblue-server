@@ -25,7 +25,7 @@ public class ApplicationQuestionRequest {
     private ApplicationQuestionType type;
 
     @Nullable
-    private List<ApplicationAnswerRequest> applicationAnswers;
+    private List<ApplicationAnswerRequest> answerList;
 
     public ApplicationQuestion toEntity(Application application) {
         return ApplicationQuestion.builder()

@@ -41,10 +41,10 @@ public class Application extends BaseTimeEntity {
     private Boolean isAlways;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-    private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
+    private List<ApplicationQuestion> questionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
-    private List<ApplicationNotice> applicationNotices = new ArrayList<>();
+    private List<ApplicationNotice> noticeList = new ArrayList<>();
 
     @Builder
     public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways) {

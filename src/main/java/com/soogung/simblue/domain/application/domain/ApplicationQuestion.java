@@ -34,7 +34,7 @@ public class ApplicationQuestion extends BaseTimeEntity {
     private Application application;
 
     @OneToMany(mappedBy = "applicationQuestion", cascade = CascadeType.ALL)
-    private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
+    private List<ApplicationAnswer> answerList = new ArrayList<>();
 
     @Builder
     public ApplicationQuestion(String question, ApplicationQuestionType type, Application application) {

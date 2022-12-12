@@ -30,7 +30,7 @@ public class RespondApplicationService {
         ApplicationRequestBlock block = applicationRequestBlockRepository.save(createApplicationRequestBlock(id));
         applicationRequestRepository.saveAll(
                 toApplicationRequestsFromRequest(
-                        request.getApplicationRequestRequests(), block));
+                        request.getRequestRequestList(), block));
     }
 
     private ApplicationRequestBlock createApplicationRequestBlock(Long id) {
@@ -46,8 +46,8 @@ public class RespondApplicationService {
     ) {
         return requests.stream()
                 .map(r ->
-                        r.getAnswer().stream()
-                                .map(a -> r.toEntity(applicationFacade.findApplicationQuestionById(r.getApplicationQuestionId()), block, a))
+                        r.getUserResponseList().stream()
+                                .map(a -> r.toEntity(applicationFacade.findApplicationQuestionById(r.getId()), block, a))
                                 .collect(Collectors.toList()))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());

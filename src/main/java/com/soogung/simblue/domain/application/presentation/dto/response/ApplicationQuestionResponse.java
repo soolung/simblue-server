@@ -15,16 +15,16 @@ public class ApplicationQuestionResponse {
     private Long id;
     private String question;
     private ApplicationQuestionType type;
-    private List<ApplicationAnswerResponse> applicationAnswers;
+    private List<ApplicationAnswerResponse> answerList;
 
     public static ApplicationQuestionResponse of(ApplicationQuestion applicationQuestion) {
         return ApplicationQuestionResponse.builder()
                 .id(applicationQuestion.getId())
                 .question(applicationQuestion.getQuestion())
                 .type(applicationQuestion.getType())
-                .applicationAnswers(
+                .answerList(
                         applicationQuestion.getType().isHasAnswer() ?
-                                applicationQuestion.getApplicationAnswers().stream()
+                                applicationQuestion.getAnswerList().stream()
                                         .map(ApplicationAnswerResponse::of)
                                         .collect(Collectors.toList()) : null)
                 .build();

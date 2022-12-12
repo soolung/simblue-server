@@ -33,15 +33,15 @@ public class CreateApplicationService {
 
         Application application = applicationRepository.save(request.toEntity());
         applicationOwnerRepository.save(new ApplicationOwner(teacher, application));
-        request.getApplicationQuestions()
+        request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
     private void saveApplicationAnswer(ApplicationQuestionRequest request, Application application) {
         ApplicationQuestion question = applicationQuestionRepository.save(request.toEntity(application));
-        if (request.getType().isHasAnswer() && request.getApplicationAnswers() != null) {
+        if (request.getType().isHasAnswer() && request.getAnswerList() != null) {
             applicationAnswerRepository.saveAll(
-                    request.getApplicationAnswers().stream()
+                    request.getAnswerList().stream()
                     .map(a -> a.toEntity(question))
                     .collect(Collectors.toList())
             );
