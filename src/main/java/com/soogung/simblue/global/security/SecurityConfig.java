@@ -1,11 +1,11 @@
 package com.soogung.simblue.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soogung.simblue.global.error.filter.GlobalErrorFilter;
 import com.soogung.simblue.global.security.auth.AuthDetailsService;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
 import com.soogung.simblue.global.security.jwt.JwtValidateService;
 import com.soogung.simblue.global.security.jwt.filter.JwtAuthenticationFilter;
-import com.soogung.simblue.global.security.jwt.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,6 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterBefore(new JwtAuthenticationFilter(authDetailsService, jwtTokenProvider, jwtValidateService),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtExceptionFilter(mapper), JwtAuthenticationFilter.class);
+                .addFilterBefore(new GlobalErrorFilter(mapper), JwtAuthenticationFilter.class);
     }
 }

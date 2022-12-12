@@ -28,6 +28,7 @@ public class GoogleAuthService {
 
     @Transactional
     public TokenResponse execute(String code) {
+        boolean isLogin = true;
         String accessToken = googleAuthClient.getAccessToken(
                 createGoogleAuthRequest(code)).getAccessToken();
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
@@ -35,6 +36,8 @@ public class GoogleAuthService {
 
 
         if (!userRepository.existsByEmail(email)) {
+            isLogin = false;
+
             userRepository.save(
                     User.builder()
                             .email(email)
@@ -47,6 +50,7 @@ public class GoogleAuthService {
                 .accessToken(jwtTokenProvider.createAccessToken(email))
                 .authority(authority)
                 .email(email)
+                .isLogin(isLogin)
                 .build();
     }
 

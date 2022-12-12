@@ -1,6 +1,6 @@
 package com.soogung.simblue.global.error;
 
-import com.soogung.simblue.global.error.exception.ErrorCode;
+import com.soogung.simblue.global.error.exception.ErrorProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +13,8 @@ public class ErrorResponse {
     private int status;
     private String message;
 
-    public ErrorResponse(ErrorCode errorCode) {
-        this.status = errorCode.getStatus();
-        this.message = errorCode.getMessage();
+    public ErrorResponse(ErrorProperty errorProperty) {
+        this.status = errorProperty.getStatus();
+        this.message = errorProperty.getMessage();
     }
 }

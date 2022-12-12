@@ -12,5 +12,6 @@ public class TokenResponse {
     private Authority authority;
     private String name;
     private String email;
+    private boolean isLogin;
 }
 
