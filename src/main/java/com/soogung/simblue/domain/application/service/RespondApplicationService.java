@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +44,12 @@ public class RespondApplicationService {
             List<ApplicationRequestRequest> requests,
             ApplicationRequestBlock block
     ) {
-        return requests.stream().map(r ->
-                        r.toEntity(applicationFacade.findApplicationQuestionById(r.getApplicationQuestionId()), block))
+        return requests.stream()
+                .map(r ->
+                        r.getAnswer().stream()
+                                .map(a -> r.toEntity(applicationFacade.findApplicationQuestionById(r.getApplicationQuestionId()), block, a))
+                                .collect(Collectors.toList()))
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 }
