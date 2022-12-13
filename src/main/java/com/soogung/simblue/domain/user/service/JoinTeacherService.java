@@ -21,7 +21,7 @@ public class JoinTeacherService {
     @Transactional
     public void execute(TeacherRequest request) {
         User user = userFacade.getCurrentUser();
-        user.updateInformation(request.getName(), passwordEncoder.encode(user.getPassword()));
+        user.updateInformation(request.getName(), passwordEncoder.encode(request.getPassword()));
 
         teacherRepository.save(
                 Teacher.builder()
