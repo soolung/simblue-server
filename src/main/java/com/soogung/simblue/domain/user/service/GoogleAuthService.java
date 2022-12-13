@@ -34,22 +34,25 @@ public class GoogleAuthService {
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
         Authority authority = validateEmailAndGetAuthority(email);
 
-
+        User user = null;
         if (!userRepository.existsByEmail(email)) {
             isLogin = false;
 
-            userRepository.save(
+            user = userRepository.save(
                     User.builder()
                             .email(email)
                             .authority(authority)
                             .build()
             );
+        } else {
+            user = userFacade.findUserByEmail(email);
         }
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(email))
                 .authority(authority)
                 .email(email)
+                .name(user.getName())
                 .isLogin(isLogin)
                 .build();
     }
