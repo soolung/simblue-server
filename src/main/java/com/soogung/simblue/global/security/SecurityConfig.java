@@ -59,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/application").permitAll()
-                .antMatchers(HttpMethod.GET, "/application/four").permitAll()
+                .antMatchers(HttpMethod.GET, "/application/my").authenticated()
+                .antMatchers(HttpMethod.GET, "/application/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable();
