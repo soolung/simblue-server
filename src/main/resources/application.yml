@@ -32,7 +32,7 @@ auth:
     redirect-url: ${GOOGLE_REDIRECT}
 
 jwt:
-  access-token-valid-time: ${JWT_ACCESS_TIME}
+  access-token-valid-time: 643000
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}
