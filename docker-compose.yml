@@ -1,17 +1,57 @@
-version: '3'
+version: "3"
 
 services:
-  mysql:
-    container_name: soogung_simblue_local
-    image: mysql/mysql-server:5.7
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - simblue-application
     environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_USER: "soogung"
-      MYSQL_PASSWORD: "soogung"
-      MYSQL_DATABASE: "soogung_simblue"
+      - TZ="Asia/Seoul"
     ports:
-      - "3307:3306"
+      - 80:80
+      - 443:443
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  simblue-database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Seoul
+    volumes:
+      - simblue-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
     command:
       - "mysqld"
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
+
+  simblue-application:
+    build: .
+    expose:
+      - 8080
+    env_file:
+      - .env
+    depends_on:
+      - simblue-database
+    environment:
+      - TZ="Asia/Seoul"
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot_service
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  simblue-volume: { }

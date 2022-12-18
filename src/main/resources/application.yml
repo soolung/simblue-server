@@ -1,9 +1,22 @@
 spring:
   profiles:
     active: local
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
 
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
@@ -11,15 +24,28 @@ spring:
     username: soogung
     password: soogung
 
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
+auth:
+  google:
+    base-url: ${GOOGLE_BASE_URL}
+    client-id: ${GOOGLE_CLIENT}
+    client-secret: ${GOOGLE_SECRET}
+    redirect-url: ${GOOGLE_REDIRECT}
+
+jwt:
+  access-token-valid-time: 643000
+  prefix: Bearer
+  header: Authorization
+  secret-key: ${JWT_SECRET}
 
 debug: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
 
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
+  datasource:
+    url: jdbc:mysql://simblue-database:${DB_PORT}/${DB_NAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
