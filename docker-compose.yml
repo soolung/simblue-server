@@ -35,7 +35,7 @@ services:
       - "--collation-server=utf8mb4_unicode_ci"
 
   simblue-application:
-    build: .
+    image: ${DOCKER_USERNAME}/${DOCKER_REPO}
     expose:
       - 8080
     env_file:
