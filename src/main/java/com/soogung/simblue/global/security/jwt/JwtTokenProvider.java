@@ -29,10 +29,10 @@ public class JwtTokenProvider {
     }
 
     public String createAccessToken(String email) {
-        return createToken(email, jwtProperties.getAccessTokenValidTime());
+        return createToken(email, jwtProperties.getAccessTime());
     }
 
-    public String createToken(String email, long time) {
+    public String createToken(String email, Long time) {
         Claims claims = Jwts.claims();
         claims.put("email", email);
         Date now = new Date();
