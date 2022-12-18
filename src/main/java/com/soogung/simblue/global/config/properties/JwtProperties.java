@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("jwt")
 public class JwtProperties {
 
-    private Long accessTokenValidTime;
+    private Long accessTime;
     private String prefix;
     private String header;
     private String secretKey;

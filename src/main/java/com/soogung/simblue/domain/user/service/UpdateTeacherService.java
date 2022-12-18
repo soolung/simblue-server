@@ -1,6 +1,5 @@
 package com.soogung.simblue.domain.user.service;
 
-import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.domain.user.presentation.dto.request.TeacherRequest;
