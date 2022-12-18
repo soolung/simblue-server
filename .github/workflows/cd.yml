@@ -55,7 +55,7 @@ jobs:
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
             
-            cd simblue-server"q
+            cd simblue-server
             git pull origin main
             
             rm -rf .env
