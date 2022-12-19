@@ -32,12 +32,10 @@ auth:
     redirect-url: ${GOOGLE_REDIRECT}
 
 jwt:
-  access-time: 643000
+  access-time: 259200000
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}
-
-debug: true
 ---
 spring:
   config:
@@ -49,3 +47,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
