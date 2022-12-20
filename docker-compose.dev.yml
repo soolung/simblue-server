@@ -2,16 +2,32 @@ version: '3'
 
 services:
   mysql:
-    container_name: soogung_simblue_local
-    image: mysql/mysql-server:5.7
+    container_name: ${DB_NAME}
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_HOST: "%"
-      MYSQL_USER: "soogung"
-      MYSQL_PASSWORD: "soogung"
-      MYSQL_DATABASE: "soogung_simblue"
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     command:
       - "mysqld"
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
+
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    environment:
+      - TZ="Asia/Seoul"

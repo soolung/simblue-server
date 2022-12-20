@@ -18,12 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: soogung
-    password: soogung
-
 auth:
   google:
     base-url: ${GOOGLE_BASE_URL}
@@ -36,6 +30,35 @@ jwt:
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: soogung
+    password: soogung
+
+server:
+  port: 9090
+
+debug: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://mysql:${DB_PORT}/${DB_NAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+debug: true
 ---
 spring:
   config:
