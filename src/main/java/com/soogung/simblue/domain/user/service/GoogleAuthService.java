@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class GoogleAuthService {
@@ -22,7 +25,6 @@ public class GoogleAuthService {
     private final AuthProperties authProperties;
     private final GoogleAuthClient googleAuthClient;
     private final GoogleInformationClient googleInformationClient;
-    private final UserFacade userFacade;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -34,8 +36,9 @@ public class GoogleAuthService {
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
         Authority authority = validateEmailAndGetAuthority(email);
 
+        Optional<User> nowUser = userRepository.findByEmail(email);
         User user = null;
-        if (!userRepository.existsByEmail(email)) {
+        if (nowUser.isEmpty()) {
             isLogin = false;
 
             user = userRepository.save(
@@ -44,8 +47,11 @@ public class GoogleAuthService {
                             .authority(authority)
                             .build()
             );
+        } else if (nowUser.get().getName() == null || nowUser.get().getName().equals("")) {
+            isLogin = false;
+            user = nowUser.get();
         } else {
-            user = userFacade.findUserByEmail(email);
+            user = nowUser.get();
         }
 
         return TokenResponse.builder()
