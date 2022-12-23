@@ -15,6 +15,6 @@ public interface ApplicationRequestBlockRepository extends JpaRepository<Applica
     @Query("SELECT b FROM ApplicationRequestBlock b JOIN FETCH b.application WHERE b.student = :student ORDER BY b.id DESC")
     List<ApplicationRequestBlock> findAllByStudent(Student student);
 
-    @Query("SELECT b FROM ApplicationRequestBlock b JOIN FETCH b.requests WHERE b.application.id = :applicationId")
+    @Query("SELECT DISTINCT b FROM ApplicationRequestBlock b JOIN FETCH b.requests WHERE b.application.id = :applicationId")
     List<ApplicationRequestBlock> findApplicationResult(Long applicationId);
 }
