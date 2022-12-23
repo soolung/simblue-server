@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +37,7 @@ public class QueryApplicationResultService {
     private final ApplicationOwnerRepository applicationOwnerRepository;
     private final ApplicationQuestionRepository applicationQuestionRepository;
     private final ApplicationRequestBlockRepository applicationRequestBlockRepository;
+
 
     @Transactional(readOnly = true)
     public ApplicationResultResponse execute(Long id) {
@@ -53,7 +55,7 @@ public class QueryApplicationResultService {
                 .collect(Collectors.toList());
 
         List<ApplicationUserResponseResponse> userResponseList = applicationRequestBlockRepository
-                .findApplicationResult(id).stream().distinct()
+                .findApplicationResult(id).stream()
                 .map(this::createApplicationUserResponseResponse)
                 .collect(Collectors.toList());
 
@@ -74,8 +76,9 @@ public class QueryApplicationResultService {
 
     private ApplicationUserResponseResponse createApplicationUserResponseResponse(ApplicationRequestBlock block) {
         Student student = block.getStudent();
+
         List<String> answerList = block.getRequests().stream()
-                .collect(Collectors.groupingBy(r -> r.getApplicationQuestion().getId()))
+                .collect(Collectors.groupingBy(r -> r.getApplicationQuestion().getId(), TreeMap<Long, List<ApplicationRequest>>::new, Collectors.toList()))
                 .values().stream()
                 .map(this::getResult)
                 .collect(Collectors.toList());
