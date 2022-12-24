@@ -1,9 +1,11 @@
 package com.soogung.simblue.domain.application.service;
 
+import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.ApplicationRequest;
 import com.soogung.simblue.domain.application.domain.ApplicationRequestBlock;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestRepository;
+import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestRequest;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,15 +30,24 @@ public class RespondApplicationService {
 
     @Transactional
     public void execute(Long id, ApplicationRequestBlockRequest request) {
-        ApplicationRequestBlock block = applicationRequestBlockRepository.save(createApplicationRequestBlock(id));
+        Application application = applicationFacade.findApplicationById(id);
+        validateApplicationPeriod(application);
+
+        ApplicationRequestBlock block = applicationRequestBlockRepository.save(createApplicationRequestBlock(application));
         applicationRequestRepository.saveAll(
                 toApplicationRequestsFromRequest(
                         request.getRequestRequestList(), block));
     }
 
-    private ApplicationRequestBlock createApplicationRequestBlock(Long id) {
+    private void validateApplicationPeriod(Application application) {
+        if (LocalDate.now().isAfter(application.getEndDate())) {
+            throw ApplicationHasAlreadyEndedException.EXCEPTION;
+        }
+    }
+
+    private ApplicationRequestBlock createApplicationRequestBlock(Application application) {
         return ApplicationRequestBlock.builder()
-                .application(applicationFacade.findApplicationById(id))
+                .application(application)
                 .student(userFacade.findStudentByUser(userFacade.getCurrentUser()))
                 .build();
     }
