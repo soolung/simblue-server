@@ -5,10 +5,12 @@ import com.soogung.simblue.domain.application.domain.ApplicationRequest;
 import com.soogung.simblue.domain.application.domain.ApplicationRequestBlock;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestRepository;
+import com.soogung.simblue.domain.application.exception.AlreadyRespondException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestRequest;
+import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,9 +33,11 @@ public class RespondApplicationService {
     @Transactional
     public void execute(Long id, ApplicationRequestBlockRequest request) {
         Application application = applicationFacade.findApplicationById(id);
+        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         validateApplicationPeriod(application);
+        validateFirstResponse(application, student);
 
-        ApplicationRequestBlock block = applicationRequestBlockRepository.save(createApplicationRequestBlock(application));
+        ApplicationRequestBlock block = applicationRequestBlockRepository.save(createApplicationRequestBlock(application, student));
         applicationRequestRepository.saveAll(
                 toApplicationRequestsFromRequest(
                         request.getRequestRequestList(), block));
@@ -45,10 +49,16 @@ public class RespondApplicationService {
         }
     }
 
-    private ApplicationRequestBlock createApplicationRequestBlock(Application application) {
+    private void validateFirstResponse(Application application, Student student) {
+        if (applicationRequestBlockRepository.existsByApplicationAndStudent(application, student)) {
+            throw AlreadyRespondException.EXCEPTION;
+        }
+    }
+
+    private ApplicationRequestBlock createApplicationRequestBlock(Application application, Student student) {
         return ApplicationRequestBlock.builder()
                 .application(application)
-                .student(userFacade.findStudentByUser(userFacade.getCurrentUser()))
+                .student(student)
                 .build();
     }
 
