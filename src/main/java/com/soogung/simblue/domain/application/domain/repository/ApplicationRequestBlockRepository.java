@@ -12,6 +12,8 @@ public interface ApplicationRequestBlockRepository extends JpaRepository<Applica
 
     void deleteApplicationRequestBlockByApplicationAndStudent(Application application, Student student);
 
+    boolean existsByApplicationAndStudent(Application application, Student student);
+
     @Query("SELECT b FROM ApplicationRequestBlock b JOIN FETCH b.application WHERE b.student = :student ORDER BY b.id DESC")
     List<ApplicationRequestBlock> findAllByStudent(Student student);
 

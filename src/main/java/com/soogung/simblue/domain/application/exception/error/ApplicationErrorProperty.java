@@ -12,6 +12,7 @@ public enum ApplicationErrorProperty implements ErrorProperty {
     APPLICATION_NOTICE_NOT_FOUND(404, "공지사항이 없습니다."),
     APPLICATION_QUESTION_NOT_FOUND(404, "해당 질문이 없습니다."),
     APPLICATION_HAS_ALREADY_ENDED(422, "기한이 종료된 신청입니다."),
+    ALREADY_RESPOND(422, "중복 응답할 수 없습니다."),
     ;
 
     private final int status;
