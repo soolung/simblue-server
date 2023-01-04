@@ -2,13 +2,13 @@ version: '3'
 
 services:
   mysql:
-    container_name: soogung_simblue_local
+    container_name: soolung_simblue_local
     image: mysql/mysql-server:5.7
     environment:
       MYSQL_ROOT_HOST: "%"
-      MYSQL_USER: "soogung"
-      MYSQL_PASSWORD: "soogung"
-      MYSQL_DATABASE: "soogung_simblue"
+      MYSQL_USER: "soolung"
+      MYSQL_PASSWORD: "soolung"
+      MYSQL_DATABASE: "soolung_simblue"
     ports:
       - "3307:3306"
     command:

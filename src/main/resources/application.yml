@@ -37,10 +37,10 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
+    url: jdbc:mysql://127.0.0.1:3307/soolung_simblue
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: soogung
-    password: soogung
+    username: soolung
+    password: soolung
 
 server:
   port: 9090
