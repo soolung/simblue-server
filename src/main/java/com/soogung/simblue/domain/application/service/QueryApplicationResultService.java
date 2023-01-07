@@ -4,10 +4,7 @@ import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.ApplicationQuestion;
 import com.soogung.simblue.domain.application.domain.ApplicationRequest;
 import com.soogung.simblue.domain.application.domain.ApplicationRequestBlock;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationNoticeRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationOwnerRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationQuestionRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestBlockRepository;
+import com.soogung.simblue.domain.application.domain.repository.*;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationNoticeResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
@@ -38,7 +35,6 @@ public class QueryApplicationResultService {
     private final ApplicationQuestionRepository applicationQuestionRepository;
     private final ApplicationRequestBlockRepository applicationRequestBlockRepository;
 
-
     @Transactional(readOnly = true)
     public ApplicationResultResponse execute(Long id) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
@@ -46,7 +42,7 @@ public class QueryApplicationResultService {
 
         Application application = applicationFacade.findApplicationById(id);
 
-        List< ApplicationNoticeResponse> noticeList = applicationNoticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
+        List<ApplicationNoticeResponse> noticeList = applicationNoticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(ApplicationNoticeResponse::of)
                 .collect(Collectors.toList());
 
