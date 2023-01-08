@@ -21,6 +21,10 @@ public class ApplicationQuestionRequest {
     @Size(min = 2, max = 20)
     private String question;
 
+    @Nullable
+    @Size(max = 50)
+    private String description;
+
     @NotNull
     private ApplicationQuestionType type;
 
@@ -30,6 +34,7 @@ public class ApplicationQuestionRequest {
     public ApplicationQuestion toEntity(Application application) {
         return ApplicationQuestion.builder()
                 .question(question)
+                .description(description)
                 .type(type)
                 .application(application)
                 .build();
