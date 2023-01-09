@@ -1,10 +1,10 @@
-package com.soogung.simblue.domain.user.service;
+package com.soogung.simblue.domain.auth.service;
 
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
-import com.soogung.simblue.domain.user.presentation.dto.request.LoginRequest;
-import com.soogung.simblue.domain.user.presentation.dto.response.TokenResponse;
+import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
+import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

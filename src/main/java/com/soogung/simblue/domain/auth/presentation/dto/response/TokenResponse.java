@@ -1,4 +1,4 @@
-package com.soogung.simblue.domain.user.presentation.dto.response;
+package com.soogung.simblue.domain.auth.presentation.dto.response;
 
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import lombok.Builder;

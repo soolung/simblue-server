@@ -1,10 +1,10 @@
-package com.soogung.simblue.domain.user.presentation;
+package com.soogung.simblue.domain.auth.presentation;
 
-import com.soogung.simblue.domain.user.presentation.dto.request.LoginRequest;
-import com.soogung.simblue.domain.user.presentation.dto.response.TokenResponse;
-import com.soogung.simblue.domain.user.service.GoogleAuthLinkService;
-import com.soogung.simblue.domain.user.service.GoogleAuthService;
-import com.soogung.simblue.domain.user.service.LoginService;
+import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
+import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
+import com.soogung.simblue.domain.auth.service.GoogleAuthLinkService;
+import com.soogung.simblue.domain.auth.service.GoogleAuthService;
+import com.soogung.simblue.domain.auth.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

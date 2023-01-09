@@ -1,4 +1,4 @@
-package com.soogung.simblue.domain.user.presentation.dto.request;
+package com.soogung.simblue.domain.auth.presentation.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
