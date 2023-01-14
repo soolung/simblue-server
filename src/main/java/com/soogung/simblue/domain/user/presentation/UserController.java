@@ -39,6 +39,11 @@ public class UserController {
         updateTeacherService.execute(request);
     }
 
+    @PatchMapping("/password")
+    public void updatePassword(@RequestBody @Valid UpdatePasswordRequest request) {
+        updatePasswordService.execute(request);
+    }
+
     @DeleteMapping
     public void deleteUser() {
         deleteUserService.execute();
