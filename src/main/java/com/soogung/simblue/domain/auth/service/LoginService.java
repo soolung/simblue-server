@@ -1,5 +1,7 @@
 package com.soogung.simblue.domain.auth.service;
 
+import com.soogung.simblue.domain.auth.domain.RefreshToken;
+import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
@@ -17,6 +19,7 @@ public class LoginService {
     private final UserFacade userFacade;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponse execute(LoginRequest request) {
         User user = userFacade.findUserByEmail(request.getEmail());
@@ -24,6 +27,7 @@ public class LoginService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
+                .refreshToken(createRefreshToken(user.getEmail()))
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
@@ -34,5 +38,18 @@ public class LoginService {
         if (!passwordEncoder.matches(actual, expected)) {
             throw PasswordMismatchException.EXCEPTION;
         }
+    }
+
+    private String createRefreshToken(String email) {
+        String token = jwtTokenProvider.createRefreshToken(email);
+
+        refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .token(token)
+                        .email(email)
+                        .build()
+        );
+
+        return token;
     }
 }

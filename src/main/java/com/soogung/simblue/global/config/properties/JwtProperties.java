@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class JwtProperties {
 
     private Long accessTime;
+    private Long refreshTime;
     private String prefix;
     private String header;
     private String secretKey;

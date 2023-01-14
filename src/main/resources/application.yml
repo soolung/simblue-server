@@ -29,7 +29,8 @@ auth:
     redirect-url: ${GOOGLE_REDIRECT}
 
 jwt:
-  access-time: 259200000
+  refresh-time: 2592000000 # 30일
+  access-time: 3600000 # 1시간
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}

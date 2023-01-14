@@ -32,6 +32,9 @@ public class JwtTokenProvider {
         return createToken(email, jwtProperties.getAccessTime());
     }
 
+    public String createRefreshToken(String email) {
+        return createToken(email, jwtProperties.getRefreshTime());
+    }
     public String createToken(String email, Long time) {
         Claims claims = Jwts.claims();
         claims.put("email", email);
