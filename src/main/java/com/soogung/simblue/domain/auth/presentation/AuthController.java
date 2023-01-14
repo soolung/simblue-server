@@ -1,6 +1,5 @@
 package com.soogung.simblue.domain.auth.presentation;
 
-import com.soogung.simblue.domain.auth.domain.RefreshToken;
 import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
 import com.soogung.simblue.domain.auth.presentation.dto.response.AccessTokenResponse;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
