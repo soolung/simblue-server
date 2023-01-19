@@ -17,6 +17,7 @@ public class ApplicationResponse {
     private LocalDate endDate;
     private String emoji;
     private Boolean isAlways;
+    private Boolean allowsDuplication;
 
     public static ApplicationResponse of(Application application) {
         return ApplicationResponse.builder()
@@ -27,6 +28,7 @@ public class ApplicationResponse {
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
+                .allowsDuplication(application.getAllowsDuplication())
                 .build();
     }
 }
