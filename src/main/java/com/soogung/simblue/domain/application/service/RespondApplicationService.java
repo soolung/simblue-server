@@ -50,7 +50,7 @@ public class RespondApplicationService {
     }
 
     private void validateFirstResponse(Application application, Student student) {
-        if (applicationRequestBlockRepository.existsByApplicationAndStudent(application, student)) {
+        if (!application.getAllowsDuplication() && applicationRequestBlockRepository.existsByApplicationAndStudent(application, student)) {
             throw AlreadyRespondException.EXCEPTION;
         }
     }

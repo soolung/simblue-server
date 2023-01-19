@@ -40,6 +40,9 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean isAlways;
 
+    @Column(nullable = false)
+    private Boolean allowsDuplication;
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<ApplicationQuestion> questionList = new ArrayList<>();
 
@@ -47,12 +50,13 @@ public class Application extends BaseTimeEntity {
     private List<ApplicationNotice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
         this.isAlways = isAlways;
+        this.allowsDuplication = allowsDuplication;
     }
 }

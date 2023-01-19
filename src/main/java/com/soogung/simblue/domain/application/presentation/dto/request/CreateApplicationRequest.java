@@ -38,6 +38,9 @@ public class CreateApplicationRequest {
     private Boolean isAlways;
 
     @NotNull
+    private Boolean allowsDuplication;
+
+    @NotNull
     @Valid
     private List<ApplicationQuestionRequest> questionList;
 
@@ -49,6 +52,7 @@ public class CreateApplicationRequest {
                 .endDate(endDate)
                 .emoji(emoji)
                 .isAlways(isAlways)
+                .allowsDuplication(allowsDuplication)
                 .build();
     }
 }
