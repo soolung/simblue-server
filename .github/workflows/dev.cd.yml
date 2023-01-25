@@ -67,11 +67,10 @@ jobs:
             echo DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
             echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
             echo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} >> .env
-            echo DOCKER_REPO=${{ secrets.DOCKER_REPO }} >> .env
-            echo DEV_DOCKER_REPO=${{ secrets.DEV_DOCKER_REPO }} >> .env
+            echo DOCKER_REPO=${{ secrets.DEV_DOCKER_REPO }} >> .env
             echo GOOGLE_BASE_URL=${{ secrets.GOOGLE_BASE_URL }} >> .env
             echo GOOGLE_CLIENT=${{ secrets.GOOGLE_CLIENT }} >> .env
-            echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT }} >> .env
+            echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT_DEV }} >> .env
             echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
             
             docker-compose -f docker-compose.dev.yml up -d
