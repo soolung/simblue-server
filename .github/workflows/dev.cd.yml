@@ -39,15 +39,15 @@ jobs:
       - name: Docker build & push to dev
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DEV_DOCKER_REPO }} .
+          docker build -f Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DEV_DOCKER_REPO }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DEV_DOCKER_REPO }}
 
       ## deploy to development server
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
-        id: deploy-prod
+        id: deploy-dev
         with:
-          host: ${{ secrets.HOST_PROD }}
+          host: ${{ secrets.HOST_DEV }}
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA

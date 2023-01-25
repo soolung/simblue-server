@@ -10,6 +10,8 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - simblue-volume:/var/lib/mysql
     ports:
       - "3306:3306"
     command:
@@ -26,9 +28,7 @@ services:
       - "6379:6379"
 
   application:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    build: ${DOCKER_USERNAME}/${DEV_DOCKER_REPO}
     expose:
       - 8080
     ports:
@@ -41,3 +41,6 @@ services:
     restart: on-failure
     environment:
       - TZ="Asia/Seoul"
+
+volumes:
+  simblue-volume: { }
