@@ -28,7 +28,7 @@ services:
       - "6379:6379"
 
   application:
-    build: ${DOCKER_USERNAME}/${DEV_DOCKER_REPO}
+    image: ${DOCKER_USERNAME}/${DEV_DOCKER_REPO}
     expose:
       - 8080
     ports:
