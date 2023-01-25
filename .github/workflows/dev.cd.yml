@@ -74,7 +74,7 @@ jobs:
             echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT }} >> .env
             echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
             
-            docker-compose up -d
+            docker-compose -f docker-compose.dev.yml up -d
             docker image prune -f
 
   ## time
