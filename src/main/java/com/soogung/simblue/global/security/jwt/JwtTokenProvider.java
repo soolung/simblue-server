@@ -1,5 +1,7 @@
 package com.soogung.simblue.global.security.jwt;
 
+import com.soogung.simblue.domain.auth.domain.RefreshToken;
+import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
 import com.soogung.simblue.global.config.properties.JwtProperties;
 import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
 import com.soogung.simblue.global.security.jwt.exception.InvalidTokenException;
@@ -21,7 +23,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
-
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -33,8 +35,18 @@ public class JwtTokenProvider {
     }
 
     public String createRefreshToken(String email) {
-        return createToken(email, jwtProperties.getRefreshTime());
+        String token = createToken(email, jwtProperties.getRefreshTime());
+
+        refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .token(token)
+                        .email(email)
+                        .build()
+        );
+
+        return token;
     }
+
     public String createToken(String email, Long time) {
         Claims claims = Jwts.claims();
         claims.put("email", email);

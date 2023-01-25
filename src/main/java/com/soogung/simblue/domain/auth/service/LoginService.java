@@ -27,7 +27,7 @@ public class LoginService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
-                .refreshToken(createRefreshToken(user.getEmail()))
+                .refreshToken(jwtTokenProvider.createRefreshToken(user.getName()))
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
@@ -39,18 +39,5 @@ public class LoginService {
         if (!passwordEncoder.matches(actual, expected)) {
             throw PasswordMismatchException.EXCEPTION;
         }
-    }
-
-    private String createRefreshToken(String email) {
-        String token = jwtTokenProvider.createRefreshToken(email);
-
-        refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .token(token)
-                        .email(email)
-                        .build()
-        );
-
-        return token;
     }
 }
