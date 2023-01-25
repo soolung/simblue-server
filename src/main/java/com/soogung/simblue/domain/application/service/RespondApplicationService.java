@@ -44,7 +44,7 @@ public class RespondApplicationService {
     }
 
     private void validateApplicationPeriod(Application application) {
-        if (LocalDate.now().isAfter(application.getEndDate())) {
+        if (!application.getIsAlways() && LocalDate.now().isAfter(application.getEndDate())) {
             throw ApplicationHasAlreadyEndedException.EXCEPTION;
         }
     }
