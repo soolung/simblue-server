@@ -31,6 +31,7 @@ public class LoginService {
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
+                .isLogin(user.getName() != null || !user.getName().equals(""))
                 .build();
     }
 
