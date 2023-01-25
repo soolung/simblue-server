@@ -19,7 +19,6 @@ public class LoginService {
     private final UserFacade userFacade;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponse execute(LoginRequest request) {
         User user = userFacade.findUserByEmail(request.getEmail());
@@ -31,7 +30,7 @@ public class LoginService {
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
-                .isLogin(user.getName() != null || !user.getName().equals(""))
+                .isLogin(!(user.getName() == null || user.getName().equals("")))
                 .build();
     }
 
