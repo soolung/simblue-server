@@ -26,6 +26,9 @@ public class ApplicationQuestionRequest {
     private String description;
 
     @NotNull
+    private Boolean isRequired;
+
+    @NotNull
     private ApplicationQuestionType type;
 
     @Nullable
@@ -35,6 +38,7 @@ public class ApplicationQuestionRequest {
         return ApplicationQuestion.builder()
                 .question(question)
                 .description(description)
+                .isRequired(isRequired)
                 .type(type)
                 .application(application)
                 .build();
