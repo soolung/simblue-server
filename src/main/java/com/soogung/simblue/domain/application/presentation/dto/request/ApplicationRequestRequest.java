@@ -21,7 +21,7 @@ public class ApplicationRequestRequest {
     private Long id;
 
     @NotEmpty
-    private List<@NotBlank String> userResponseList;
+    private List<String> userResponseList;
 
     public ApplicationRequest toEntity(ApplicationQuestion question, ApplicationRequestBlock block, String a) {
         return ApplicationRequest.builder()

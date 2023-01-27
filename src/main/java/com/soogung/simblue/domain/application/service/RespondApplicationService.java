@@ -1,6 +1,7 @@
 package com.soogung.simblue.domain.application.service;
 
 import com.soogung.simblue.domain.application.domain.Application;
+import com.soogung.simblue.domain.application.domain.ApplicationQuestion;
 import com.soogung.simblue.domain.application.domain.ApplicationRequest;
 import com.soogung.simblue.domain.application.domain.ApplicationRequestBlock;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestBlockRepository;
@@ -8,6 +9,7 @@ import com.soogung.simblue.domain.application.domain.repository.ApplicationReque
 import com.soogung.simblue.domain.application.exception.AlreadyRespondException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
+import com.soogung.simblue.domain.application.exception.QuestionIsRequiredException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequestRequest;
@@ -78,9 +80,28 @@ public class RespondApplicationService {
         return requests.stream()
                 .map(r ->
                         r.getUserResponseList().stream()
-                                .map(a -> r.toEntity(applicationFacade.findApplicationQuestionById(r.getId()), block, a))
+                                .map(a -> createApplicationRequestFrom(r, block, a))
                                 .collect(Collectors.toList()))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    private ApplicationRequest createApplicationRequestFrom(
+            ApplicationRequestRequest request,
+            ApplicationRequestBlock block,
+            String answer
+    ) {
+        ApplicationQuestion question = applicationFacade.findApplicationQuestionById(request.getId());
+        validateUserResponse(question, answer);
+        return request.toEntity(question, block, answer);
+    }
+
+    private void validateUserResponse(
+            ApplicationQuestion question,
+            String answer
+    ) {
+        if (question.getIsRequired() && (answer == null || answer.equals(""))) {
+            throw QuestionIsRequiredException.EXCEPTION;
+        }
     }
 }
