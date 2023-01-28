@@ -26,7 +26,7 @@ public class LoginService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
-                .refreshToken(jwtTokenProvider.createRefreshToken(user.getName()))
+                .refreshToken(jwtTokenProvider.createRefreshToken(user.getEmail()))
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
