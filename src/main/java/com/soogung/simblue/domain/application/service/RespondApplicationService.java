@@ -78,10 +78,13 @@ public class RespondApplicationService {
             ApplicationRequestBlock block
     ) {
         return requests.stream()
-                .map(r ->
-                        r.getUserResponseList().stream()
-                                .map(a -> createApplicationRequestFrom(r, block, a))
-                                .collect(Collectors.toList()))
+                .map(r -> {
+                    ApplicationQuestion q = applicationFacade.findApplicationQuestionById(r.getId());
+                    validateUserResponse(r, q);
+                    return r.getUserResponseList().stream()
+                            .map(a -> createApplicationRequestFrom(r, block, q, a))
+                            .collect(Collectors.toList());
+                })
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -89,11 +92,17 @@ public class RespondApplicationService {
     private ApplicationRequest createApplicationRequestFrom(
             ApplicationRequestRequest request,
             ApplicationRequestBlock block,
+            ApplicationQuestion question,
             String answer
     ) {
-        ApplicationQuestion question = applicationFacade.findApplicationQuestionById(request.getId());
         validateUserResponse(question, answer);
         return request.toEntity(question, block, answer);
+    }
+
+    private void validateUserResponse(ApplicationRequestRequest request, ApplicationQuestion question) {
+        if (question.getIsRequired() && request.getUserResponseList().isEmpty()) {
+            throw QuestionIsRequiredException.EXCEPTION;
+        }
     }
 
     private void validateUserResponse(
