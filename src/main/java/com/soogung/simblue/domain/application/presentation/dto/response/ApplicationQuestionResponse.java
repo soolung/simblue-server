@@ -14,6 +14,8 @@ public class ApplicationQuestionResponse {
 
     private Long id;
     private String question;
+    private String description;
+    private Boolean isRequired;
     private ApplicationQuestionType type;
     private List<ApplicationAnswerResponse> answerList;
 
@@ -21,6 +23,8 @@ public class ApplicationQuestionResponse {
         return ApplicationQuestionResponse.builder()
                 .id(applicationQuestion.getId())
                 .question(applicationQuestion.getQuestion())
+                .description(applicationQuestion.getDescription())
+                .isRequired(applicationQuestion.getIsRequired())
                 .type(applicationQuestion.getType())
                 .answerList(
                         applicationQuestion.getType().isHasAnswer() ?

@@ -1,4 +1,4 @@
-package com.soogung.simblue.domain.user.service;
+package com.soogung.simblue.domain.auth.service;
 
 import com.soogung.simblue.global.config.properties.AuthProperties;
 import lombok.RequiredArgsConstructor;

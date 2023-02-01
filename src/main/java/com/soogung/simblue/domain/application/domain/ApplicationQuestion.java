@@ -25,6 +25,12 @@ public class ApplicationQuestion extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private String question;
 
+    @Column(nullable = true, length = 50)
+    private String description;
+
+    @Column(nullable = false)
+    private Boolean isRequired;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private ApplicationQuestionType type;
@@ -37,8 +43,10 @@ public class ApplicationQuestion extends BaseTimeEntity {
     private List<ApplicationAnswer> answerList = new ArrayList<>();
 
     @Builder
-    public ApplicationQuestion(String question, ApplicationQuestionType type, Application application) {
+    public ApplicationQuestion(String question, String description, Boolean isRequired, ApplicationQuestionType type, Application application) {
         this.question = question;
+        this.description = description;
+        this.isRequired = isRequired;
         this.type = type;
         this.application = application;
     }

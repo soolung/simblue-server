@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.user.presentation;
 
-import com.soogung.simblue.domain.user.presentation.dto.request.StudentRequest;
-import com.soogung.simblue.domain.user.presentation.dto.request.TeacherRequest;
+import com.soogung.simblue.domain.user.presentation.dto.request.*;
 import com.soogung.simblue.domain.user.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ public class UserController {
     private final JoinTeacherService joinTeacherService;
     private final UpdateStudentService updateStudentService;
     private final UpdateTeacherService updateTeacherService;
+    private final UpdatePasswordService updatePasswordService;
     private final DeleteUserService deleteUserService;
 
     @PostMapping("/student")
@@ -30,13 +30,18 @@ public class UserController {
     }
 
     @PutMapping("/student")
-    public void updateStudent(@RequestBody @Valid StudentRequest request) {
+    public void updateStudent(@RequestBody @Valid UpdateStudentRequest request) {
         updateStudentService.execute(request);
     }
 
     @PutMapping("/teacher")
-    public void updateTeacher(@RequestBody @Valid TeacherRequest request) {
+    public void updateTeacher(@RequestBody @Valid UpdateTeacherRequest request) {
         updateTeacherService.execute(request);
+    }
+
+    @PatchMapping("/password")
+    public void updatePassword(@RequestBody @Valid UpdatePasswordRequest request) {
+        updatePasswordService.execute(request);
     }
 
     @DeleteMapping

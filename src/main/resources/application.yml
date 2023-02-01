@@ -18,6 +18,9 @@ spring:
     hibernate:
       ddl-auto: update
 
+  cache:
+    type: redis
+
 auth:
   google:
     base-url: ${GOOGLE_BASE_URL}
@@ -26,7 +29,8 @@ auth:
     redirect-url: ${GOOGLE_REDIRECT}
 
 jwt:
-  access-time: 259200000
+  refresh-time: 2592000000 # 30일
+  access-time: 3600000 # 1시간
   prefix: Bearer
   header: Authorization
   secret-key: ${JWT_SECRET}
@@ -37,10 +41,14 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/soogung_simblue
+    url: jdbc:mysql://127.0.0.1:3307/soolung_simblue
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: soogung
-    password: soogung
+    username: soolung
+    password: soolung
+
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: 9090
@@ -58,6 +66,10 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  redis:
+    host: redis
+    port: 6379
+
 debug: true
 ---
 spring:
@@ -70,6 +82,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+  redis:
+    host: simblue-redis
+    port: 6379
 
   jpa:
     hibernate:

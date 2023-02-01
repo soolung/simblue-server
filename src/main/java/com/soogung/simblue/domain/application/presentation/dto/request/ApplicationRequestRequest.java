@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -20,8 +18,7 @@ public class ApplicationRequestRequest {
     @NotNull
     private Long id;
 
-    @NotEmpty
-    private List<@NotBlank String> userResponseList;
+    private List<String> userResponseList;
 
     public ApplicationRequest toEntity(ApplicationQuestion question, ApplicationRequestBlock block, String a) {
         return ApplicationRequest.builder()

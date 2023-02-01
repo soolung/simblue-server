@@ -10,6 +10,9 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+      TZ: Asia/Seoul
+    volumes:
+      - simblue-volume:/var/lib/mysql
     ports:
       - "3306:3306"
     command:
@@ -17,10 +20,16 @@ services:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
 
+  redis:
+    image: redis:latest
+    container_name: soolung_simblue_redis
+    hostname: soolung
+    command: redis-server --port 6379
+    ports:
+      - "6379:6379"
+
   application:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    image: ${DOCKER_USERNAME}/${DOCKER_REPO}
     expose:
       - 8080
     ports:
@@ -29,5 +38,10 @@ services:
       - .env
     depends_on:
       - mysql
+      - redis
+    restart: on-failure
     environment:
       - TZ="Asia/Seoul"
+
+volumes:
+  simblue-volume: { }

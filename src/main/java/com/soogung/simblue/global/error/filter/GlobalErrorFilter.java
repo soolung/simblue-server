@@ -5,7 +5,9 @@ import com.soogung.simblue.global.error.ErrorResponse;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.ErrorProperty;
 import com.soogung.simblue.global.error.exception.SimblueException;
+import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,6 +28,9 @@ public class GlobalErrorFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws IOException {
         try {
             filterChain.doFilter(request, response);
+        } catch (ExpiredTokenException e) {
+            setErrorResponse(e.getErrorProperty(), response);
+            response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         } catch (SimblueException e) {
             setErrorResponse(e.getErrorProperty(), response);
         } catch (Exception e) {

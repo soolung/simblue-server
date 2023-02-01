@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
-public class TeacherRequest {
+public class UpdatePasswordRequest {
 
     @NotBlank
-    private String name;
+    private String oldPassword;
 
     @NotBlank
-    private String password;
+    private String newPassword;
 }
