@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.application.domain;
 
+import com.soogung.simblue.domain.notice.domain.Notice;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,7 +48,7 @@ public class Application extends BaseTimeEntity {
     private List<ApplicationQuestion> questionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
-    private List<ApplicationNotice> noticeList = new ArrayList<>();
+    private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
     public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication) {

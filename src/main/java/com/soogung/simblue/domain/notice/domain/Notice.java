@@ -1,5 +1,6 @@
-package com.soogung.simblue.domain.application.domain;
+package com.soogung.simblue.domain.notice.domain;
 
+import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "application_notice_tbl")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ApplicationNotice extends BaseTimeEntity {
+public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,7 @@ public class ApplicationNotice extends BaseTimeEntity {
     private Teacher teacher;
 
     @Builder
-    public ApplicationNotice(String notice, Application application, Teacher teacher) {
+    public Notice(String notice, Application application, Teacher teacher) {
         this.notice = notice;
         this.isPinned = false;
         this.application = application;

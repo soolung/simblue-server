@@ -1,6 +1,6 @@
-package com.soogung.simblue.domain.application.presentation.dto.response;
+package com.soogung.simblue.domain.notice.presentation.dto.response;
 
-import com.soogung.simblue.domain.application.domain.ApplicationNotice;
+import com.soogung.simblue.domain.notice.domain.Notice;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class ApplicationNoticeResponse {
+public class NoticeResponse {
 
     private Long id;
     private String notice;
@@ -16,8 +16,8 @@ public class ApplicationNoticeResponse {
     private LocalDateTime createdAt;
     private Boolean isPinned;
 
-    public static ApplicationNoticeResponse of(ApplicationNotice notice) {
-        return ApplicationNoticeResponse.builder()
+    public static NoticeResponse of(Notice notice) {
+        return NoticeResponse.builder()
                 .id(notice.getId())
                 .notice(notice.getNotice())
                 .author(notice.getTeacher().getUser().getName())

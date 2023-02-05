@@ -6,10 +6,11 @@ import com.soogung.simblue.domain.application.domain.ApplicationRequest;
 import com.soogung.simblue.domain.application.domain.ApplicationRequestBlock;
 import com.soogung.simblue.domain.application.domain.repository.*;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationNoticeResponse;
+import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationUserResponseResponse;
+import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
@@ -30,7 +31,7 @@ public class QueryApplicationResultService {
 
     private final UserFacade userFacade;
     private final ApplicationFacade applicationFacade;
-    private final ApplicationNoticeRepository applicationNoticeRepository;
+    private final NoticeRepository noticeRepository;
     private final ApplicationOwnerRepository applicationOwnerRepository;
     private final ApplicationQuestionRepository applicationQuestionRepository;
     private final ApplicationRequestBlockRepository applicationRequestBlockRepository;
@@ -42,8 +43,8 @@ public class QueryApplicationResultService {
 
         Application application = applicationFacade.findApplicationById(id);
 
-        List<ApplicationNoticeResponse> noticeList = applicationNoticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
-                .stream().map(ApplicationNoticeResponse::of)
+        List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
+                .stream().map(NoticeResponse::of)
                 .collect(Collectors.toList());
 
         List<String> questionList = applicationQuestionRepository.findByApplicationIdOrderById(id).stream()

@@ -1,9 +1,8 @@
-package com.soogung.simblue.domain.application.presentation.dto.request;
+package com.soogung.simblue.domain.notice.presentation.dto.request;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.ApplicationNotice;
+import com.soogung.simblue.domain.notice.domain.Notice;
 import com.soogung.simblue.domain.user.domain.Teacher;
-import com.soogung.simblue.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateApplicationNoticeRequest {
+public class CreateNoticeRequest {
 
     @NotNull
     private Long applicationId;
@@ -23,8 +22,8 @@ public class CreateApplicationNoticeRequest {
     @Length(min = 2, max = 50)
     private String notice;
 
-    public ApplicationNotice toEntity(Application application, Teacher teacher) {
-        return ApplicationNotice.builder()
+    public Notice toEntity(Application application, Teacher teacher) {
+        return Notice.builder()
                 .notice(notice)
                 .application(application)
                 .teacher(teacher)
