@@ -1,6 +1,7 @@
 package com.soogung.simblue.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.global.error.filter.GlobalErrorFilter;
 import com.soogung.simblue.global.security.auth.AuthDetailsService;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
@@ -60,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/application/my").authenticated()
+                .antMatchers(HttpMethod.POST, "/application").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.GET, "/application/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -53,4 +53,10 @@ public class UserFacade {
         return teacherRepository.findByUser(user)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
+
+    @Transactional(readOnly = true)
+    public Teacher findTeacherById(Long id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
 }

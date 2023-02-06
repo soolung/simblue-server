@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -39,6 +40,9 @@ public class CreateApplicationRequest {
 
     @NotNull
     private Boolean allowsDuplication;
+
+    @NotEmpty
+    private List<Long> applicationOwnerIdList;
 
     @NotNull
     @Valid

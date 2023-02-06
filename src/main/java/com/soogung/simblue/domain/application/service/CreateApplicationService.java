@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,12 +30,22 @@ public class CreateApplicationService {
 
     @Transactional
     public void execute(CreateApplicationRequest request) {
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
-
         Application application = applicationRepository.save(request.toEntity());
-        applicationOwnerRepository.save(new ApplicationOwner(teacher, application));
+        saveApplicationOwner(request.getApplicationOwnerIdList(), application);
+
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
+    }
+
+    private void saveApplicationOwner(List<Long> applicationOwnerIdList, Application application) {
+        applicationOwnerRepository.saveAll(
+                applicationOwnerIdList.stream().map(
+                        (id) -> ApplicationOwner.builder()
+                                .teacher(userFacade.findTeacherById(id))
+                                .application(application)
+                                .build()
+                ).collect(Collectors.toList())
+        );
     }
 
     private void saveApplicationAnswer(ApplicationQuestionRequest request, Application application) {
