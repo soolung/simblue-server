@@ -1,7 +1,7 @@
 package com.soogung.simblue.domain.application.service;
 
-import com.soogung.simblue.domain.application.domain.repository.ApplicationOwnerRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationRequestBlockRepository;
+import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
 import com.soogung.simblue.domain.user.domain.Student;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QueryMyApplicationService {
 
-    private final ApplicationOwnerRepository applicationOwnerRepository;
-    private final ApplicationRequestBlockRepository applicationRequestBlockRepository;
+    private final OwnerRepository ownerRepository;
+    private final ReplyBlockRepository replyBlockRepository;
     private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
@@ -34,7 +34,7 @@ public class QueryMyApplicationService {
 
     private ApplicationListResponse getStudentApplication(Student student) {
         return new ApplicationListResponse(
-                applicationRequestBlockRepository.findAllByStudent(student)
+                replyBlockRepository.findAllByStudent(student)
                         .stream().map(b -> ApplicationResponse.of(b.getApplication()))
                         .collect(Collectors.toList())
         );
@@ -42,7 +42,7 @@ public class QueryMyApplicationService {
 
     private ApplicationListResponse getTeacherApplication(Teacher teacher) {
         return new ApplicationListResponse(
-                applicationOwnerRepository.findAllByTeacher(teacher)
+                ownerRepository.findAllByTeacher(teacher)
                         .stream().map(o -> ApplicationResponse.of(o.getApplication()))
                         .collect(Collectors.toList())
         );

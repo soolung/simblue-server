@@ -1,8 +1,8 @@
 package com.soogung.simblue.domain.application.presentation.dto.request;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.ApplicationQuestion;
-import com.soogung.simblue.domain.application.domain.type.ApplicationQuestionType;
+import com.soogung.simblue.domain.application.domain.Question;
+import com.soogung.simblue.domain.application.domain.type.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationQuestionRequest {
+public class QuestionRequest {
 
     @NotNull
     @Size(min = 2, max = 20)
@@ -29,13 +29,13 @@ public class ApplicationQuestionRequest {
     private Boolean isRequired;
 
     @NotNull
-    private ApplicationQuestionType type;
+    private QuestionType type;
 
     @Nullable
-    private List<ApplicationAnswerRequest> answerList;
+    private List<AnswerRequest> answerList;
 
-    public ApplicationQuestion toEntity(Application application) {
-        return ApplicationQuestion.builder()
+    public Question toEntity(Application application) {
+        return Question.builder()
                 .question(question)
                 .description(description)
                 .isRequired(isRequired)

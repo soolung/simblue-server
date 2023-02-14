@@ -46,7 +46,7 @@ public class CreateApplicationRequest {
 
     @NotNull
     @Valid
-    private List<ApplicationQuestionRequest> questionList;
+    private List<QuestionRequest> questionList;
 
     public Application toEntity() {
         return Application.builder()

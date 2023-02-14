@@ -1,15 +1,14 @@
 package com.soogung.simblue.domain.application.service;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.ApplicationOwner;
-import com.soogung.simblue.domain.application.domain.ApplicationQuestion;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationAnswerRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationOwnerRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationQuestionRepository;
+import com.soogung.simblue.domain.application.domain.Owner;
+import com.soogung.simblue.domain.application.domain.Question;
+import com.soogung.simblue.domain.application.domain.repository.AnswerRepository;
+import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
 import com.soogung.simblue.domain.application.domain.repository.ApplicationRepository;
-import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationQuestionRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
-import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,9 @@ import java.util.stream.Collectors;
 public class CreateApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final ApplicationQuestionRepository applicationQuestionRepository;
-    private final ApplicationAnswerRepository applicationAnswerRepository;
-    private final ApplicationOwnerRepository applicationOwnerRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final OwnerRepository ownerRepository;
     private final UserFacade userFacade;
 
     @Transactional
@@ -37,10 +36,10 @@ public class CreateApplicationService {
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
-    private void saveApplicationOwner(List<Long> applicationOwnerIdList, Application application) {
-        applicationOwnerRepository.saveAll(
-                applicationOwnerIdList.stream().map(
-                        (id) -> ApplicationOwner.builder()
+    private void saveApplicationOwner(List<Long> ownerIdList, Application application) {
+        ownerRepository.saveAll(
+                ownerIdList.stream().map(
+                        (id) -> Owner.builder()
                                 .teacher(userFacade.findTeacherById(id))
                                 .application(application)
                                 .build()
@@ -48,10 +47,10 @@ public class CreateApplicationService {
         );
     }
 
-    private void saveApplicationAnswer(ApplicationQuestionRequest request, Application application) {
-        ApplicationQuestion question = applicationQuestionRepository.save(request.toEntity(application));
+    private void saveApplicationAnswer(QuestionRequest request, Application application) {
+        Question question = questionRepository.save(request.toEntity(application));
         if (request.getType().isHasAnswer() && request.getAnswerList() != null) {
-            applicationAnswerRepository.saveAll(
+            answerRepository.saveAll(
                     request.getAnswerList().stream()
                     .map(a -> a.toEntity(question))
                     .collect(Collectors.toList())

@@ -20,7 +20,7 @@ public class ApplicationDetailResponse {
     private LocalDate endDate;
     private String emoji;
     private Boolean isAlways;
-    private List<ApplicationQuestionResponse> questionList;
+    private List<QuestionResponse> questionList;
     private List<NoticeResponse> noticeList;
 
     public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList) {
@@ -34,7 +34,7 @@ public class ApplicationDetailResponse {
                 .isAlways(application.getIsAlways())
                 .questionList(
                         application.getQuestionList().stream()
-                                .map(ApplicationQuestionResponse::of)
+                                .map(QuestionResponse::of)
                                 .collect(Collectors.toList()))
                 .noticeList(noticeList)
                 .build();

@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "application_request_tbl")
+@Table(name = "tbl_reply")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ApplicationRequest {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_request_id")
+    @Column(name = "reply_id")
     private Long id;
 
     @Column(nullable = false)
@@ -23,16 +23,16 @@ public class ApplicationRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_question_id")
-    private ApplicationQuestion applicationQuestion;
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_request_block_id")
-    private ApplicationRequestBlock applicationRequestBlock;
+    @JoinColumn(name = "reply_block_id")
+    private ReplyBlock replyBlock;
 
     @Builder
-    public ApplicationRequest(String answer, ApplicationQuestion applicationQuestion, ApplicationRequestBlock applicationRequestBlock) {
+    public Reply(String answer, Question question, ReplyBlock replyBlock) {
         this.answer = answer;
-        this.applicationQuestion = applicationQuestion;
-        this.applicationRequestBlock = applicationRequestBlock;
+        this.question = question;
+        this.replyBlock = replyBlock;
     }
 }

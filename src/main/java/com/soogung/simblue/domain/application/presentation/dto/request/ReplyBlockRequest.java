@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationRequestBlockRequest {
+public class ReplyBlockRequest {
+
+    @NotNull
+    private Long applicationId;
 
     @Valid
-    List<ApplicationRequestRequest> requestRequestList;
+    private List<ReplyRequest> requestRequestList;
 }

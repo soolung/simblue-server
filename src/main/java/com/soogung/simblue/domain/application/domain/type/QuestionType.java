@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ApplicationQuestionType {
+public enum QuestionType {
     TEXT(false),
     TEXTAREA(false),
     LINK(false),

@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "application_owner_tbl")
+@Table(name = "tbl_owner")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ApplicationOwner extends BaseTimeEntity {
+public class Owner extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class ApplicationOwner extends BaseTimeEntity {
     private Application application;
 
     @Builder
-    public ApplicationOwner(Teacher teacher, Application application) {
+    public Owner(Teacher teacher, Application application) {
         this.teacher = teacher;
         this.application = application;
     }

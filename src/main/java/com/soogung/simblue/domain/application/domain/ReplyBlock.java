@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "application_request_blcok_tbl")
+@Table(name = "tbl_reply_blcok")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ApplicationRequestBlock extends BaseTimeEntity {
+public class ReplyBlock extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_request_block_id")
+    @Column(name = "reply_block_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,11 +30,11 @@ public class ApplicationRequestBlock extends BaseTimeEntity {
     @JoinColumn(name = "application_id")
     private Application application;
 
-    @OneToMany(mappedBy = "applicationRequestBlock", cascade = CascadeType.ALL)
-    private List<ApplicationRequest> requests = new ArrayList<>();
+    @OneToMany(mappedBy = "replyBlock", cascade = CascadeType.ALL)
+    private List<Reply> requests = new ArrayList<>();
 
     @Builder
-    public ApplicationRequestBlock(Student student, Application application) {
+    public ReplyBlock(Student student, Application application) {
         this.student = student;
         this.application = application;
     }

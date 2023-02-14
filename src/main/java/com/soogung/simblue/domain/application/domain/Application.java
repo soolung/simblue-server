@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "application_tbl")
+@Table(name = "tbl_application")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Application extends BaseTimeEntity {
@@ -45,7 +45,7 @@ public class Application extends BaseTimeEntity {
     private Boolean allowsDuplication;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-    private List<ApplicationQuestion> questionList = new ArrayList<>();
+    private List<Question> questionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
     private List<Notice> noticeList = new ArrayList<>();

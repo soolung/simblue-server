@@ -1,6 +1,6 @@
 package com.soogung.simblue.domain.notice.presentation;
 
-import com.soogung.simblue.domain.application.presentation.dto.request.UpdateApplicationNoticeRequest;
+import com.soogung.simblue.domain.notice.presentation.dto.request.UpdateNoticeRequest;
 import com.soogung.simblue.domain.notice.presentation.dto.request.CreateNoticeRequest;
 import com.soogung.simblue.domain.notice.service.CreateNoticeService;
 import com.soogung.simblue.domain.notice.service.DeleteNoticeService;
@@ -29,7 +29,7 @@ public class NoticeController {
     @PutMapping("/{id}")
     public void updateApplicationNotice(
             @PathVariable Long id,
-            @RequestBody @Valid UpdateApplicationNoticeRequest request
+            @RequestBody @Valid UpdateNoticeRequest request
     ) {
         updateNoticeService.execute(id, request);
     }

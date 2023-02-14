@@ -1,4 +1,4 @@
-package com.soogung.simblue.domain.application.presentation.dto.request;
+package com.soogung.simblue.domain.notice.presentation.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateApplicationNoticeRequest {
+public class UpdateNoticeRequest {
 
     @NotNull
     @Length(min = 2, max = 50)

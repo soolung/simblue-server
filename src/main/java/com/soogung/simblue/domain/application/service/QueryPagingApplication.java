@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QueryFourLatestApplication {
+public class QueryPagingApplication {
 
     private final ApplicationRepository applicationRepository;
 

@@ -4,6 +4,7 @@ import com.soogung.simblue.domain.application.presentation.dto.request.CreateApp
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultBlockResponse;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
@@ -24,9 +25,10 @@ public class ApplicationController {
     private final QueryDeadlineApplicationService queryDeadlineApplicationService;
     private final QueryLatestApplicationService queryLatestApplicationService;
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
-    private final QueryFourLatestApplication queryFourLatestApplication;
+    private final QueryPagingApplication queryPagingApplication;
     private final QueryApplicationDetailService queryApplicationDetailService;
     private final QueryMyApplicationService queryMyApplicationService;
+    private final QueryApplicationResultService queryApplicationResultService;
 
     @PostMapping
     public void createApplication(@RequestBody @Valid CreateApplicationRequest request) {
@@ -46,9 +48,9 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping("/four")
-    public ApplicationListResponse getFourLatestApplication(@PageableDefault(size = 4) Pageable pageable) {
-        return queryFourLatestApplication.execute(pageable);
+    @GetMapping("/paging")
+    public ApplicationListResponse getPagingApplication(@PageableDefault(size = 4) Pageable pageable) {
+        return queryPagingApplication.execute(pageable);
     }
 
     @GetMapping("/{id}")
@@ -59,5 +61,10 @@ public class ApplicationController {
     @GetMapping("/my")
     public ApplicationListResponse getMyApplication() {
         return queryMyApplicationService.execute();
+    }
+
+    @GetMapping("/{id}/result")
+    public ApplicationResultBlockResponse getApplicationResult(@PathVariable Long id) {
+        return queryApplicationResultService.execute(id);
     }
 }
