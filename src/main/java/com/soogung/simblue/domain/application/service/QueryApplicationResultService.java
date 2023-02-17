@@ -8,8 +8,8 @@ import com.soogung.simblue.domain.application.domain.repository.*;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultBlockResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ResultBlockResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ResultResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.Teacher;
@@ -37,7 +37,7 @@ public class QueryApplicationResultService {
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationResultBlockResponse execute(Long id) {
+    public ResultBlockResponse execute(Long id) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
         checkPermission(id, teacher.getId());
 
@@ -51,13 +51,13 @@ public class QueryApplicationResultService {
                 .map(Question::getQuestion)
                 .collect(Collectors.toList());
 
-        List<ApplicationResultResponse> resultList = replyBlockRepository
+        List<ResultResponse> resultList = replyBlockRepository
                 .findApplicationResult(id).stream()
                 .map(this::createApplicationUserResponseResponse)
                 .collect(Collectors.toList());
 
 
-        return new ApplicationResultBlockResponse(
+        return new ResultBlockResponse(
                 ApplicationResponse.of(application),
                 noticeList,
                 questionList,
@@ -71,16 +71,16 @@ public class QueryApplicationResultService {
         }
     }
 
-    private ApplicationResultResponse createApplicationUserResponseResponse(ReplyBlock block) {
+    private ResultResponse createApplicationUserResponseResponse(ReplyBlock block) {
         Student student = block.getStudent();
 
-        List<String> answerList = block.getRequests().stream()
+        List<String> answerList = block.getReplies().stream()
                 .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
                 .values().stream()
                 .map(this::getResult)
                 .collect(Collectors.toList());
 
-        return new ApplicationResultResponse(
+        return new ResultResponse(
                 student.getUser().getName(),
                 student.getStudentNumber(),
                 answerList

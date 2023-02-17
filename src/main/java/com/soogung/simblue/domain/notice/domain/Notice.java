@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "application_notice_tbl")
+@Table(name = "tbl_notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "applicaiton_notice_tbl")
+    @Column(name = "notice_id")
     private Long id;
 
     @Column(nullable = false, length = 50)

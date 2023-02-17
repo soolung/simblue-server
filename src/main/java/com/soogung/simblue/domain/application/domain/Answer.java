@@ -16,14 +16,14 @@ public class Answer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_answer_id")
+    @Column(name = "answer_id")
     private Long id;
 
     @Column(nullable = false, length = 150)
     private String answer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_question_id", nullable = false)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     @Builder

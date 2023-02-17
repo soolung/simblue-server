@@ -18,7 +18,7 @@ public class ReplyRequest {
     @NotNull
     private Long id;
 
-    private List<String> replyList;
+    private List<String> replyDetailList;
 
     public Reply toEntity(Question question, ReplyBlock block, String a) {
         return Reply.builder()

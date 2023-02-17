@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_reply_blcok")
+@Table(name = "tbl_reply_block")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ReplyBlock extends BaseTimeEntity {
@@ -31,7 +31,7 @@ public class ReplyBlock extends BaseTimeEntity {
     private Application application;
 
     @OneToMany(mappedBy = "replyBlock", cascade = CascadeType.ALL)
-    private List<Reply> requests = new ArrayList<>();
+    private List<Reply> replies = new ArrayList<>();
 
     @Builder
     public ReplyBlock(Student student, Application application) {

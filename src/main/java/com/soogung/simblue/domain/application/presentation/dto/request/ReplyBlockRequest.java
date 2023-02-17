@@ -17,5 +17,5 @@ public class ReplyBlockRequest {
     private Long applicationId;
 
     @Valid
-    private List<ReplyRequest> requestRequestList;
+    private List<ReplyRequest> replyList;
 }

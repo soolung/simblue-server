@@ -42,8 +42,7 @@ public class ReplyApplicationService {
 
         ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, student));
         replyRepository.saveAll(
-                toApplicationRequestsFromRequest(
-                        request.getRequestRequestList(), block));
+                toReplyFrom(request.getReplyList(), block));
     }
 
     private void validateApplicationPeriod(Application application) {
@@ -73,7 +72,7 @@ public class ReplyApplicationService {
                 .build();
     }
 
-    private List<Reply> toApplicationRequestsFromRequest(
+    private List<Reply> toReplyFrom(
             List<ReplyRequest> replyRequestList,
             ReplyBlock block
     ) {
@@ -81,7 +80,7 @@ public class ReplyApplicationService {
                 .map(r -> {
                     Question q = applicationFacade.findQuestionById(r.getId());
                     validateRequiredQuestion(r, q);
-                    return r.getReplyList().stream()
+                    return r.getReplyDetailList().stream()
                             .map(a -> createReplyFrom(r, block, q, a))
                             .collect(Collectors.toList());
                 })
@@ -100,7 +99,7 @@ public class ReplyApplicationService {
     }
 
     private void validateRequiredQuestion(ReplyRequest request, Question question) {
-        if (question.getIsRequired() && request.getReplyList().isEmpty()) {
+        if (question.getIsRequired() && request.getReplyDetailList().isEmpty()) {
             throw QuestionIsRequiredException.EXCEPTION;
         }
     }

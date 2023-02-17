@@ -19,7 +19,7 @@ public class Question extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_question_id")
+    @Column(name = "question_id")
     private Long id;
 
     @Column(nullable = false, length = 20)

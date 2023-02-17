@@ -17,7 +17,7 @@ public class Owner extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "appliction_owner_id")
+    @Column(name = "owner_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

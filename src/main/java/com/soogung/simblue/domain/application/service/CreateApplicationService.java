@@ -30,7 +30,7 @@ public class CreateApplicationService {
     @Transactional
     public void execute(CreateApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        saveApplicationOwner(request.getApplicationOwnerIdList(), application);
+        saveApplicationOwner(request.getOwnerList(), application);
 
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));

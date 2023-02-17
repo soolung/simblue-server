@@ -22,7 +22,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     public List<ReplyBlock> findApplicationResult(Long applicationId) {
         return queryFactory
                 .selectFrom(replyBlock)
-                .join(replyBlock.requests, reply).fetchJoin()
+                .join(replyBlock.replies, reply).fetchJoin()
                 .join(replyBlock.student, student).fetchJoin()
                 .join(student.user, user).fetchJoin()
                 .where(replyBlock.application.id.eq(applicationId))
@@ -32,5 +32,14 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
                 )
                 .distinct()
                 .fetch();
+    }
+
+    @Override
+    public ReplyBlock findReplyBlock(Long replyBlockId) {
+        return queryFactory
+                .selectFrom(replyBlock)
+                .join(replyBlock.replies, reply).fetchJoin()
+                .where(replyBlock.id.eq(replyBlockId))
+                .fetchOne();
     }
 }

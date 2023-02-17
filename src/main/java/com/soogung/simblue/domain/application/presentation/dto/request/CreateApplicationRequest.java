@@ -42,7 +42,7 @@ public class CreateApplicationRequest {
     private Boolean allowsDuplication;
 
     @NotEmpty
-    private List<Long> applicationOwnerIdList;
+    private List<Long> ownerList;
 
     @NotNull
     @Valid

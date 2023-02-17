@@ -7,4 +7,5 @@ import java.util.List;
 public interface ReplyBlockRepositoryCustom {
 
     List<ReplyBlock> findApplicationResult(Long applicationId);
+    ReplyBlock findReplyBlock(Long replyBlockId);
 }
