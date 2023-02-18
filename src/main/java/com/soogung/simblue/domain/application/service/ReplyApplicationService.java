@@ -7,8 +7,6 @@ import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
 import com.soogung.simblue.domain.application.exception.AlreadyReplyException;
-import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
-import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
 import com.soogung.simblue.domain.application.exception.QuestionIsRequiredException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,26 +34,12 @@ public class ReplyApplicationService {
     public void execute(ReplyBlockRequest request) {
         Application application = applicationFacade.findApplicationById(request.getApplicationId());
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
-        validateApplicationPeriod(application);
+        application.validatePeriod();
         validateFirstResponse(application, student);
 
         ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, student));
         replyRepository.saveAll(
                 toReplyFrom(request.getReplyList(), block));
-    }
-
-    private void validateApplicationPeriod(Application application) {
-        if (application.getIsAlways()) {
-            return;
-        }
-
-        if (LocalDate.now().isBefore(application.getStartDate())) {
-            throw ApplicationHasNotStartedYetException.EXCEPTION;
-        }
-
-        if (LocalDate.now().isAfter(application.getEndDate())) {
-            throw ApplicationHasAlreadyEndedException.EXCEPTION;
-        }
     }
 
     private void validateFirstResponse(Application application, Student student) {
@@ -95,7 +78,9 @@ public class ReplyApplicationService {
             String answer
     ) {
         validateRequiredQuestion(question, answer);
-        return request.toEntity(question, block, answer);
+        Reply reply = request.toEntity(question, block, answer);
+        block.addReply(reply);
+        return reply;
     }
 
     private void validateRequiredQuestion(ReplyRequest request, Question question) {

@@ -1,5 +1,7 @@
 package com.soogung.simblue.domain.application.domain;
 
+import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
+import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
 import com.soogung.simblue.domain.notice.domain.Notice;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -45,7 +47,7 @@ public class Application extends BaseTimeEntity {
     private Boolean allowsDuplication;
 
     @Column(nullable = false)
-    private Boolean allowsReplyUpdated;
+    private Boolean allowsUpdatingReply;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
@@ -54,7 +56,7 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsReplyUpdated) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsUpdatingReply) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -62,6 +64,18 @@ public class Application extends BaseTimeEntity {
         this.emoji = emoji;
         this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
-        this.allowsReplyUpdated = allowsReplyUpdated;
+        this.allowsUpdatingReply = allowsUpdatingReply;
+    }
+
+    public void validatePeriod() {
+        if (isAlways) return;
+
+        if (LocalDate.now().isBefore(startDate)) {
+            throw ApplicationHasNotStartedYetException.EXCEPTION;
+        }
+
+        if (LocalDate.now().isAfter(endDate)) {
+            throw ApplicationHasAlreadyEndedException.EXCEPTION;
+        }
     }
 }

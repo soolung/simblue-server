@@ -30,9 +30,12 @@ public class Reply {
     private ReplyBlock replyBlock;
 
     @Builder
-    public Reply(String answer, Question question, ReplyBlock replyBlock) {
+    public Reply(String answer, Question question) {
         this.answer = answer;
         this.question = question;
+    }
+
+    public void putReplyBlock(ReplyBlock replyBlock) {
         this.replyBlock = replyBlock;
     }
 }

@@ -38,4 +38,9 @@ public class ReplyBlock extends BaseTimeEntity {
         this.student = student;
         this.application = application;
     }
+
+    public void addReply(Reply child){
+        replies.add(child);
+        child.putReplyBlock(this);
+    }
 }
