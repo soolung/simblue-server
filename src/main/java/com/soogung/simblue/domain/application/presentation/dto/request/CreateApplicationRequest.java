@@ -41,6 +41,9 @@ public class CreateApplicationRequest {
     @NotNull
     private Boolean allowsDuplication;
 
+    @NotNull
+    private Boolean allowsReplyUpdated;
+
     @NotEmpty
     private List<Long> ownerList;
 
@@ -57,6 +60,7 @@ public class CreateApplicationRequest {
                 .emoji(emoji)
                 .isAlways(isAlways)
                 .allowsDuplication(allowsDuplication)
+                .allowsReplyUpdated(allowsReplyUpdated)
                 .build();
     }
 }

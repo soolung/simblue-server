@@ -44,6 +44,9 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean allowsDuplication;
 
+    @Column(nullable = false)
+    private Boolean allowsReplyUpdated;
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
@@ -51,7 +54,7 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsReplyUpdated) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -59,5 +62,6 @@ public class Application extends BaseTimeEntity {
         this.emoji = emoji;
         this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
+        this.allowsReplyUpdated = allowsReplyUpdated;
     }
 }
