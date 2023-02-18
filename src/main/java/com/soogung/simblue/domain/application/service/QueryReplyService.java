@@ -9,6 +9,9 @@ import com.soogung.simblue.domain.application.presentation.dto.response.Applicat
 import com.soogung.simblue.domain.application.presentation.dto.response.ReplyDetailResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
+import com.soogung.simblue.domain.user.domain.Student;
+import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
+import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +25,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QueryReplyService {
 
+    private final UserFacade userFacade;
     private final ReplyBlockRepository replyBlockRepository;
     private final ApplicationFacade applicationFacade;
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
+        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         ReplyBlock replyBlock = getReplyBlock(id);
+        checkPermission(student, replyBlock);
+
         List<ReplyDetailResponse> replyDetailList = createReplyDetailList(replyBlock);
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
@@ -39,6 +46,12 @@ public class QueryReplyService {
                 noticeList,
                 replyDetailList
         );
+    }
+
+    private void checkPermission(Student student, ReplyBlock replyBlock) {
+        if (!Objects.equals(replyBlock.getStudent().getId(), student.getId())) {
+            throw AuthorityMismatchException.EXCEPTION;
+        }
     }
 
 

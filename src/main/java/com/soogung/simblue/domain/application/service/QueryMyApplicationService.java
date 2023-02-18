@@ -35,7 +35,7 @@ public class QueryMyApplicationService {
     private ApplicationListResponse getStudentApplication(Student student) {
         return new ApplicationListResponse(
                 replyBlockRepository.findAllByStudent(student)
-                        .stream().map(b -> ApplicationResponse.of(b.getApplication()))
+                        .stream().map(ApplicationResponse::of)
                         .collect(Collectors.toList())
         );
     }

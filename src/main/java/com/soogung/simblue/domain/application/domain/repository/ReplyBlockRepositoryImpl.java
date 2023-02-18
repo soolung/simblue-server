@@ -39,6 +39,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
         return queryFactory
                 .selectFrom(replyBlock)
                 .join(replyBlock.replies, reply).fetchJoin()
+                .join(replyBlock.student, student).fetchJoin()
                 .where(replyBlock.id.eq(replyBlockId))
                 .fetchOne();
     }
