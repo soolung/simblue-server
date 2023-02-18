@@ -53,7 +53,7 @@ public class QueryApplicationResultService {
 
         List<ResultResponse> resultList = replyBlockRepository
                 .findApplicationResult(id).stream()
-                .map(this::createApplicationUserResponseResponse)
+                .map(this::createUserDetailList)
                 .collect(Collectors.toList());
 
 
@@ -71,7 +71,7 @@ public class QueryApplicationResultService {
         }
     }
 
-    private ResultResponse createApplicationUserResponseResponse(ReplyBlock block) {
+    private ResultResponse createUserDetailList(ReplyBlock block) {
         Student student = block.getStudent();
 
         List<String> answerList = block.getReplies().stream()

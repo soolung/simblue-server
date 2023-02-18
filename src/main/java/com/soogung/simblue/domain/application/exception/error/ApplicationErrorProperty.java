@@ -14,6 +14,7 @@ public enum ApplicationErrorProperty implements ErrorProperty {
     APPLICATION_HAS_ALREADY_ENDED(422, "기한이 종료된 신청입니다."),
     APPLICATION_HAS_NOT_STARTED_YET(422, "아직 신청 기한이 아닙니다."),
     ALREADY_REPLY(422, "중복 응답할 수 없습니다."),
+    REPLY_NOT_FOUND(404, "응답이 없습니다."),
     QUESTION_IS_REQUIRED(422, "필수 항목을 확인하세요."),
     ;
 

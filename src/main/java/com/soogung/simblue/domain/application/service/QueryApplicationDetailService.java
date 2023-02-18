@@ -6,6 +6,7 @@ import com.soogung.simblue.domain.application.presentation.dto.response.Applicat
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ public class QueryApplicationDetailService {
     private final ApplicationFacade applicationFacade;
     private final NoticeRepository noticeRepository;
 
+    @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)

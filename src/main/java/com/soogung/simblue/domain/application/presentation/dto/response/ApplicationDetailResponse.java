@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Getter
@@ -35,6 +36,25 @@ public class ApplicationDetailResponse {
                 .questionList(
                         application.getQuestionList().stream()
                                 .map(QuestionResponse::of)
+                                .collect(Collectors.toList()))
+                .noticeList(noticeList)
+                .build();
+    }
+
+    public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList, List<ReplyDetailResponse> replyDetailList) {
+        AtomicInteger index = new AtomicInteger();
+
+        return ApplicationDetailResponse.builder()
+                .id(application.getId())
+                .title(application.getTitle())
+                .description(application.getDescription())
+                .startDate(application.getStartDate())
+                .endDate(application.getEndDate())
+                .emoji(application.getEmoji())
+                .isAlways(application.getIsAlways())
+                .questionList(
+                        application.getQuestionList().stream()
+                                .map((q) -> QuestionResponse.of(q, replyDetailList.get(index.getAndIncrement())))
                                 .collect(Collectors.toList()))
                 .noticeList(noticeList)
                 .build();

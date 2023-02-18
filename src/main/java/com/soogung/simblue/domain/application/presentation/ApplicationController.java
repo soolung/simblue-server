@@ -4,7 +4,7 @@ import com.soogung.simblue.domain.application.presentation.dto.request.CreateApp
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultBlockResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ResultBlockResponse;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
@@ -64,7 +64,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}/result")
-    public ApplicationResultBlockResponse getApplicationResult(@PathVariable Long id) {
+    public ResultBlockResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
     }
 }
