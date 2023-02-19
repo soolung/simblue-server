@@ -21,6 +21,7 @@ public class ApplicationDetailResponse {
     private LocalDate endDate;
     private String emoji;
     private Boolean isAlways;
+    private Boolean allowsUpdatingReply;
     private List<QuestionResponse> questionList;
     private List<NoticeResponse> noticeList;
 
@@ -33,6 +34,7 @@ public class ApplicationDetailResponse {
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
+                .allowsUpdatingReply(application.getAllowsUpdatingReply())
                 .questionList(
                         application.getQuestionList().stream()
                                 .map(QuestionResponse::of)
@@ -52,6 +54,7 @@ public class ApplicationDetailResponse {
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
+                .allowsUpdatingReply(application.getAllowsUpdatingReply())
                 .questionList(
                         application.getQuestionList().stream()
                                 .map((q) -> QuestionResponse.of(q, replyDetailList.get(index.getAndIncrement())))
