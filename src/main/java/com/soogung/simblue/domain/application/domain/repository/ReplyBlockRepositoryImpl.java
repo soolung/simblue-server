@@ -36,6 +36,16 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     }
 
     @Override
+    public ReplyBlock findSimpleReplyBlockById(Long replyBlockId) {
+        return queryFactory
+                .selectFrom(replyBlock)
+                .join(replyBlock.student, student).fetchJoin()
+                .join(replyBlock.application, application).fetchJoin()
+                .where(replyBlock.id.eq(replyBlockId))
+                .fetchOne();
+    }
+
+    @Override
     public ReplyBlock findReplyBlockById(Long replyBlockId) {
         return queryFactory
                 .selectFrom(replyBlock)

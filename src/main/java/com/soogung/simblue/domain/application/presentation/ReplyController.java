@@ -7,6 +7,7 @@ import com.soogung.simblue.domain.application.service.QueryReplyService;
 import com.soogung.simblue.domain.application.service.ReplyApplicationService;
 import com.soogung.simblue.domain.application.service.UpdateReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class ReplyController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void replyApplication(
             @RequestBody @Valid ReplyBlockRequest request
     ) {
@@ -34,6 +36,7 @@ public class ReplyController {
     }
 
     @PutMapping("/{reply-block-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateReply(
             @PathVariable(name = "reply-block-id") Long replyBlockId,
             @RequestBody @Valid ReplyBlockRequest request
@@ -42,6 +45,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/{reply-block-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelReply(@PathVariable(name = "reply-block-id") Long replyBlockId) {
         cancelReplyService.execute(replyBlockId);
     }

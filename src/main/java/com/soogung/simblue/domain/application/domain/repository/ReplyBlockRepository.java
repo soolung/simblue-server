@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface ReplyBlockRepository extends JpaRepository<ReplyBlock, Long>, ReplyBlockRepositoryCustom {
 
-    void deleteByIdAndStudent(Long id, Student student);
-
     boolean existsByApplicationAndStudent(Application application, Student student);
 
     @Query("SELECT b FROM ReplyBlock b JOIN FETCH b.application WHERE b.student = :student ORDER BY b.id DESC")
