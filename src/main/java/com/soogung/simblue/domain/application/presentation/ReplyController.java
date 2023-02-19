@@ -5,6 +5,7 @@ import com.soogung.simblue.domain.application.presentation.dto.response.Applicat
 import com.soogung.simblue.domain.application.service.CancelReplyService;
 import com.soogung.simblue.domain.application.service.QueryReplyService;
 import com.soogung.simblue.domain.application.service.ReplyApplicationService;
+import com.soogung.simblue.domain.application.service.UpdateReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ public class ReplyController {
 
     private final QueryReplyService queryReplyService;
     private final ReplyApplicationService replyApplicationService;
+    private final UpdateReplyService updateReplyService;
     private final CancelReplyService cancelReplyService;
 
     @GetMapping("/{reply-block-id}")
@@ -29,6 +31,14 @@ public class ReplyController {
             @RequestBody @Valid ReplyBlockRequest request
     ) {
         replyApplicationService.execute(request);
+    }
+
+    @PutMapping("/{reply-block-id}")
+    public void updateReply(
+            @PathVariable(name = "reply-block-id") Long replyBlockId,
+            @RequestBody @Valid ReplyBlockRequest request
+    ) {
+        updateReplyService.execute(replyBlockId, request);
     }
 
     @DeleteMapping("/{reply-block-id}")

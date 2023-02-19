@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.user.domain;
 
+import com.soogung.simblue.domain.application.domain.Application;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

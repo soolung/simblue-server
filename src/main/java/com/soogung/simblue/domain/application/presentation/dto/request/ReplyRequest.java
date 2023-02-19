@@ -24,7 +24,6 @@ public class ReplyRequest {
         return Reply.builder()
                 .answer(a)
                 .question(question)
-                .replyBlock(block)
                 .build();
     }
 }

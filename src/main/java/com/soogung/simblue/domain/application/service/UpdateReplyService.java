@@ -6,8 +6,6 @@ import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
-import com.soogung.simblue.domain.application.exception.AlreadyReplyException;
-import com.soogung.simblue.domain.application.exception.QuestionIsRequiredException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
@@ -23,36 +21,25 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ReplyApplicationService {
+public class UpdateReplyService {
 
-    private final ApplicationFacade applicationFacade;
     private final UserFacade userFacade;
     private final ReplyBlockRepository replyBlockRepository;
     private final ReplyRepository replyRepository;
+    private final ApplicationFacade applicationFacade;
 
     @Transactional
-    public void execute(ReplyBlockRequest request) {
-        Application application = applicationFacade.findApplicationById(request.getApplicationId());
+    public void execute(Long replyBlockId, ReplyBlockRequest request) {
+        ReplyBlock block = replyBlockRepository.findReplyBlockById(replyBlockId);
+        Application application = block.getApplication();
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        block.validatePermission(student);
         application.validatePeriod();
-        validateFirstResponse(application, student);
 
-        ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, student));
+        replyRepository.deleteByReplyBlock(block);
+        replyRepository.flush();
         replyRepository.saveAll(
                 toReplyFrom(request.getReplyList(), block));
-    }
-
-    private void validateFirstResponse(Application application, Student student) {
-        if (!application.getAllowsDuplication() && replyBlockRepository.existsByApplicationAndStudent(application, student)) {
-            throw AlreadyReplyException.EXCEPTION;
-        }
-    }
-
-    private ReplyBlock createReplyBlock(Application application, Student student) {
-        return ReplyBlock.builder()
-                .application(application)
-                .student(student)
-                .build();
     }
 
     private List<Reply> toReplyFrom(

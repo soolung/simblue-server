@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.soogung.simblue.domain.application.domain.QApplication.application;
 import static com.soogung.simblue.domain.application.domain.QReply.reply;
 import static com.soogung.simblue.domain.application.domain.QReplyBlock.replyBlock;
 import static com.soogung.simblue.domain.user.domain.QStudent.student;
@@ -40,6 +41,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
                 .selectFrom(replyBlock)
                 .join(replyBlock.replies, reply).fetchJoin()
                 .join(replyBlock.student, student).fetchJoin()
+                .join(replyBlock.application, application).fetchJoin()
                 .where(replyBlock.id.eq(replyBlockId))
                 .fetchOne();
     }

@@ -42,7 +42,7 @@ public class CreateApplicationRequest {
     private Boolean allowsDuplication;
 
     @NotNull
-    private Boolean allowsReplyUpdated;
+    private Boolean allowsUpdatingReply;
 
     @NotEmpty
     private List<Long> ownerList;
@@ -60,7 +60,7 @@ public class CreateApplicationRequest {
                 .emoji(emoji)
                 .isAlways(isAlways)
                 .allowsDuplication(allowsDuplication)
-                .allowsReplyUpdated(allowsReplyUpdated)
+                .allowsUpdatingReply(allowsUpdatingReply)
                 .build();
     }
 }

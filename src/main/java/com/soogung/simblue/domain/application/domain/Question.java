@@ -1,6 +1,8 @@
 package com.soogung.simblue.domain.application.domain;
 
 import com.soogung.simblue.domain.application.domain.type.QuestionType;
+import com.soogung.simblue.domain.application.exception.QuestionIsRequiredException;
+import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -49,5 +51,17 @@ public class Question extends BaseTimeEntity {
         this.isRequired = isRequired;
         this.type = type;
         this.application = application;
+    }
+
+    public void validateAnswer(ReplyRequest request) {
+        if (isRequired && request.getReplyDetailList().isEmpty()) {
+            throw QuestionIsRequiredException.EXCEPTION;
+        }
+    }
+
+    public void validateAnswer(String answer) {
+        if (isRequired && (answer == null || answer.equals(""))) {
+            throw QuestionIsRequiredException.EXCEPTION;
+        }
     }
 }

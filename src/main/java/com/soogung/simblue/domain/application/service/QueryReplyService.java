@@ -34,7 +34,7 @@ public class QueryReplyService {
     public ApplicationDetailResponse execute(Long id) {
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         ReplyBlock replyBlock = getReplyBlock(id);
-        checkPermission(student, replyBlock);
+        replyBlock.validatePermission(student);
 
         List<ReplyDetailResponse> replyDetailList = createReplyDetailList(replyBlock);
 
@@ -47,13 +47,6 @@ public class QueryReplyService {
                 replyDetailList
         );
     }
-
-    private void checkPermission(Student student, ReplyBlock replyBlock) {
-        if (!Objects.equals(replyBlock.getStudent().getId(), student.getId())) {
-            throw AuthorityMismatchException.EXCEPTION;
-        }
-    }
-
 
     private ReplyBlock getReplyBlock(Long replyBlockId) {
         ReplyBlock replyBlock = replyBlockRepository.findReplyBlockById(replyBlockId);

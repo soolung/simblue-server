@@ -37,5 +37,6 @@ public class Reply {
 
     public void putReplyBlock(ReplyBlock replyBlock) {
         this.replyBlock = replyBlock;
+        replyBlock.getReplies().add(this);
     }
 }
