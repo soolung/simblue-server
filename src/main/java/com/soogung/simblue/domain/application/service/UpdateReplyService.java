@@ -35,6 +35,7 @@ public class UpdateReplyService {
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         block.validatePermission(student);
         application.validatePeriod();
+        application.validateReplyUpdatable();
 
         replyRepository.deleteByReplyBlock(block);
         replyRepository.flush();

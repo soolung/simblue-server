@@ -2,6 +2,7 @@ package com.soogung.simblue.domain.application.domain;
 
 import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
+import com.soogung.simblue.domain.application.exception.CanNotUpdateReplyException;
 import com.soogung.simblue.domain.notice.domain.Notice;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -76,6 +77,12 @@ public class Application extends BaseTimeEntity {
 
         if (LocalDate.now().isAfter(endDate)) {
             throw ApplicationHasAlreadyEndedException.EXCEPTION;
+        }
+    }
+
+    public void validateReplyUpdatable() {
+        if (!allowsUpdatingReply) {
+            throw CanNotUpdateReplyException.EXCEPTION;
         }
     }
 }
