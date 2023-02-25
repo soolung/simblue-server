@@ -1,9 +1,13 @@
 package com.soogung.simblue.domain.application.domain;
 
+import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
+import com.soogung.simblue.domain.application.exception.ApplicationNotFoundException;
 import com.soogung.simblue.domain.application.exception.CanNotUpdateReplyException;
 import com.soogung.simblue.domain.notice.domain.Notice;
+import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -50,6 +54,10 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean allowsUpdatingReply;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private Status status;
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
@@ -66,6 +74,13 @@ public class Application extends BaseTimeEntity {
         this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
+        this.status = Status.OPENED;
+    }
+
+    public void validateStatus() {
+        if (status == Status.DELETED) {
+            throw ApplicationNotFoundException.EXCEPTION;
+        }
     }
 
     public void validatePeriod() {
@@ -84,5 +99,15 @@ public class Application extends BaseTimeEntity {
         if (!allowsUpdatingReply) {
             throw CanNotUpdateReplyException.EXCEPTION;
         }
+    }
+
+    public void validatePermission(OwnerRepository ownerRepository, Long teacherId) {
+        if (!ownerRepository.existsByApplicationIdAndTeacherId(id, teacherId)) {
+            throw AuthorityMismatchException.EXCEPTION;
+        }
+    }
+
+    public void delete() {
+        this.status = Status.DELETED;
     }
 }

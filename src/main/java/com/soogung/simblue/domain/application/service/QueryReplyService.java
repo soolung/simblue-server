@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.application.service;
 
+import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
@@ -34,6 +35,8 @@ public class QueryReplyService {
     public ApplicationDetailResponse execute(Long id) {
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         ReplyBlock replyBlock = getReplyBlock(id);
+        Application application = replyBlock.getApplication();
+        application.validateStatus();
         replyBlock.validatePermission(student);
 
         List<ReplyDetailResponse> replyDetailList = createReplyDetailList(replyBlock);
@@ -42,7 +45,7 @@ public class QueryReplyService {
                 .stream().map(NoticeResponse::of).collect(Collectors.toList());
 
         return ApplicationDetailResponse.of(
-                applicationFacade.findApplicationById(replyBlock.getApplication().getId()),
+                application,
                 noticeList,
                 replyDetailList
         );

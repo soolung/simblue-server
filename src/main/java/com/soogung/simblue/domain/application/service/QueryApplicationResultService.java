@@ -39,9 +39,8 @@ public class QueryApplicationResultService {
     @Transactional(readOnly = true)
     public ResultBlockResponse execute(Long id) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
-        checkPermission(id, teacher.getId());
-
         Application application = applicationFacade.findApplicationById(id);
+        application.validatePermission(ownerRepository, teacher.getId());
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(NoticeResponse::of)
@@ -63,12 +62,6 @@ public class QueryApplicationResultService {
                 questionList,
                 resultList
         );
-    }
-
-    private void checkPermission(Long applicationId, Long teacherId) {
-        if (!ownerRepository.existsByApplicationIdAndTeacherId(applicationId, teacherId)) {
-            throw AuthorityMismatchException.EXCEPTION;
-        }
     }
 
     private ResultResponse createUserDetailList(ReplyBlock block) {

@@ -27,6 +27,7 @@ public class ApplicationController {
     private final QueryApplicationCreationFormService queryApplicationCreationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
+    private final DeleteApplicationService deleteApplicationService;
 
     @PostMapping
     public void createApplication(@RequestBody @Valid CreateApplicationRequest request) {
@@ -69,5 +70,10 @@ public class ApplicationController {
     @GetMapping("/{id}/result")
     public ResultBlockResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteApplication(@PathVariable Long id) {
+        deleteApplicationService.execute(id);
     }
 }
