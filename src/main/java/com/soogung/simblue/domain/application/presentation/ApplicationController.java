@@ -1,10 +1,7 @@
 package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ResultBlockResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.*;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
@@ -27,6 +24,7 @@ public class ApplicationController {
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
     private final QueryPagingApplication queryPagingApplication;
     private final QueryApplicationDetailService queryApplicationDetailService;
+    private final QueryApplicationCreationFormService queryApplicationCreationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
 
@@ -56,6 +54,11 @@ public class ApplicationController {
     @GetMapping("/{id}")
     public ApplicationDetailResponse getApplicationDetail(@PathVariable Long id) {
         return queryApplicationDetailService.execute(id);
+    }
+
+    @GetMapping("/{id}/form")
+    public ApplicationFormResponse getApplicationCreationForm(@PathVariable Long id) {
+        return queryApplicationCreationFormService.execute(id);
     }
 
     @GetMapping("/my")
