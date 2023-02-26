@@ -19,7 +19,7 @@ public class ApplicationFacade {
 
     @Transactional(readOnly = true)
     public Application findApplicationById(Long id) {
-        return applicationRepository.findById(id)
+        return applicationRepository.findApplicationById(id)
                 .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
     }
 
