@@ -58,10 +58,10 @@ public class Application extends BaseTimeEntity {
     @Column(length = 10, nullable = false)
     private Status status;
 
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "application")
     private List<Question> questionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "notice")
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
@@ -109,5 +109,16 @@ public class Application extends BaseTimeEntity {
 
     public void delete() {
         this.status = Status.DELETED;
+    }
+
+    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsUpdatingReply) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.emoji = emoji;
+        this.isAlways = isAlways;
+        this.allowsDuplication = allowsDuplication;
+        this.allowsUpdatingReply = allowsUpdatingReply;
     }
 }

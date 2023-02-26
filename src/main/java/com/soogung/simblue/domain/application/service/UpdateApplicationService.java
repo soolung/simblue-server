@@ -6,9 +6,10 @@ import com.soogung.simblue.domain.application.domain.Question;
 import com.soogung.simblue.domain.application.domain.repository.AnswerRepository;
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
-import com.soogung.simblue.domain.application.domain.repository.ApplicationRepository;
-import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
+import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
+import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,19 +20,37 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CreateApplicationService {
+public class UpdateApplicationService {
 
-    private final ApplicationRepository applicationRepository;
+    private final UserFacade userFacade;
+    private final ApplicationFacade applicationFacade;
+    private final OwnerRepository ownerRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final OwnerRepository ownerRepository;
-    private final UserFacade userFacade;
 
     @Transactional
-    public void execute(ApplicationRequest request) {
-        Application application = applicationRepository.save(request.toEntity());
-        saveApplicationOwner(request.getOwnerList(), application);
+    public void execute(Long id, ApplicationRequest request) {
+        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Application application = applicationFacade.getSimpleApplication(id);
+        application.validatePermission(ownerRepository, teacher.getId());
 
+        application.updateInformation(
+                request.getTitle(),
+                request.getDescription(),
+                request.getStartDate(),
+                request.getEndDate(),
+                request.getEmoji(),
+                request.getIsAlways(),
+                request.getAllowsDuplication(),
+                request.getAllowsUpdatingReply()
+        );
+
+        ownerRepository.deleteByApplication(application);
+        ownerRepository.flush();
+        questionRepository.deleteByApplication(application);
+        questionRepository.flush();
+
+        saveApplicationOwner(request.getOwnerList(), application);
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
@@ -52,9 +71,10 @@ public class CreateApplicationService {
         if (request.getType().isHasAnswer() && request.getAnswerList() != null) {
             answerRepository.saveAll(
                     request.getAnswerList().stream()
-                    .map(a -> a.toEntity(question))
-                    .collect(Collectors.toList())
+                            .map(a -> a.toEntity(question))
+                            .collect(Collectors.toList())
             );
         }
     }
+
 }

@@ -1,6 +1,6 @@
 package com.soogung.simblue.domain.application.presentation;
 
-import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.*;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
@@ -27,10 +27,11 @@ public class ApplicationController {
     private final QueryApplicationCreationFormService queryApplicationCreationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
+    private final UpdateApplicationService updateApplicationService;
     private final DeleteApplicationService deleteApplicationService;
 
     @PostMapping
-    public void createApplication(@RequestBody @Valid CreateApplicationRequest request) {
+    public void createApplication(@RequestBody @Valid ApplicationRequest request) {
         applicationService.execute(request);
     }
 
@@ -70,6 +71,14 @@ public class ApplicationController {
     @GetMapping("/{id}/result")
     public ResultBlockResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
+    }
+
+    @PutMapping("/{id}")
+    public void updateApplication(
+            @PathVariable Long id,
+            @RequestBody @Valid ApplicationRequest request
+    ) {
+        updateApplicationService.execute(id, request);
     }
 
     @DeleteMapping("/{id}")

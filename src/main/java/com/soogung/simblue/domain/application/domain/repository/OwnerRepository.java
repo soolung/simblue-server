@@ -17,4 +17,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     List<Owner> findAllByApplication(Application application);
 
     boolean existsByApplicationIdAndTeacherId(Long application, Long teacher);
+
+    void deleteByApplication(Application application);
 }

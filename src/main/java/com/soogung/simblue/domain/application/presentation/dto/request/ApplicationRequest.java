@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateApplicationRequest {
+public class ApplicationRequest {
 
     @NotNull
     @Size(min = 2, max = 20)

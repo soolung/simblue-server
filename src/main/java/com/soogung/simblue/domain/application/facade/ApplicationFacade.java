@@ -18,6 +18,12 @@ public class ApplicationFacade {
     private final QuestionRepository questionRepository;
 
     @Transactional(readOnly = true)
+    public Application getSimpleApplication(Long id) {
+        return applicationRepository.findById(id)
+                .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
     public Application findApplicationById(Long id) {
         return applicationRepository.findApplicationById(id)
                 .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
