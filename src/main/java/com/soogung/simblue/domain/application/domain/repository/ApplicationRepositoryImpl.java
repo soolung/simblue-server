@@ -33,8 +33,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     public List<Application> findAlwaysApplication() {
         return queryFactory
                 .selectFrom(application)
-                .where(application.isAlways.eq(true)
-                        .and(application.status.eq(Status.OPENED)))
+                .where(application.status.eq(Status.ALWAYS))
                 .fetch();
     }
 
@@ -44,9 +43,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
         return queryFactory
                 .selectFrom(application)
-                .where(application.status.eq(Status.OPENED)
-                        .and(application.startDate.after(now).not())
-                        .and(application.endDate.before(now).not())
+                .where(application.status.eq(Status.ALWAYS)
+                        .or(application.status.eq(Status.OPENED)
+                                .and(application.startDate.after(now).not())
+                                .and(application.endDate.before(now).not())
+                        )
                 )
                 .orderBy(application.id.desc())
                 .fetch();
@@ -59,7 +60,6 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
         return queryFactory
                 .selectFrom(application)
                 .where(application.status.eq(Status.OPENED)
-                        .and(application.isAlways.eq(false))
                         .and(application.startDate.after(now).not())
                         .and(application.endDate.before(now).not())
                 )

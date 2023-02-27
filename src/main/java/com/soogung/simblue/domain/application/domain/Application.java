@@ -46,9 +46,6 @@ public class Application extends BaseTimeEntity {
     private String emoji;
 
     @Column(nullable = false)
-    private Boolean isAlways;
-
-    @Column(nullable = false)
     private Boolean allowsDuplication;
 
     @Column(nullable = false)
@@ -65,16 +62,15 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsUpdatingReply) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, Status status) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
-        this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
-        this.status = Status.OPENED;
+        this.status = status;
     }
 
     public void validateStatus() {
@@ -84,7 +80,7 @@ public class Application extends BaseTimeEntity {
     }
 
     public void validatePeriod() {
-        if (isAlways) return;
+        if (status == Status.ALWAYS) return;
 
         if (LocalDate.now().isBefore(startDate)) {
             throw ApplicationHasNotStartedYetException.EXCEPTION;
@@ -111,14 +107,14 @@ public class Application extends BaseTimeEntity {
         this.status = Status.DELETED;
     }
 
-    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication, Boolean allowsUpdatingReply) {
+    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, Status status) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
-        this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
+        this.status = status;
     }
 }

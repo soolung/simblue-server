@@ -31,7 +31,6 @@ public class ApplicationResponse {
                 .startDate(application.getStartDate())
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
-                .isAlways(application.getIsAlways())
                 .allowsDuplication(application.getAllowsDuplication())
                 .status(application.getStatus())
                 .build();
@@ -47,7 +46,6 @@ public class ApplicationResponse {
                 .startDate(application.getStartDate())
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
-                .isAlways(application.getIsAlways())
                 .allowsDuplication(application.getAllowsDuplication())
                 .status(application.getStatus())
                 .replyId(replyBlock.getId())

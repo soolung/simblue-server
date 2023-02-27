@@ -6,6 +6,7 @@ import com.soogung.simblue.domain.application.domain.Question;
 import com.soogung.simblue.domain.application.domain.repository.AnswerRepository;
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
+import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
@@ -40,9 +41,9 @@ public class UpdateApplicationService {
                 request.getStartDate(),
                 request.getEndDate(),
                 request.getEmoji(),
-                request.getIsAlways(),
                 request.getAllowsDuplication(),
-                request.getAllowsUpdatingReply()
+                request.getAllowsUpdatingReply(),
+                request.getIsAlways() ? Status.ALWAYS : Status.OPENED
         );
 
         ownerRepository.deleteByApplication(application);
