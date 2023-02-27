@@ -21,7 +21,6 @@ public class ApplicationDetailResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private String emoji;
-    private Boolean isAlways;
     private Boolean allowsUpdatingReply;
     private Status status;
     private List<QuestionResponse> questionList;

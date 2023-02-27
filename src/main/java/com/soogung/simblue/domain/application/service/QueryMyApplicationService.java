@@ -61,15 +61,9 @@ public class QueryMyApplicationService {
 
     private HashMap<String, List<ApplicationResponse>> getTeacherApplication(Teacher teacher) {
         HashMap<String, List<ApplicationResponse>> result = new HashMap<>();
-        List<ApplicationResponse> allApplication = ownerRepository.findAllByTeacher(teacher)
+
+        ownerRepository.findAllByTeacher(teacher)
                 .stream().map(o -> ApplicationResponse.of(o.getApplication()))
-                .collect(Collectors.toList());
-
-        Map<Boolean, List<ApplicationResponse>> isAlwaysGroup = allApplication.stream()
-                .collect(Collectors.groupingBy(ApplicationResponse::getIsAlways));
-        result.put("ALWAYS", isAlwaysGroup.get(true));
-
-        isAlwaysGroup.get(false).stream()
                 .collect(Collectors.groupingBy(ApplicationResponse::getStatus))
                 .forEach((k, v) -> result.put(k.name(), v));
 

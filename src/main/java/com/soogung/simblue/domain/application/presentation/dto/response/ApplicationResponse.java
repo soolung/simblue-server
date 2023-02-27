@@ -18,7 +18,6 @@ public class ApplicationResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private String emoji;
-    private Boolean isAlways;
     private Boolean allowsDuplication;
     private Status status;
     private Long replyId;
