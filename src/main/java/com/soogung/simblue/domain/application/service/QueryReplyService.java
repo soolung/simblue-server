@@ -5,7 +5,6 @@ import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.exception.ReplyNotFoundException;
-import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ReplyDetailResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,6 @@ public class QueryReplyService {
 
     private final UserFacade userFacade;
     private final ReplyBlockRepository replyBlockRepository;
-    private final ApplicationFacade applicationFacade;
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
@@ -51,12 +48,8 @@ public class QueryReplyService {
     }
 
     private ReplyBlock getReplyBlock(Long replyBlockId) {
-        ReplyBlock replyBlock = replyBlockRepository.findReplyBlockById(replyBlockId);
-        if (Objects.isNull(replyBlock)) {
-            throw ReplyNotFoundException.EXCEPTION;
-        }
-
-        return replyBlock;
+        return replyBlockRepository.findReplyBlockById(replyBlockId)
+                .orElseThrow(() -> ReplyNotFoundException.EXCEPTION);
     }
 
     private List<ReplyDetailResponse> createReplyDetailList(ReplyBlock block) {

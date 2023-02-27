@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.soogung.simblue.domain.application.domain.QApplication.application;
 import static com.soogung.simblue.domain.application.domain.QReply.reply;
@@ -46,13 +47,15 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     }
 
     @Override
-    public ReplyBlock findReplyBlockById(Long replyBlockId) {
-        return queryFactory
-                .selectFrom(replyBlock)
-                .join(replyBlock.replies, reply).fetchJoin()
-                .join(replyBlock.student, student).fetchJoin()
-                .join(replyBlock.application, application).fetchJoin()
-                .where(replyBlock.id.eq(replyBlockId))
-                .fetchOne();
+    public Optional<ReplyBlock> findReplyBlockById(Long replyBlockId) {
+        return Optional.ofNullable(
+                queryFactory
+                        .selectFrom(replyBlock)
+                        .join(replyBlock.replies, reply).fetchJoin()
+                        .join(replyBlock.student, student).fetchJoin()
+                        .join(replyBlock.application, application).fetchJoin()
+                        .where(replyBlock.id.eq(replyBlockId))
+                        .fetchOne()
+        );
     }
 }
