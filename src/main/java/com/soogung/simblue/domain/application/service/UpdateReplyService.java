@@ -4,9 +4,9 @@ import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.Question;
 import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
-import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
+import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
 import com.soogung.simblue.domain.user.domain.Student;
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 public class UpdateReplyService {
 
     private final UserFacade userFacade;
-    private final ReplyBlockRepository replyBlockRepository;
+    private final ReplyBlockFacade replyBlockFacade;
     private final ReplyRepository replyRepository;
     private final ApplicationFacade applicationFacade;
 
     @Transactional
     public void execute(Long replyBlockId, ReplyBlockRequest request) {
-        ReplyBlock block = replyBlockRepository.findReplyBlockById(replyBlockId);
+        ReplyBlock block = replyBlockFacade.getReplyBlock(replyBlockId);
         Application application = block.getApplication();
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         block.validatePermission(student);

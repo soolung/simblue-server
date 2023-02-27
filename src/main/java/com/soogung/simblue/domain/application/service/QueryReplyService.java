@@ -3,8 +3,7 @@ package com.soogung.simblue.domain.application.service;
 import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
-import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
-import com.soogung.simblue.domain.application.exception.ReplyNotFoundException;
+import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ReplyDetailResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
@@ -24,13 +23,13 @@ import java.util.stream.Collectors;
 public class QueryReplyService {
 
     private final UserFacade userFacade;
-    private final ReplyBlockRepository replyBlockRepository;
+    private final ReplyBlockFacade replyBlockFacade;
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
-        ReplyBlock replyBlock = getReplyBlock(id);
+        ReplyBlock replyBlock = replyBlockFacade.getReplyBlock(id);
         Application application = replyBlock.getApplication();
         application.validateStatus();
         replyBlock.validatePermission(student);
@@ -45,11 +44,6 @@ public class QueryReplyService {
                 noticeList,
                 replyDetailList
         );
-    }
-
-    private ReplyBlock getReplyBlock(Long replyBlockId) {
-        return replyBlockRepository.findReplyBlockById(replyBlockId)
-                .orElseThrow(() -> ReplyNotFoundException.EXCEPTION);
     }
 
     private List<ReplyDetailResponse> createReplyDetailList(ReplyBlock block) {
