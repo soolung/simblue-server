@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class QueryApplicationCreationFormService {
+public class QueryApplicationFormService {
 
     private final ApplicationFacade applicationFacade;
     private final OwnerRepository ownerRepository;

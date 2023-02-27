@@ -24,7 +24,7 @@ public class ApplicationController {
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
     private final QueryPagingApplication queryPagingApplication;
     private final QueryApplicationDetailService queryApplicationDetailService;
-    private final QueryApplicationCreationFormService queryApplicationCreationFormService;
+    private final QueryApplicationFormService queryApplicationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
     private final UpdateApplicationService updateApplicationService;
@@ -59,12 +59,12 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}/form")
-    public ApplicationFormResponse getApplicationCreationForm(@PathVariable Long id) {
-        return queryApplicationCreationFormService.execute(id);
+    public ApplicationFormResponse getApplicationForm(@PathVariable Long id) {
+        return queryApplicationFormService.execute(id);
     }
 
     @GetMapping("/my")
-    public ApplicationListResponse getMyApplication() {
+    public ApplicationStatusResponse getMyApplication() {
         return queryMyApplicationService.execute();
     }
 

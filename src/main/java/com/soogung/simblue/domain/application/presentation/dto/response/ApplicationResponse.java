@@ -2,6 +2,7 @@ package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
+import com.soogung.simblue.domain.application.domain.type.Status;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +20,7 @@ public class ApplicationResponse {
     private String emoji;
     private Boolean isAlways;
     private Boolean allowsDuplication;
+    private Status status;
     private Long replyId;
 
     public static ApplicationResponse of(Application application) {
@@ -31,6 +33,7 @@ public class ApplicationResponse {
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
                 .allowsDuplication(application.getAllowsDuplication())
+                .status(application.getStatus())
                 .build();
     }
 
@@ -46,6 +49,7 @@ public class ApplicationResponse {
                 .emoji(application.getEmoji())
                 .isAlways(application.getIsAlways())
                 .allowsDuplication(application.getAllowsDuplication())
+                .status(application.getStatus())
                 .replyId(replyBlock.getId())
                 .build();
     }
