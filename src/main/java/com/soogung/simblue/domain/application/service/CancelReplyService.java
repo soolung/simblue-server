@@ -22,8 +22,9 @@ public class CancelReplyService {
     public void execute(Long replyBlockId) {
         Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
         ReplyBlock replyBlock = replyBlockRepository.findSimpleReplyBlockById(replyBlockId);
-        replyBlock.validatePermission(student);
+        replyBlock.getApplication().validateStatus();
         replyBlock.getApplication().validatePeriod();
+        replyBlock.validatePermission(student);
 
         replyRepository.deleteByReplyBlock(replyBlock);
         replyBlockRepository.deleteById(replyBlockId);

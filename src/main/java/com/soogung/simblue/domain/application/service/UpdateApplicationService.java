@@ -33,6 +33,7 @@ public class UpdateApplicationService {
     public void execute(Long id, ApplicationRequest request) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
         Application application = applicationFacade.getSimpleApplication(id);
+        application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
 
         application.updateInformation(

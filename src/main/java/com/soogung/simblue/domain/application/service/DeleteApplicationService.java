@@ -26,6 +26,7 @@ public class DeleteApplicationService {
     public void execute(Long id) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
         Application application = applicationFacade.findApplicationById(id);
+        application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
 
         application.delete();
