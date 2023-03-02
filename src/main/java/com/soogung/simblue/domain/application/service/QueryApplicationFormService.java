@@ -18,6 +18,7 @@ public class QueryApplicationFormService {
     @Transactional(readOnly = true)
     public ApplicationFormResponse execute(Long id) {
         Application application = applicationFacade.findApplicationById(id);
+        application.validateStatus();
 
         return ApplicationFormResponse.of(
                 application,

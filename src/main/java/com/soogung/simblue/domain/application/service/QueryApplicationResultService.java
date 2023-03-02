@@ -40,6 +40,7 @@ public class QueryApplicationResultService {
     public ResultBlockResponse execute(Long id) {
         Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
         Application application = applicationFacade.findApplicationById(id);
+        application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
