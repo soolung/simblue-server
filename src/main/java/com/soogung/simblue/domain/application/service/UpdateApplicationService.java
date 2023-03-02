@@ -9,6 +9,7 @@ import com.soogung.simblue.domain.application.domain.repository.QuestionReposito
 import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.OwnerRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
 import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.facade.UserFacade;
@@ -52,16 +53,22 @@ public class UpdateApplicationService {
         questionRepository.deleteByApplication(application);
         questionRepository.flush();
 
-        saveApplicationOwner(request.getOwnerList(), application);
+        saveApplicationOwner(request.getOwnerList(), application, teacher);
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
-    private void saveApplicationOwner(List<Long> ownerIdList, Application application) {
+    private void saveApplicationOwner(
+            List<OwnerRequest> ownerRequestList, Application application, Teacher teacher) {
+        ownerRepository.save(Owner.builder()
+                .teacher(teacher)
+                .application(application)
+                .build());
+
         ownerRepository.saveAll(
-                ownerIdList.stream().map(
-                        (id) -> Owner.builder()
-                                .teacher(userFacade.findTeacherById(id))
+                ownerRequestList.stream().map(
+                        (owner) -> Owner.builder()
+                                .teacher(userFacade.findTeacherById(owner.getTeacherId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())

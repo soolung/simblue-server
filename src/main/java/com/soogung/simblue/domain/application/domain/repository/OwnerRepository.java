@@ -13,8 +13,11 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     @Query("SELECT o FROM Owner o JOIN FETCH o.application WHERE o.teacher = :teacher ORDER BY o.id DESC")
     List<Owner> findAllByTeacher(Teacher teacher);
 
-    @Query("SELECT o FROM Owner o JOIN FETCH o.teacher WHERE o.application = :application ORDER BY o.id DESC")
-    List<Owner> findAllByApplication(Application application);
+    @Query("SELECT o FROM Owner o " +
+            "JOIN FETCH o.teacher " +
+            "WHERE o.application = :application AND o.teacher <> :teacher " +
+            "ORDER BY o.id DESC")
+    List<Owner> findOwnerByApplicationWithoutTeacher(Application application, Teacher teacher);
 
     boolean existsByApplicationIdAndTeacherId(Long application, Long teacher);
 

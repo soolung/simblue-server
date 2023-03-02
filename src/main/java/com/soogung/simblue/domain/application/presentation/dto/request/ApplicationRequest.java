@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -45,8 +44,8 @@ public class ApplicationRequest {
     @NotNull
     private Boolean allowsUpdatingReply;
 
-    @NotEmpty
-    private List<Long> ownerList;
+    @NotNull
+    private List<OwnerRequest> ownerList;
 
     @NotNull
     @Valid
