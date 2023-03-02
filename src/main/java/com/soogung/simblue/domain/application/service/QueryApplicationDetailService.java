@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.application.service;
 
+import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
@@ -20,11 +21,12 @@ public class QueryApplicationDetailService {
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
+        Application application = applicationFacade.findApplicationById(id);
+        application.validateStatus();
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(NoticeResponse::of).collect(Collectors.toList());
 
-        return ApplicationDetailResponse.of(
-                applicationFacade.findApplicationById(id), noticeList);
+        return ApplicationDetailResponse.of(application, noticeList);
     }
 }
