@@ -1,12 +1,11 @@
 package com.soogung.simblue.domain.auth.service;
 
-import com.soogung.simblue.domain.auth.domain.RefreshToken;
-import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
-import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
+import com.soogung.simblue.domain.user.domain.User;
+import com.soogung.simblue.domain.user.domain.type.Authority;
+import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
+import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +30,7 @@ public class LoginService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .isLogin(!(user.getName() == null || user.getName().equals("")))
+                .roleId(getRoleId(user))
                 .build();
     }
 
@@ -38,5 +38,15 @@ public class LoginService {
         if (!passwordEncoder.matches(actual, expected)) {
             throw PasswordMismatchException.EXCEPTION;
         }
+    }
+
+    private Long getRoleId(User user) {
+        if (user.getAuthority() == Authority.ROLE_STUDENT) {
+            return userFacade.findStudentByUser(user).getId();
+        } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
+            return userFacade.findTeacherByUser(user).getId();
+        }
+
+        return null;
     }
 }
