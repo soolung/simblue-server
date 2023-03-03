@@ -8,12 +8,12 @@ import lombok.Getter;
 @Builder
 public class OwnerResponse {
 
-    private Long id;
+    private Long teacherId;
     private String name;
 
     public static OwnerResponse of(Teacher teacher) {
         return OwnerResponse.builder()
-                .id(teacher.getId())
+                .teacherId(teacher.getId())
                 .name(teacher.getUser().getName())
                 .build();
     }
