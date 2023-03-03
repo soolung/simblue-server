@@ -57,6 +57,8 @@ public class SecurityConfig {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/application/my").authenticated()
+                .antMatchers(HttpMethod.GET, "/application/{\\d+}/form").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.GET, "/application/{\\d+}/result").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.POST, "/application").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.GET, "/application/**").permitAll()
                 .anyRequest().authenticated()
