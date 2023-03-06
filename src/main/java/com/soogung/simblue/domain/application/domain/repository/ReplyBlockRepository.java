@@ -14,4 +14,6 @@ public interface ReplyBlockRepository extends JpaRepository<ReplyBlock, Long>, R
 
     @Query("SELECT b FROM ReplyBlock b JOIN FETCH b.application WHERE b.student = :student ORDER BY b.id DESC")
     List<ReplyBlock> findAllByStudent(Student student);
+
+    int countByApplication(Application application);
 }
