@@ -2,6 +2,7 @@ package com.soogung.simblue.domain.application.service;
 
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
+import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationStatusResponse;
 import com.soogung.simblue.domain.user.domain.Student;
@@ -10,13 +11,15 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,12 +64,35 @@ public class QueryMyApplicationService {
 
     private HashMap<String, List<ApplicationResponse>> getTeacherApplication(Teacher teacher) {
         HashMap<String, List<ApplicationResponse>> result = new HashMap<>();
+        Arrays.stream(kanbanStatus.values())
+                .forEach(s -> result.put(s.name(), new ArrayList<>()));
 
         ownerRepository.findAllByTeacher(teacher)
                 .stream().map(o -> ApplicationResponse.of(o.getApplication()))
-                .collect(Collectors.groupingBy(ApplicationResponse::getStatus))
-                .forEach((k, v) -> result.put(k.name(), v));
+                .forEach(a -> {
+                    LocalDate now = LocalDate.now();
+
+                    if (a.getStatus() == Status.ALWAYS) {
+                        result.get(kanbanStatus.ALWAYS.name()).add(a);
+                    }
+
+                    else if (a.getStatus() == Status.CLOSED || a.getEndDate().isBefore(now)) {
+                        result.get(kanbanStatus.DONE.name()).add(a);
+                    }
+
+                    else if (a.getStartDate().isAfter(now)) {
+                        result.get(kanbanStatus.NOT_STARTED.name()).add(a);
+                    }
+
+                    else {
+                        result.get(kanbanStatus.IN_PROGRESS.name()).add(a);
+                    }
+                });
 
         return result;
     }
+}
+
+enum kanbanStatus {
+    ALWAYS, NOT_STARTED, IN_PROGRESS, DONE
 }
