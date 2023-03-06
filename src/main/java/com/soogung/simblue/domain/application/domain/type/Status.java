@@ -1,5 +1,5 @@
 package com.soogung.simblue.domain.application.domain.type;
 
 public enum Status {
-    ALWAYS, OPENED, CLOSED, DELETED;
+    ALWAYS, NOT_STARTED, IN_PROGRESS, DONE
 }

@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
-    @Query("SELECT o FROM Owner o JOIN FETCH o.application WHERE o.teacher = :teacher ORDER BY o.id DESC")
+    @Query("SELECT o FROM Owner o " +
+            "JOIN FETCH o.application " +
+            "WHERE o.teacher = :teacher AND o.application.state <> 'DELETED' " +
+            "ORDER BY o.id DESC")
     List<Owner> findAllByTeacher(Teacher teacher);
 
     @Query("SELECT o FROM Owner o " +

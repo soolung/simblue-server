@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplicationStatusResponse {
 
-    private HashMap<String, List<ApplicationResponse>> applicationMap;
+    private HashMap<String, List<MyApplicationResponse>> applicationMap;
     private Authority authority;
 }

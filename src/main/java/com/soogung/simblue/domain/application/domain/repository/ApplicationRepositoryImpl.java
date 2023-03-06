@@ -2,7 +2,7 @@ package com.soogung.simblue.domain.application.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.type.Status;
+import com.soogung.simblue.domain.application.domain.type.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +33,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     public List<Application> findAlwaysApplication() {
         return queryFactory
                 .selectFrom(application)
-                .where(application.status.eq(Status.ALWAYS))
+                .where(application.state.eq(State.ALWAYS))
                 .fetch();
     }
 
@@ -43,8 +43,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
         return queryFactory
                 .selectFrom(application)
-                .where(application.status.eq(Status.ALWAYS)
-                        .or(application.status.eq(Status.OPENED)
+                .where(application.state.eq(State.ALWAYS)
+                        .or(application.state.eq(State.OPENED)
                                 .and(application.startDate.after(now).not())
                                 .and(application.endDate.before(now).not())
                         )
@@ -59,7 +59,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
         return queryFactory
                 .selectFrom(application)
-                .where(application.status.eq(Status.OPENED)
+                .where(application.state.eq(State.OPENED)
                         .and(application.startDate.after(now).not())
                         .and(application.endDate.before(now).not())
                 )

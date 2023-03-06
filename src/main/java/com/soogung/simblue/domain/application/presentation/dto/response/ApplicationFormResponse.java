@@ -2,7 +2,7 @@ package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.Owner;
-import com.soogung.simblue.domain.application.domain.type.Status;
+import com.soogung.simblue.domain.application.domain.type.State;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -34,7 +34,7 @@ public class ApplicationFormResponse {
                 .startDate(application.getStartDate())
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
-                .isAlways(application.getStatus() == Status.ALWAYS)
+                .isAlways(application.getState() == State.ALWAYS)
                 .allowsDuplication(application.getAllowsDuplication())
                 .allowsUpdatingReply(application.getAllowsUpdatingReply())
                 .questionList(

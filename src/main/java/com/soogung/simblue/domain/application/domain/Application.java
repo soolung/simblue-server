@@ -1,6 +1,7 @@
 package com.soogung.simblue.domain.application.domain;
 
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.type.State;
 import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
 import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
@@ -53,7 +54,7 @@ public class Application extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
-    private Status status;
+    private State state;
 
     @OneToMany(mappedBy = "application")
     private List<Question> questionList = new ArrayList<>();
@@ -62,7 +63,7 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, Status status) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -70,17 +71,17 @@ public class Application extends BaseTimeEntity {
         this.emoji = emoji;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
-        this.status = status;
+        this.state = state;
     }
 
     public void validateStatus() {
-        if (status == Status.DELETED) {
+        if (state == State.DELETED) {
             throw ApplicationNotFoundException.EXCEPTION;
         }
     }
 
     public void validatePeriod() {
-        if (status == Status.ALWAYS) return;
+        if (state == State.ALWAYS) return;
 
         if (LocalDate.now().isBefore(startDate)) {
             throw ApplicationHasNotStartedYetException.EXCEPTION;
@@ -104,10 +105,10 @@ public class Application extends BaseTimeEntity {
     }
 
     public void delete() {
-        this.status = Status.DELETED;
+        this.state = State.DELETED;
     }
 
-    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, Status status) {
+    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -115,6 +116,24 @@ public class Application extends BaseTimeEntity {
         this.emoji = emoji;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
-        this.status = status;
+        this.state = state;
+    }
+
+    public Status getStatus() {
+        LocalDate now = LocalDate.now();
+
+        if (state == State.ALWAYS) {
+            return Status.ALWAYS;
+        }
+
+        else if (state == State.CLOSED || endDate.isBefore(now)) {
+            return Status.DONE;
+        }
+
+        else if (startDate.isAfter(now)) {
+            return Status.NOT_STARTED;
+        }
+
+        return Status.IN_PROGRESS;
     }
 }

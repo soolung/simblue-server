@@ -1,7 +1,7 @@
 package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.type.Status;
+import com.soogung.simblue.domain.application.domain.type.State;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class ApplicationDetailResponse {
     private LocalDate endDate;
     private String emoji;
     private Boolean allowsUpdatingReply;
-    private Status status;
+    private State state;
     private List<QuestionResponse> questionList;
     private List<NoticeResponse> noticeList;
 
@@ -40,7 +40,7 @@ public class ApplicationDetailResponse {
                                 .map(QuestionResponse::of)
                                 .collect(Collectors.toList()))
                 .noticeList(noticeList)
-                .status(application.getStatus())
+                .state(application.getState())
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class ApplicationDetailResponse {
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
                 .allowsUpdatingReply(application.getAllowsUpdatingReply())
-                .status(application.getStatus())
+                .state(application.getState())
                 .questionList(
                         application.getQuestionList().stream()
                                 .map((q) -> QuestionResponse.of(q, replyDetailList.get(index.getAndIncrement())))

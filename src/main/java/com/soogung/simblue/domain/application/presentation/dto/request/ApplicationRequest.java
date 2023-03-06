@@ -1,7 +1,7 @@
 package com.soogung.simblue.domain.application.presentation.dto.request;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.type.Status;
+import com.soogung.simblue.domain.application.domain.type.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,7 +60,7 @@ public class ApplicationRequest {
                 .emoji(emoji)
                 .allowsDuplication(allowsDuplication)
                 .allowsUpdatingReply(allowsUpdatingReply)
-                .status(isAlways ? Status.ALWAYS : Status.OPENED)
+                .state(isAlways ? State.ALWAYS : State.OPENED)
                 .build();
     }
 }
