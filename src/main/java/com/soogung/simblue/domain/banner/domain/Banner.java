@@ -1,7 +1,9 @@
 package com.soogung.simblue.domain.banner.domain;
 
 import com.soogung.simblue.domain.banner.domain.type.Status;
+import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,5 +44,15 @@ public class Banner extends BaseTimeEntity {
         this.linkTo = linkTo;
         this.status = Status.ACTIVE;
         this.teacher = teacher;
+    }
+
+    public void validatePermission(Teacher teacher) {
+        if (!Objects.equals(this.teacher.getId(), teacher.getId())) {
+            throw AuthorityMismatchException.EXCEPTION;
+        }
+    }
+
+    public void delete() {
+        this.status = Status.DELETED;
     }
 }

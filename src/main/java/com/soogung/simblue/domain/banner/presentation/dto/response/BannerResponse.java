@@ -6,11 +6,13 @@ import lombok.Builder;
 @Builder
 public class BannerResponse {
 
+    private Long id;
     private String imageUri;
     private String linkTo;
 
     public static BannerResponse of(Banner banner) {
-        Banner.builder()
+        return BannerResponse.builder()
+                .id(banner.getId())
                 .imageUri(banner.getImageUri())
                 .linkTo(banner.getLinkTo())
                 .build();
