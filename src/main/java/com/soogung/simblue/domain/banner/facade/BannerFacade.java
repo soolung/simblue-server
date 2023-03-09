@@ -2,7 +2,6 @@ package com.soogung.simblue.domain.banner.facade;
 
 import com.soogung.simblue.domain.banner.domain.Banner;
 import com.soogung.simblue.domain.banner.domain.repository.BannerRepository;
-import com.soogung.simblue.domain.banner.domain.type.Status;
 import com.soogung.simblue.domain.banner.exception.BannerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class BannerFacade {
 
     @Transactional(readOnly = true)
     public Banner getBanner(Long id) {
-        return bannerRepository.findByIdAndStatus(id, Status.ACTIVE)
+        return bannerRepository.findBannerById(id)
                 .orElseThrow(() -> BannerNotFoundException.EXCEPTION);
     }
 }
