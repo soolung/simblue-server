@@ -12,6 +12,8 @@ public interface ReplyBlockRepository extends JpaRepository<ReplyBlock, Long>, R
 
     boolean existsByApplicationAndStudent(Application application, Student student);
 
+    boolean existsByApplication(Application application);
+
     @Query("SELECT b FROM ReplyBlock b " +
             "JOIN FETCH b.application " +
             "WHERE b.student = :student AND b.application.state <> 'DELETED' " +

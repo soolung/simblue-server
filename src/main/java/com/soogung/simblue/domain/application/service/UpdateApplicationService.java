@@ -6,7 +6,9 @@ import com.soogung.simblue.domain.application.domain.Question;
 import com.soogung.simblue.domain.application.domain.repository.AnswerRepository;
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
+import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.type.State;
+import com.soogung.simblue.domain.application.exception.CanNotUpdateApplicationException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.OwnerRequest;
@@ -26,6 +28,7 @@ public class UpdateApplicationService {
 
     private final UserFacade userFacade;
     private final ApplicationFacade applicationFacade;
+    private final ReplyBlockRepository replyBlockRepository;
     private final OwnerRepository ownerRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -36,6 +39,7 @@ public class UpdateApplicationService {
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
+        validateApplicationHasReplies(application);
 
         application.updateInformation(
                 request.getTitle(),
@@ -58,8 +62,17 @@ public class UpdateApplicationService {
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
+    private void validateApplicationHasReplies(Application application) {
+        if (replyBlockRepository.existsByApplication(application)) {
+            throw CanNotUpdateApplicationException.EXCEPTION;
+        }
+    }
+
     private void saveApplicationOwner(
-            List<OwnerRequest> ownerRequestList, Application application, Teacher teacher) {
+            List<OwnerRequest> ownerRequestList,
+            Application application,
+            Teacher teacher
+    ) {
         ownerRepository.save(Owner.builder()
                 .teacher(teacher)
                 .application(application)

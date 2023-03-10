@@ -17,6 +17,7 @@ public enum ApplicationErrorProperty implements ErrorProperty {
     REPLY_NOT_FOUND(404, "응답이 없습니다."),
     QUESTION_IS_REQUIRED(422, "필수 항목을 확인하세요."),
     CAN_NOT_UPDATE_REPLY(422, "응답을 수정할 수 없는 신청입니다"),
+    CAN_NOT_UPDATE_APPLICATION(422, "이미 응답이 있어 신청을 수정할 수 없습니다"),
     ;
 
     private final int status;
