@@ -2,6 +2,7 @@ package com.soogung.simblue.domain.application.service;
 
 import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationFormResponse;
 import com.soogung.simblue.domain.user.domain.Teacher;
@@ -17,6 +18,7 @@ public class QueryApplicationFormService {
     private final ApplicationFacade applicationFacade;
     private final UserFacade userFacade;
     private final OwnerRepository ownerRepository;
+    private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
     public ApplicationFormResponse execute(Long id) {
@@ -27,6 +29,7 @@ public class QueryApplicationFormService {
 
         return ApplicationFormResponse.of(
                 application,
+                !replyBlockRepository.existsByApplication(application),
                 ownerRepository.findOwnerByApplicationWithoutTeacher(application, teacher)
         );
     }

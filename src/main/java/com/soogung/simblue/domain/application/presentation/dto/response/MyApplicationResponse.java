@@ -21,6 +21,7 @@ public class MyApplicationResponse {
     private Integer numberOfReplies;
     private Long replyId;
     private LocalDate repliedAt;
+    private Boolean canUpdate;
 
     public static MyApplicationResponse of(Application application, Integer numberOfReplies) {
         return MyApplicationResponse.builder()
@@ -31,6 +32,7 @@ public class MyApplicationResponse {
                 .emoji(application.getEmoji())
                 .status(application.getStatus())
                 .numberOfReplies(numberOfReplies)
+                .canUpdate(numberOfReplies > 0)
                 .build();
     }
 
@@ -45,6 +47,7 @@ public class MyApplicationResponse {
                 .status(application.getStatus())
                 .repliedAt(LocalDate.from(replyBlock.getCreatedAt()))
                 .replyId(replyBlock.getId())
+                .canUpdate(application.getAllowsUpdatingReply())
                 .build();
     }
 }

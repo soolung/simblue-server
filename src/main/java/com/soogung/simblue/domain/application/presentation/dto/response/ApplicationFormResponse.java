@@ -23,10 +23,11 @@ public class ApplicationFormResponse {
     private Boolean isAlways;
     private Boolean allowsDuplication;
     private Boolean allowsUpdatingReply;
+    private Boolean canUpdate;
     private List<QuestionResponse> questionList;
     private List<OwnerResponse> ownerList;
 
-    public static ApplicationFormResponse of(Application application, List<Owner> ownerList) {
+    public static ApplicationFormResponse of(Application application, Boolean canUpdate, List<Owner> ownerList) {
         return ApplicationFormResponse.builder()
                 .id(application.getId())
                 .title(application.getTitle())
@@ -37,6 +38,7 @@ public class ApplicationFormResponse {
                 .isAlways(application.getState() == State.ALWAYS)
                 .allowsDuplication(application.getAllowsDuplication())
                 .allowsUpdatingReply(application.getAllowsUpdatingReply())
+                .canUpdate(canUpdate)
                 .questionList(
                         application.getQuestionList().stream()
                                 .map(QuestionResponse::of)
