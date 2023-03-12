@@ -7,16 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ApplicationRepository extends JpaRepository<Application, Long> {
+public interface ApplicationRepository extends JpaRepository<Application, Long>, ApplicationRepositoryCustom {
 
-    List<Application> findAllByIsAlways(Boolean isAlways);
-
-    List<Application> findAllByOrderByIdDesc();
-
+    @Query("SELECT a FROM Application a WHERE a.state = 'ALWAYS' OR a.state = 'OPENED'")
     List<Application> findAllByOrderByIdDesc(Pageable pageable);
-
-    @Query("SELECT a FROM Application a " +
-            "WHERE a.endDate >= current_date AND a.startDate <= current_date AND a.isAlways = false " +
-            "ORDER BY a.endDate ASC")
-    List<Application> findAllClosingDeadline();
 }

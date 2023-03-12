@@ -1,9 +1,7 @@
 package com.soogung.simblue.domain.application.presentation;
 
-import com.soogung.simblue.domain.application.presentation.dto.request.CreateApplicationRequest;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
+import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
+import com.soogung.simblue.domain.application.presentation.dto.response.*;
 import com.soogung.simblue.domain.application.service.*;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
@@ -24,12 +22,16 @@ public class ApplicationController {
     private final QueryDeadlineApplicationService queryDeadlineApplicationService;
     private final QueryLatestApplicationService queryLatestApplicationService;
     private final QueryAlwaysApplicationService queryAlwaysApplicationService;
-    private final QueryFourLatestApplication queryFourLatestApplication;
+    private final QueryPagingApplication queryPagingApplication;
     private final QueryApplicationDetailService queryApplicationDetailService;
+    private final QueryApplicationFormService queryApplicationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
+    private final QueryApplicationResultService queryApplicationResultService;
+    private final UpdateApplicationService updateApplicationService;
+    private final DeleteApplicationService deleteApplicationService;
 
     @PostMapping
-    public void createApplication(@RequestBody @Valid CreateApplicationRequest request) {
+    public void createApplication(@RequestBody @Valid ApplicationRequest request) {
         applicationService.execute(request);
     }
 
@@ -46,9 +48,9 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping("/four")
-    public ApplicationListResponse getFourLatestApplication(@PageableDefault(size = 4) Pageable pageable) {
-        return queryFourLatestApplication.execute(pageable);
+    @GetMapping("/paging")
+    public ApplicationListResponse getPagingApplication(@PageableDefault(size = 4) Pageable pageable) {
+        return queryPagingApplication.execute(pageable);
     }
 
     @GetMapping("/{id}")
@@ -56,8 +58,31 @@ public class ApplicationController {
         return queryApplicationDetailService.execute(id);
     }
 
+    @GetMapping("/{id}/form")
+    public ApplicationFormResponse getApplicationForm(@PathVariable Long id) {
+        return queryApplicationFormService.execute(id);
+    }
+
     @GetMapping("/my")
-    public ApplicationListResponse getMyApplication() {
+    public ApplicationStatusResponse getMyApplication() {
         return queryMyApplicationService.execute();
+    }
+
+    @GetMapping("/{id}/result")
+    public ResultBlockResponse getApplicationResult(@PathVariable Long id) {
+        return queryApplicationResultService.execute(id);
+    }
+
+    @PutMapping("/{id}")
+    public void updateApplication(
+            @PathVariable Long id,
+            @RequestBody @Valid ApplicationRequest request
+    ) {
+        updateApplicationService.execute(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteApplication(@PathVariable Long id) {
+        deleteApplicationService.execute(id);
     }
 }

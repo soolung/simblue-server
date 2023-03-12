@@ -15,7 +15,7 @@ public class QueryAlwaysApplicationService {
     private final ApplicationRepository applicationRepository;
 
     public List<ApplicationResponse> execute() {
-        return applicationRepository.findAllByIsAlways(true).stream()
+        return applicationRepository.findAlwaysApplication().stream()
                 .map(ApplicationResponse::of).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,14 @@
 package com.soogung.simblue.domain.application.domain;
 
+import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.type.State;
+import com.soogung.simblue.domain.application.domain.type.Status;
+import com.soogung.simblue.domain.application.exception.ApplicationHasAlreadyEndedException;
+import com.soogung.simblue.domain.application.exception.ApplicationHasNotStartedYetException;
+import com.soogung.simblue.domain.application.exception.ApplicationNotFoundException;
+import com.soogung.simblue.domain.application.exception.CanNotUpdateReplyException;
+import com.soogung.simblue.domain.notice.domain.Notice;
+import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "application_tbl")
+@Table(name = "tbl_application")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Application extends BaseTimeEntity {
@@ -38,25 +47,93 @@ public class Application extends BaseTimeEntity {
     private String emoji;
 
     @Column(nullable = false)
-    private Boolean isAlways;
-
-    @Column(nullable = false)
     private Boolean allowsDuplication;
 
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-    private List<ApplicationQuestion> questionList = new ArrayList<>();
+    @Column(nullable = false)
+    private Boolean allowsUpdatingReply;
 
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL)
-    private List<ApplicationNotice> noticeList = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private State state;
+
+    @OneToMany(mappedBy = "application")
+    private List<Question> questionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "notice")
+    private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean isAlways, Boolean allowsDuplication) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
-        this.isAlways = isAlways;
         this.allowsDuplication = allowsDuplication;
+        this.allowsUpdatingReply = allowsUpdatingReply;
+        this.state = state;
+    }
+
+    public void validateStatus() {
+        if (state == State.DELETED) {
+            throw ApplicationNotFoundException.EXCEPTION;
+        }
+    }
+
+    public void validatePeriod() {
+        if (state == State.ALWAYS) return;
+
+        if (LocalDate.now().isBefore(startDate)) {
+            throw ApplicationHasNotStartedYetException.EXCEPTION;
+        }
+
+        if (LocalDate.now().isAfter(endDate)) {
+            throw ApplicationHasAlreadyEndedException.EXCEPTION;
+        }
+    }
+
+    public void validateReplyUpdatable() {
+        if (!allowsUpdatingReply) {
+            throw CanNotUpdateReplyException.EXCEPTION;
+        }
+    }
+
+    public void validatePermission(OwnerRepository ownerRepository, Long teacherId) {
+        if (!ownerRepository.existsByApplicationIdAndTeacherId(id, teacherId)) {
+            throw AuthorityMismatchException.EXCEPTION;
+        }
+    }
+
+    public void delete() {
+        this.state = State.DELETED;
+    }
+
+    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.emoji = emoji;
+        this.allowsDuplication = allowsDuplication;
+        this.allowsUpdatingReply = allowsUpdatingReply;
+        this.state = state;
+    }
+
+    public Status getStatus() {
+        LocalDate now = LocalDate.now();
+
+        if (state == State.ALWAYS) {
+            return Status.ALWAYS;
+        }
+
+        else if (state == State.CLOSED || endDate.isBefore(now)) {
+            return Status.DONE;
+        }
+
+        else if (startDate.isAfter(now)) {
+            return Status.NOT_STARTED;
+        }
+
+        return Status.IN_PROGRESS;
     }
 }

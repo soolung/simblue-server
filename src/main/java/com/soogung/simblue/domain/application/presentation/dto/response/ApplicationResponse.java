@@ -1,6 +1,7 @@
 package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Application;
+import com.soogung.simblue.domain.application.domain.type.Status;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,8 +17,8 @@ public class ApplicationResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private String emoji;
-    private Boolean isAlways;
     private Boolean allowsDuplication;
+    private Status status;
 
     public static ApplicationResponse of(Application application) {
         return ApplicationResponse.builder()
@@ -27,8 +28,8 @@ public class ApplicationResponse {
                 .startDate(application.getStartDate())
                 .endDate(application.getEndDate())
                 .emoji(application.getEmoji())
-                .isAlways(application.getIsAlways())
                 .allowsDuplication(application.getAllowsDuplication())
+                .status(application.getStatus())
                 .build();
     }
 }

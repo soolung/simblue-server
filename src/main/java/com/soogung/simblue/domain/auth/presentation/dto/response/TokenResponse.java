@@ -14,5 +14,6 @@ public class TokenResponse {
     private String name;
     private String email;
     private boolean isLogin;
+    private Long roleId;
 }
 

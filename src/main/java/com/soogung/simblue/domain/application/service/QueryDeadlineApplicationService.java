@@ -15,7 +15,7 @@ public class QueryDeadlineApplicationService {
     private final ApplicationRepository applicationRepository;
 
     public List<ApplicationResponse> execute() {
-        return applicationRepository.findAllClosingDeadline().stream()
-                .map(ApplicationResponse::of).collect(Collectors.toList());
+        return applicationRepository.findApplicationClosingDeadline()
+                .stream().map(ApplicationResponse::of).collect(Collectors.toList());
     }
 }

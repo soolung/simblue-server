@@ -6,8 +6,6 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.StudentRepository;
 import com.soogung.simblue.domain.user.domain.repository.TeacherRepository;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
-import com.soogung.simblue.domain.user.domain.type.Authority;
-import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.domain.user.exception.UserAlreadyExistsException;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
 import com.soogung.simblue.global.security.auth.AuthDetails;
@@ -51,6 +49,12 @@ public class UserFacade {
     @Transactional(readOnly = true)
     public Teacher findTeacherByUser(User user) {
         return teacherRepository.findByUser(user)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
+    public Teacher findTeacherById(Long id) {
+        return teacherRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }

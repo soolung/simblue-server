@@ -15,7 +15,7 @@ public class QueryLatestApplicationService {
     private final ApplicationRepository applicationRepository;
 
     public List<ApplicationResponse> execute() {
-        return applicationRepository.findAllByOrderByIdDesc()
+        return applicationRepository.findTheLatestApplication()
                 .stream().map(ApplicationResponse::of).collect(Collectors.toList());
     }
 }
