@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.banner.domain;
 
 import com.soogung.simblue.domain.banner.domain.type.Status;
-import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.global.entity.BaseTimeEntity;
@@ -11,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -30,6 +30,9 @@ public class Banner extends BaseTimeEntity {
     @Column(nullable = true)
     private String linkTo;
 
+    @Column(nullable = false)
+    private LocalDate endDate;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private Status status;
@@ -39,9 +42,10 @@ public class Banner extends BaseTimeEntity {
     private Teacher teacher;
 
     @Builder
-    public Banner(String imageUri, String linkTo, Teacher teacher) {
+    public Banner(String imageUri, String linkTo, LocalDate endDate, Teacher teacher) {
         this.imageUri = imageUri;
         this.linkTo = linkTo;
+        this.endDate = endDate;
         this.status = Status.ACTIVE;
         this.teacher = teacher;
     }
