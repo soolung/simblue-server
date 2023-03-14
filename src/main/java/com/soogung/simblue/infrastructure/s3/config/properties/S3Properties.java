@@ -11,8 +11,18 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("cloud.aws")
 public class S3Properties {
 
-    private String bucket;
+    private S3 s3;
     private Credentials credentials;
+
+    @Getter
+    @Setter
+    public static class S3 {
+        private String bucket;
+    }
+
+    public String getBucket() {
+        return s3.getBucket();
+    }
 
     @Getter
     @Setter

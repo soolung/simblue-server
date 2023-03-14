@@ -9,21 +9,23 @@ import com.soogung.simblue.infrastructure.s3.exception.EmptyFileException;
 import com.soogung.simblue.infrastructure.s3.exception.FailedToSaveException;
 import com.soogung.simblue.infrastructure.s3.exception.TooLongNameException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
-@Component
+@Slf4j
+@Service
 @RequiredArgsConstructor
 public class S3Service {
 
     private final S3Properties s3Properties;
     private final AmazonS3Client amazonS3Client;
 
-    public String uploadImage(MultipartFile image) {
+    public String uploadImage(MultipartFile image, String folder) {
         validateFile(image);
-        String fileName = createFileName(image.getOriginalFilename());
+        String fileName = createFileName(folder, image.getOriginalFilename());
 
         try {
             PutObjectRequest request = new PutObjectRequest(
@@ -34,6 +36,10 @@ public class S3Service {
             );
             amazonS3Client.putObject(request.withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (Exception e) {
+            e.printStackTrace();
+            log.info(s3Properties.getBucket());
+            log.info(s3Properties.getAccessKey());
+            log.info(s3Properties.getSecretKey());
             throw FailedToSaveException.EXCEPTION;
         }
 
@@ -50,8 +56,8 @@ public class S3Service {
         }
     }
 
-    private String createFileName(String originalName) {
-        return s3Properties.getBucket() + "/" + UUID.randomUUID() + "-" + originalName;
+    private String createFileName(String folder, String originalName) {
+        return folder + "/" + UUID.randomUUID() + "-" + originalName;
     }
 
     private ObjectMetadata getObjectMetadata(MultipartFile file) {
