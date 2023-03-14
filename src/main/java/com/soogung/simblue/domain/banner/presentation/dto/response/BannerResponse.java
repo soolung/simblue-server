@@ -2,7 +2,9 @@ package com.soogung.simblue.domain.banner.presentation.dto.response;
 
 import com.soogung.simblue.domain.banner.domain.Banner;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Builder
 public class BannerResponse {
 
