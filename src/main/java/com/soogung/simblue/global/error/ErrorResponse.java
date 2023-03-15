@@ -12,9 +12,11 @@ public class ErrorResponse {
 
     private int status;
     private String message;
+    private String code;
 
     public ErrorResponse(ErrorProperty errorProperty) {
         this.status = errorProperty.getStatus();
         this.message = errorProperty.getMessage();
+        this.code = errorProperty.name();
     }
 }
