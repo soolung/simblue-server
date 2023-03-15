@@ -23,7 +23,7 @@ public class QueryApplicationFormService {
     @Transactional(readOnly = true)
     public ApplicationFormResponse execute(Long id) {
         Application application = applicationFacade.findApplicationById(id);
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
 

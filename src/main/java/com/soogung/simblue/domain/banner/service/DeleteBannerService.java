@@ -23,7 +23,7 @@ public class DeleteBannerService {
 
     @Transactional
     public void execute(Long id) {
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
         Banner banner = bannerFacade.getBanner(id);
         banner.validatePermission(teacher);
         banner.delete();

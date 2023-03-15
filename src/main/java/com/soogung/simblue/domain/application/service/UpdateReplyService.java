@@ -32,7 +32,7 @@ public class UpdateReplyService {
     public void execute(Long replyBlockId, ReplyBlockRequest request) {
         ReplyBlock block = replyBlockFacade.getReplyBlock(replyBlockId);
         Application application = block.getApplication();
-        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        Student student = userFacade.getCurrentStudent();
         application.validateStatus();
         application.validatePeriod();
         application.validateReplyUpdatable();

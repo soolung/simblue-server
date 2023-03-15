@@ -6,6 +6,7 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.StudentRepository;
 import com.soogung.simblue.domain.user.domain.repository.TeacherRepository;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
+import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.domain.user.exception.UserAlreadyExistsException;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
 import com.soogung.simblue.global.security.auth.AuthDetails;
@@ -38,6 +39,20 @@ public class UserFacade {
     public User getCurrentUser() {
         AuthDetails auth = (AuthDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return auth.getUser();
+    }
+
+    @Transactional(readOnly = true)
+    public Teacher getCurrentTeacher() {
+        AuthDetails auth = (AuthDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return teacherRepository.findByUser(auth.getUser())
+                .orElseThrow(() -> AuthorityMismatchException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
+    public Student getCurrentStudent() {
+        AuthDetails auth = (AuthDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return studentRepository.findByUser(auth.getUser())
+                .orElseThrow(() -> AuthorityMismatchException.EXCEPTION);
     }
 
     @Transactional(readOnly = true)

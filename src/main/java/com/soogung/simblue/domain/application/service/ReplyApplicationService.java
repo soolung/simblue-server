@@ -33,7 +33,7 @@ public class ReplyApplicationService {
     @Transactional
     public void execute(ReplyBlockRequest request) {
         Application application = applicationFacade.findApplicationById(request.getApplicationId());
-        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        Student student = userFacade.getCurrentStudent();
         application.validateStatus();
         application.validatePeriod();
         validateFirstResponse(application, student);

@@ -38,7 +38,7 @@ public class QueryApplicationResultService {
 
     @Transactional(readOnly = true)
     public ResultBlockResponse execute(Long id) {
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
         Application application = applicationFacade.findApplicationById(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());

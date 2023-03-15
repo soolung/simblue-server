@@ -21,7 +21,7 @@ public class RegisterBannerService {
 
     @Transactional
     public void execute(BannerRequest request, MultipartFile image) {
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
         String imageUri = s3Service.uploadImage(image, "banner");
 
         bannerRepository.save(

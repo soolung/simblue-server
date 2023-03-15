@@ -28,7 +28,7 @@ public class QueryReplyService {
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
-        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        Student student = userFacade.getCurrentStudent();
         ReplyBlock replyBlock = replyBlockFacade.getReplyBlock(id);
         Application application = replyBlock.getApplication();
         application.validateStatus();
