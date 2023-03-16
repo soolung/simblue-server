@@ -3,10 +3,7 @@ package com.soogung.simblue.domain.banner.presentation;
 import com.soogung.simblue.domain.banner.presentation.dto.request.BannerRequest;
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerImageResponse;
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerListResponse;
-import com.soogung.simblue.domain.banner.service.DeleteBannerService;
-import com.soogung.simblue.domain.banner.service.QueryBannerService;
-import com.soogung.simblue.domain.banner.service.RegisterBannerService;
-import com.soogung.simblue.domain.banner.service.UploadBannerImageService;
+import com.soogung.simblue.domain.banner.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +18,7 @@ public class BannerController {
     private final QueryBannerService queryBannerService;
     private final RegisterBannerService registerBannerService;
     private final UploadBannerImageService uploadBannerImageService;
+    private final UpdateBannerService updateBannerService;
     private final DeleteBannerService deleteBannerService;
 
     @GetMapping
@@ -40,6 +38,14 @@ public class BannerController {
             @RequestPart(value = "image") MultipartFile image
     ) {
         return uploadBannerImageService.execute(image);
+    }
+
+    @PutMapping("/{id}")
+    public void updateBanner(
+            @PathVariable Long id,
+            @RequestBody @Valid BannerRequest request
+    ) {
+        updateBannerService.execute(id, request);
     }
 
     @DeleteMapping("/{id}")

@@ -8,8 +8,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -54,6 +57,12 @@ public class Banner extends BaseTimeEntity {
         if (!Objects.equals(this.teacher.getId(), teacher.getId())) {
             throw AuthorityMismatchException.EXCEPTION;
         }
+    }
+
+    public void update(String imageUri, String linkTo, LocalDate endDate) {
+        this.imageUri = imageUri;
+        this.linkTo = linkTo;
+        this.endDate = endDate;
     }
 
     public void delete() {
