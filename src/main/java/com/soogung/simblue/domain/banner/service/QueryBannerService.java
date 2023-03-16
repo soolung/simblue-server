@@ -1,7 +1,7 @@
 package com.soogung.simblue.domain.banner.service;
 
 import com.soogung.simblue.domain.banner.domain.repository.BannerRepository;
-import com.soogung.simblue.domain.banner.domain.type.Status;
+import com.soogung.simblue.domain.banner.domain.type.State;
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerListResponse;
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class QueryBannerService {
     @Transactional(readOnly = true)
     public BannerListResponse execute() {
         return new BannerListResponse(
-                bannerRepository.findByStatus(Status.ACTIVE)
+                bannerRepository.findByState(State.ACTIVE)
                         .stream()
                         .map(BannerResponse::of)
                         .collect(Collectors.toList())

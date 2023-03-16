@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.banner.domain;
 
+import com.soogung.simblue.domain.banner.domain.type.State;
 import com.soogung.simblue.domain.banner.domain.type.Status;
 import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
@@ -8,11 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -38,7 +36,7 @@ public class Banner extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
-    private Status status;
+    private State state;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
@@ -49,8 +47,16 @@ public class Banner extends BaseTimeEntity {
         this.imageUri = imageUri;
         this.linkTo = linkTo;
         this.endDate = endDate;
-        this.status = Status.ACTIVE;
+        this.state = State.ACTIVE;
         this.teacher = teacher;
+    }
+
+    public Status getStatus() {
+        if (LocalDate.now().isAfter(endDate)) {
+            return Status.DONE;
+        }
+
+        return Status.STARTED;
     }
 
     public void validatePermission(Teacher teacher) {
@@ -66,6 +72,6 @@ public class Banner extends BaseTimeEntity {
     }
 
     public void delete() {
-        this.status = Status.DELETED;
+        this.state = State.DELETED;
     }
 }
