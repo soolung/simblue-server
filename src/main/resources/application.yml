@@ -21,6 +21,10 @@ spring:
   cache:
     type: redis
 
+  servlet:
+    multipart:
+      max-file-size: 1MB
+
 auth:
   google:
     base-url: ${GOOGLE_BASE_URL}

@@ -1,13 +1,19 @@
 package com.soogung.simblue.domain.banner.service;
 
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerImageResponse;
-import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.facade.UserFacade;
+import com.soogung.simblue.infrastructure.s3.exception.FailedToSaveException;
+import com.soogung.simblue.infrastructure.s3.exception.ImageSizeMismatchException;
 import com.soogung.simblue.infrastructure.s3.service.S3Service;
+import com.soogung.simblue.infrastructure.s3.validation.FileValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,16 @@ public class UploadBannerImageService {
         userFacade.getCurrentTeacher();
 
         return new BannerImageResponse(
-                s3Service.uploadImage(image, "banner"));
+                s3Service.uploadImage(image, "banner", file -> {
+                    try {
+                        BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+                        if (!(bufferedImage.getWidth() == 1450 && bufferedImage.getHeight() == 450)) {
+                            throw ImageSizeMismatchException.EXCEPTION;
+                        }
+                    } catch (IOException e) {
+                        throw FailedToSaveException.EXCEPTION;
+                    }
+                })
+        );
     }
 }
