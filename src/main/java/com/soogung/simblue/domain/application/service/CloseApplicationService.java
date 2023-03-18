@@ -12,17 +12,20 @@ import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class CloseApplicationService {
 
+    private final UserFacade userFacade;
     private final ApplicationFacade applicationFacade;
     private final OwnerRepository ownerRepository;
-    private final UserFacade userFacade;
 
+    @Transactional
     public void execute(Long id) {
         Teacher teacher = userFacade.getCurrentTeacher();
-        Application application = applicationFacade.findApplicationById(id);
+        Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
 

@@ -87,7 +87,7 @@ public class ApplicationController {
         deleteApplicationService.execute(id);
     }
 
-    @GetMapping("/{id}/close")
+    @PutMapping("/{id}/close")
     public void closeApplication(@PathVariable Long id) {
         closeApplicationService.execute(id);
     }
