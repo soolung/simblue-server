@@ -29,6 +29,7 @@ public class ApplicationController {
     private final QueryApplicationResultService queryApplicationResultService;
     private final UpdateApplicationService updateApplicationService;
     private final DeleteApplicationService deleteApplicationService;
+    private final CloseApplicationService closeApplicationService;
 
     @PostMapping
     public void createApplication(@RequestBody @Valid ApplicationRequest request) {
@@ -79,6 +80,11 @@ public class ApplicationController {
             @RequestBody @Valid ApplicationRequest request
     ) {
         updateApplicationService.execute(id, request);
+    }
+
+    @PutMapping("/{id}/close")
+    public void closeApplication(@PathVariable Long id) {
+        closeApplicationService.execute(id);
     }
 
     @DeleteMapping("/{id}")
