@@ -82,13 +82,13 @@ public class ApplicationController {
         updateApplicationService.execute(id, request);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteApplication(@PathVariable Long id) {
-        deleteApplicationService.execute(id);
-    }
-
     @PutMapping("/{id}/close")
     public void closeApplication(@PathVariable Long id) {
         closeApplicationService.execute(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteApplication(@PathVariable Long id) {
+        deleteApplicationService.execute(id);
     }
 }
