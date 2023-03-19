@@ -26,11 +26,7 @@ public class LoginService {
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
                 .refreshToken(jwtTokenProvider.createRefreshToken(user.getEmail()))
-                .authority(user.getAuthority())
-                .name(user.getName())
-                .email(user.getEmail())
                 .isLogin(!(user.getName() == null || user.getName().equals("")))
-                .roleId(getRoleId(user))
                 .build();
     }
 
@@ -38,15 +34,5 @@ public class LoginService {
         if (!passwordEncoder.matches(actual, expected)) {
             throw PasswordMismatchException.EXCEPTION;
         }
-    }
-
-    private Long getRoleId(User user) {
-        if (user.getAuthority() == Authority.ROLE_STUDENT) {
-            return userFacade.findStudentByUser(user).getId();
-        } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
-            return userFacade.findTeacherByUser(user).getId();
-        }
-
-        return null;
     }
 }
