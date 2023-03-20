@@ -30,7 +30,7 @@ public class UploadBannerImageService {
                 s3Service.uploadImage(image, "banner", file -> {
                     try {
                         BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
-                        if (!(bufferedImage.getWidth() == 1450 && bufferedImage.getHeight() == 450)) {
+                        if (!(bufferedImage.getWidth() == 1400 && bufferedImage.getHeight() == 450)) {
                             throw ImageSizeMismatchException.EXCEPTION;
                         }
                     } catch (IOException e) {
