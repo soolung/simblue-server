@@ -5,7 +5,7 @@ import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ReplyDetailResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ReplyResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.user.domain.Student;
@@ -34,7 +34,7 @@ public class QueryReplyService {
         application.validateStatus();
         replyBlock.validatePermission(student);
 
-        List<ReplyDetailResponse> replyDetailList = createReplyDetailList(replyBlock);
+        List<ReplyResponse> replyDetailList = createReplyDetailList(replyBlock);
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(NoticeResponse::of).collect(Collectors.toList());
@@ -46,11 +46,11 @@ public class QueryReplyService {
         );
     }
 
-    private List<ReplyDetailResponse> createReplyDetailList(ReplyBlock block) {
+    private List<ReplyResponse> createReplyDetailList(ReplyBlock block) {
         return block.getReplies().stream()
                 .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
                 .values().stream()
-                .map(r -> new ReplyDetailResponse(getResult(r)))
+                .map(r -> new ReplyResponse(getResult(r)))
                 .collect(Collectors.toList());
     }
 

@@ -44,7 +44,7 @@ public class ApplicationDetailResponse {
                 .build();
     }
 
-    public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList, List<ReplyDetailResponse> replyDetailList) {
+    public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList, List<ReplyResponse> replyDetailList) {
         AtomicInteger index = new AtomicInteger();
 
         return ApplicationDetailResponse.builder()

@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.application.presentation.dto.response;
 
 import com.soogung.simblue.domain.application.domain.Question;
-import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.type.QuestionType;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +35,7 @@ public class QuestionResponse {
                 .build();
     }
 
-    public static QuestionResponse of(Question question, ReplyDetailResponse replyDetail) {
+    public static QuestionResponse of(Question question, ReplyResponse replyDetail) {
         return QuestionResponse.builder()
                 .id(question.getId())
                 .question(question.getQuestion())

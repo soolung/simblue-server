@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ResultResponse {
+public class ReplyBlockResponse {
     private String name;
     private String studentNumber;
-    private List<String> replyList;
+    private List<ReplyDetailResponse> replyList;
 }
