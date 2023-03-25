@@ -65,7 +65,7 @@ public class QueryApplicationResultService {
     private ReplyBlockResponse createReplyList(ReplyBlock block) {
         Student student = block.getStudent();
 
-        List<ReplyDetailResponse> replyList = new ArrayList<>();
+        List<ReplyResponse> replyList = new ArrayList<>();
 
         block.getReplies().stream()
                 .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
@@ -78,8 +78,8 @@ public class QueryApplicationResultService {
         );
     }
 
-    private ReplyDetailResponse getResult(Long questionId, List<Reply> request) {
-        return new ReplyDetailResponse(
+    private ReplyResponse getResult(Long questionId, List<Reply> request) {
+        return new ReplyResponse(
                 questionId,
                 request.stream()
                         .map(Reply::getAnswer)

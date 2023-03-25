@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ReplyDetailResponse {
+public class ReplyListResponse {
 
     private Long questionId;
-    private String reply;
+    private List<String> replyList;
 }

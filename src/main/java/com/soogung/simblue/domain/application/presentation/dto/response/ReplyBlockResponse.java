@@ -10,5 +10,5 @@ import java.util.List;
 public class ReplyBlockResponse {
     private String name;
     private String studentNumber;
-    private List<ReplyDetailResponse> replyList;
+    private List<ReplyResponse> replyList;
 }
