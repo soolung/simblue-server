@@ -23,6 +23,7 @@ public class ApplicationRequest {
     private String title;
 
     @Nullable
+    @Size(max = 500)
     private String description;
 
     @Nullable
