@@ -82,7 +82,7 @@ public class QueryApplicationResultService {
         return new ReplyResponse(
                 questionId,
                 request.stream()
-                        .map(Reply::getAnswer)
+                        .map(r -> r.getAnswer(userFacade))
                         .collect(Collectors.joining(", "))
         );
     }

@@ -61,7 +61,7 @@ public class QueryReplyService {
         return new ReplyListResponse(
                 questionId,
                 request.stream()
-                        .map(Reply::getAnswer)
+                        .map(r -> r.getAnswer(userFacade))
                         .collect(Collectors.toList())
         );
     }
