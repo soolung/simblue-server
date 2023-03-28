@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long>, ApplicationRepositoryCustom {
 
-    @Query("SELECT a FROM Application a WHERE a.state = 'ALWAYS' OR a.state = 'OPENED'")
+    @Query("SELECT a FROM Application a WHERE a.state = 'ALWAYS' OR a.state = 'OPENED' ORDER BY a.id DESC")
     List<Application> findAllByOrderByIdDesc(Pageable pageable);
 }
