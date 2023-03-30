@@ -10,12 +10,4 @@ import java.util.List;
 public class JoinGroupRequest {
 
     private List<MemberRequest> memberList;
-
-    /*
-    1. 학생을 추가할 그룹을 찾는다
-    2. 학생을 추가한다 ((member에 잇는)학번이랑 이름을 받는 request dto사용)
-
-    1. 학생을 삭제할 그룹을 찾는다
-    2. 학생을 삭제한다 ((member에 잇는)학번이랑 이름을 받는 request dto사용)
-     */
 }
