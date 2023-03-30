@@ -15,12 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/group")
 @RequiredArgsConstructor
-public class GroupController {
+public class MemberController {
 
     private final CreateGroupService createGroupService;
     private final QueryGroupService queryGroupService;
     private final JoinGroupService joinGroupService;
 
+<<<<<<< HEAD:src/main/java/com/soogung/simblue/domain/group/presentation/GroupController.java
     @PostMapping
     public void createGroup(@RequestBody @Valid GroupRequest request) {
         createGroupService.execute(request);
@@ -32,6 +33,9 @@ public class GroupController {
     }
     
     @PutMapping("/{id}/add")
+=======
+    @PostMapping("/{id}/join")
+>>>>>>> 4e6690e (ADD :: 리뷰 반영 (#63)):src/main/java/com/soogung/simblue/domain/group/presentation/MemberController.java
     public void addMember(@PathVariable Long id,@RequestBody @Valid JoinGroupRequest request) {
         joinGroupService.execute(id, request);
     }
