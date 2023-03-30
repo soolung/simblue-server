@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -44,9 +44,7 @@ public class ApplicationDetailResponse {
                 .build();
     }
 
-    public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList, List<ReplyDetailResponse> replyDetailList) {
-        AtomicInteger index = new AtomicInteger();
-
+    public static ApplicationDetailResponse of(Application application, List<NoticeResponse> noticeList, List<ReplyListResponse> replyList) {
         return ApplicationDetailResponse.builder()
                 .id(application.getId())
                 .title(application.getTitle())
@@ -58,7 +56,11 @@ public class ApplicationDetailResponse {
                 .state(application.getState())
                 .questionList(
                         application.getQuestionList().stream()
-                                .map((q) -> QuestionResponse.of(q, replyDetailList.get(index.getAndIncrement())))
+                                .map((q) -> QuestionResponse.of(q,
+                                        replyList.stream().filter(r -> r.getQuestionId() == q.getId())
+                                                .findFirst()
+                                                .orElse(null)
+                                ))
                                 .collect(Collectors.toList()))
                 .noticeList(noticeList)
                 .build();

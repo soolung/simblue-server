@@ -7,7 +7,6 @@ import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
 import com.soogung.simblue.domain.application.exception.AlreadyReplyException;
-import com.soogung.simblue.domain.application.exception.QuestionIsRequiredException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,6 +66,7 @@ public class ReplyApplicationService {
                     q.validateAnswer(r);
                     return r.getReplyDetailList().stream()
                             .map(a -> createReplyFrom(r, block, q, a))
+                            .filter(Objects::nonNull)
                             .collect(Collectors.toList());
                 })
                 .flatMap(Collection::stream)
@@ -79,6 +80,11 @@ public class ReplyApplicationService {
             String answer
     ) {
         question.validateAnswer(answer);
+
+        if (Objects.isNull(answer) || answer.equals("")) {
+            return null;
+        }
+
         Reply reply = request.toEntity(question, block, answer);
         reply.putReplyBlock(block);
         return reply;
