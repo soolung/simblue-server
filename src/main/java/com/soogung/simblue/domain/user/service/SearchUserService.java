@@ -15,11 +15,10 @@ import java.util.stream.Collectors;
 public class SearchUserService {
 
     private final UserRepository userRepository;
-    private final UserFacade userFacade;
 
     public List<SearchUserResponse> execute(String q, Authority authority) {
         return userRepository.searchUser(q, authority)
-                .stream().map(u -> SearchUserResponse.of(u, userFacade))
+                .stream().map(SearchUserResponse::of)
                 .collect(Collectors.toList());
     }
 }
