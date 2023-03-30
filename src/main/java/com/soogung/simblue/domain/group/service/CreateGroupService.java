@@ -16,7 +16,7 @@ public class CreateGroupService {
 
     @Transactional
     public void execute(GroupRequest request) {
-        Group group = groupRepository.save(request.toEntity());
+        groupRepository.save(request.toEntity());
     }
 
 }
