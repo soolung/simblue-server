@@ -39,6 +39,7 @@ public class GoogleAuthService {
 
         Optional<User> nowUser = userRepository.findByEmail(email);
         User user = null;
+        Long roleId = null;
         if (nowUser.isEmpty()) {
             isLogin = false;
 
@@ -53,6 +54,7 @@ public class GoogleAuthService {
             user = nowUser.get();
         } else {
             user = nowUser.get();
+            roleId = getRoleId(user);
         }
 
         return TokenResponse.builder()
@@ -62,7 +64,7 @@ public class GoogleAuthService {
                 .email(email)
                 .name(user.getName())
                 .isLogin(isLogin)
-                .roleId(getRoleId(user))
+                .roleId(roleId)
                 .build();
     }
 
