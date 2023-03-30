@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -84,10 +85,12 @@ public class GoogleAuthService {
     }
 
     private Long getRoleId(User user) {
-        if (user.getAuthority() == Authority.ROLE_STUDENT) {
-            return userFacade.findStudentByUser(user).getId();
-        } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
-            return userFacade.findTeacherByUser(user).getId();
+        if (Objects.nonNull(user)) {
+            if (user.getAuthority() == Authority.ROLE_STUDENT) {
+                return userFacade.findStudentByUser(user).getId();
+            } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
+                return userFacade.findTeacherByUser(user).getId();
+            }
         }
 
         return null;
