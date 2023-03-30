@@ -25,7 +25,7 @@ public class GroupController {
     }
 
     @GetMapping
-    public GroupListResponse getListGroups(){
+    public GroupListResponse getGroupList(){
         return queryGroupService.execute();
     }
 
