@@ -17,7 +17,7 @@ public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
+    @Column(name = "member_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
