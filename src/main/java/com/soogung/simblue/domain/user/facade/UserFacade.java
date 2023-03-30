@@ -72,4 +72,10 @@ public class UserFacade {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
+
+    @Transactional(readOnly = true)
+    public Student findStudentById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
 }
