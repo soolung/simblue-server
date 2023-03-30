@@ -9,6 +9,5 @@ import java.util.Optional;
 public interface GroupRepository extends CrudRepository<Group, Long> {
 
     Optional<Group> findByGroupName(String name);
-
-
+    List<Group> findAll();
 }
