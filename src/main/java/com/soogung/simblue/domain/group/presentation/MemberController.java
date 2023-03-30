@@ -10,11 +10,11 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/group")
 @RequiredArgsConstructor
-public class GroupController {
+public class MemberController {
 
     private final JoinGroupService joinGroupService;
 
-    @PutMapping("/{id}/add")
+    @PostMapping("/{id}/join")
     public void addMember(@PathVariable Long id,@RequestBody @Valid JoinGroupRequest request) {
         joinGroupService.execute(id, request);
     }

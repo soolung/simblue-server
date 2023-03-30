@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberRequest {
 
-    private Long StudentId;
+    private Long studentId;
 }
