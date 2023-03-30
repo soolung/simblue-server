@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class CreateGroupService {
 
-    final GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
     @Transactional
     public void execute(GroupRequest request) {
