@@ -30,7 +30,7 @@ public class MemberController {
         return queryGroupService.execute();
     }
 
-    @PutMapping("/{id}/add")
+    @PostMapping("/{id}/add")
     public void addMember(@PathVariable Long id,@RequestBody @Valid AddGroupRequest request) {
         addGroupService.execute(id, request);
     }
