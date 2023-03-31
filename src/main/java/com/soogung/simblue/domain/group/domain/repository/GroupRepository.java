@@ -4,11 +4,10 @@ import com.soogung.simblue.domain.group.domain.Group;
 import com.soogung.simblue.domain.group.domain.Member;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
+import java.util.List;
+
 
 public interface GroupRepository extends CrudRepository<Group, Long> {
 
-    Optional<Group> findByGroupName(String name);
-
-
+    List<Group> findAll();
 }
