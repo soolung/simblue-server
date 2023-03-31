@@ -20,6 +20,8 @@ services:
     image: redis:latest
     container_name: soolung_simblue_redis
     hostname: soolung
-    command: redis-server --port 6379
+    command: /bin/sh -c "redis-server --requirepass soolung"
+    env_file:
+      - .env
     ports:
       - "6379:6379"

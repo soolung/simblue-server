@@ -65,13 +65,21 @@ jobs:
             echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
             echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
             echo DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            
             echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+            
             echo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} >> .env
             echo DOCKER_REPO=${{ secrets.DEV_DOCKER_REPO }} >> .env
+            
             echo GOOGLE_BASE_URL=${{ secrets.GOOGLE_BASE_URL }} >> .env
             echo GOOGLE_CLIENT=${{ secrets.GOOGLE_CLIENT }} >> .env
             echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT_DEV }} >> .env
             echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
+            
+            echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+            echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+            echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
             
             docker-compose -f docker-compose.dev.yml up -d
             docker image prune -f
