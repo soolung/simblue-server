@@ -29,7 +29,7 @@ public class MemberController {
     public GroupListResponse getGroupList(){
         return queryGroupService.execute();
     }
-
+    //ㅁㄴㅇㄴ
     @PostMapping("/{id}/add")
     public void addMember(@PathVariable Long id,@RequestBody @Valid AddGroupRequest request) {
         addGroupService.execute(id, request);
