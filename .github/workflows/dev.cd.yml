@@ -65,7 +65,7 @@ jobs:
             echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
             echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
             echo DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_HOST=${{ secrets.DEV_DB_HOST }} >> .env
             
             echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
             
@@ -77,7 +77,7 @@ jobs:
             echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT_DEV }} >> .env
             echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
             
-            echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+            echo REDIS_HOST=${{ secrets.DEV_REDIS_HOST }} >> .env
             echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
             echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
             
