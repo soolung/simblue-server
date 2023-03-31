@@ -108,6 +108,10 @@ public class Application extends BaseTimeEntity {
         this.state = State.DELETED;
     }
 
+    public void close() {
+        this.state = State.CLOSED;
+    }
+
     public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;

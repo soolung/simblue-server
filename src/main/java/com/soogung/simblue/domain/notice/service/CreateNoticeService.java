@@ -21,7 +21,7 @@ public class CreateNoticeService {
         noticeRepository.save(
                 request.toEntity(
                         applicationFacade.findApplicationById(request.getApplicationId()),
-                        userFacade.findTeacherByUser(userFacade.getCurrentUser())
+                        userFacade.getCurrentTeacher()
                 )
         );
     }

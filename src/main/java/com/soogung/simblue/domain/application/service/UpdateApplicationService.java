@@ -35,7 +35,7 @@ public class UpdateApplicationService {
 
     @Transactional
     public void execute(Long id, ApplicationRequest request) {
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());

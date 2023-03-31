@@ -32,7 +32,7 @@ public class CreateApplicationService {
     @Transactional
     public void execute(ApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        Teacher teacher = userFacade.findTeacherByUser(userFacade.getCurrentUser());
+        Teacher teacher = userFacade.getCurrentTeacher();
 
         saveApplicationOwner(request.getOwnerList(), application, teacher);
 

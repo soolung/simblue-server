@@ -5,7 +5,7 @@ import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ReplyDetailResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ReplyListResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.user.domain.Student;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -28,13 +29,13 @@ public class QueryReplyService {
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
-        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        Student student = userFacade.getCurrentStudent();
         ReplyBlock replyBlock = replyBlockFacade.getReplyBlock(id);
         Application application = replyBlock.getApplication();
         application.validateStatus();
         replyBlock.validatePermission(student);
 
-        List<ReplyDetailResponse> replyDetailList = createReplyDetailList(replyBlock);
+        List<ReplyListResponse> replyList = createReplyDetailList(replyBlock);
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(NoticeResponse::of).collect(Collectors.toList());
@@ -42,21 +43,26 @@ public class QueryReplyService {
         return ApplicationDetailResponse.of(
                 application,
                 noticeList,
-                replyDetailList
+                replyList
         );
     }
 
-    private List<ReplyDetailResponse> createReplyDetailList(ReplyBlock block) {
-        return block.getReplies().stream()
+    private List<ReplyListResponse> createReplyDetailList(ReplyBlock block) {
+        List<ReplyListResponse> replyList = new ArrayList<>();
+
+        block.getReplies().stream()
                 .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
-                .values().stream()
-                .map(r -> new ReplyDetailResponse(getResult(r)))
-                .collect(Collectors.toList());
+                .forEach((k, v) -> replyList.add(getResult(k, v)));
+
+        return replyList;
     }
 
-    private List<String> getResult(List<Reply> request) {
-        return request.stream()
-                .map(Reply::getAnswer)
-                .collect(Collectors.toList());
+    private ReplyListResponse getResult(Long questionId, List<Reply> request) {
+        return new ReplyListResponse(
+                questionId,
+                request.stream()
+                        .map(r -> r.getAnswer(userFacade))
+                        .collect(Collectors.toList())
+        );
     }
 }

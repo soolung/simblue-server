@@ -20,7 +20,7 @@ public class CancelReplyService {
 
     @Transactional
     public void execute(Long replyBlockId) {
-        Student student = userFacade.findStudentByUser(userFacade.getCurrentUser());
+        Student student = userFacade.getCurrentStudent();
         ReplyBlock replyBlock = replyBlockRepository.findSimpleReplyBlockById(replyBlockId);
         replyBlock.getApplication().validateStatus();
         replyBlock.getApplication().validatePeriod();
