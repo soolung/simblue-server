@@ -1,32 +1,29 @@
 package com.soogung.simblue.domain.application.service;
 
 import com.soogung.simblue.domain.application.domain.Application;
-import com.soogung.simblue.domain.application.domain.Question;
 import com.soogung.simblue.domain.application.domain.Reply;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
-import com.soogung.simblue.domain.application.domain.repository.*;
+import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
+import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
+import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
-import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ResultBlockResponse;
-import com.soogung.simblue.domain.application.presentation.dto.response.ResultResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.*;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
+import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.user.domain.Student;
 import com.soogung.simblue.domain.user.domain.Teacher;
-import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class QueryApplicationResultService {
 
     private final UserFacade userFacade;
@@ -37,7 +34,7 @@ public class QueryApplicationResultService {
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ResultBlockResponse execute(Long id) {
+    public ApplicationResultResponse execute(Long id) {
         Teacher teacher = userFacade.getCurrentTeacher();
         Application application = applicationFacade.findApplicationById(id);
         application.validateStatus();
@@ -47,17 +44,17 @@ public class QueryApplicationResultService {
                 .stream().map(NoticeResponse::of)
                 .collect(Collectors.toList());
 
-        List<String> questionList = questionRepository.findByApplicationIdOrderById(id).stream()
-                .map(Question::getQuestion)
+        List<SimpleQuestionResponse> questionList = questionRepository.findByApplicationIdOrderById(id).stream()
+                .map(SimpleQuestionResponse::of)
                 .collect(Collectors.toList());
 
-        List<ResultResponse> resultList = replyBlockRepository
+        List<ReplyBlockResponse> resultList = replyBlockRepository
                 .findApplicationResult(id).stream()
-                .map(this::createUserDetailList)
+                .map(this::createReplyList)
                 .collect(Collectors.toList());
 
 
-        return new ResultBlockResponse(
+        return new ApplicationResultResponse(
                 ApplicationResponse.of(application),
                 noticeList,
                 questionList,
@@ -65,25 +62,28 @@ public class QueryApplicationResultService {
         );
     }
 
-    private ResultResponse createUserDetailList(ReplyBlock block) {
+    private ReplyBlockResponse createReplyList(ReplyBlock block) {
         Student student = block.getStudent();
 
-        List<String> answerList = block.getReplies().stream()
-                .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
-                .values().stream()
-                .map(this::getResult)
-                .collect(Collectors.toList());
+        List<ReplyResponse> replyList = new ArrayList<>();
 
-        return new ResultResponse(
+        block.getReplies().stream()
+                .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
+                .forEach((k, v) -> replyList.add(getResult(k, v)));
+
+        return new ReplyBlockResponse(
                 student.getUser().getName(),
                 student.getStudentNumber(),
-                answerList
+                replyList
         );
     }
 
-    private String getResult(List<Reply> request) {
-        return request.stream()
-                .map(Reply::getAnswer)
-                .collect(Collectors.joining(", "));
+    private ReplyResponse getResult(Long questionId, List<Reply> request) {
+        return new ReplyResponse(
+                questionId,
+                request.stream()
+                        .map(r -> r.getAnswer(userFacade))
+                        .collect(Collectors.joining(", "))
+        );
     }
 }

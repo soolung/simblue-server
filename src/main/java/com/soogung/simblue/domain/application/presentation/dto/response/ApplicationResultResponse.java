@@ -8,9 +8,9 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ResultBlockResponse {
+public class ApplicationResultResponse {
     private ApplicationResponse application;
     private List<NoticeResponse> noticeList;
-    private List<String> questionList;
-    private List<ResultResponse> resultList;
+    private List<SimpleQuestionResponse> questionList;
+    private List<ReplyBlockResponse> resultList;
 }

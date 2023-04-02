@@ -21,12 +21,14 @@ services:
       - "--collation-server=utf8mb4_unicode_ci"
 
   redis:
-    image: redis:latest
+    image: redis:7.0-alpine
     container_name: soolung_simblue_redis
     hostname: soolung
-    command: redis-server --port 6379
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    env_file:
+      - .env
     ports:
-      - "6379:6379"
+      - ${REDIS_PORT}:6379
 
   application:
     image: ${DOCKER_USERNAME}/${DOCKER_REPO}

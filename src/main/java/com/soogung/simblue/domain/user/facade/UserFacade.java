@@ -6,6 +6,7 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.StudentRepository;
 import com.soogung.simblue.domain.user.domain.repository.TeacherRepository;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
+import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
 import com.soogung.simblue.domain.user.exception.UserAlreadyExistsException;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
@@ -26,6 +27,12 @@ public class UserFacade {
     @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
@@ -70,6 +77,20 @@ public class UserFacade {
     @Transactional(readOnly = true)
     public Teacher findTeacherById(Long id) {
         return teacherRepository.findById(id)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    @Transactional(readOnly = true)
+    public String getName(Long userId) {
+        User user = getUserById(userId);
+        if (user.getAuthority() == Authority.ROLE_TEACHER) {
+            return user.getName() + " 선생님";
+        }
+        return findStudentByUser(user).getStudentNumber() + " " + user.getName();
+    }
+
+    public Student findStudentById(Long id) {
+        return studentRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }

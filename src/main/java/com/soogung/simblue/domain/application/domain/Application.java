@@ -34,7 +34,7 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private String title;
 
-    @Column(nullable = true, length = 200)
+    @Column(nullable = true, length = 500)
     private String description;
 
     @Column(nullable = true)
