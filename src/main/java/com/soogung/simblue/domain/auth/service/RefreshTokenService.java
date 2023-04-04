@@ -2,29 +2,32 @@ package com.soogung.simblue.domain.auth.service;
 
 import com.soogung.simblue.domain.auth.domain.RefreshToken;
 import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
-import com.soogung.simblue.domain.auth.presentation.dto.response.AccessTokenResponse;
+import com.soogung.simblue.global.feign.auth.dto.response.BsmTokenResponse;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
-import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
+import com.soogung.simblue.global.security.jwt.exception.RefreshTokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
-
     private final RefreshTokenRepository refreshTokenRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtProvider;
 
-    public AccessTokenResponse execute(String token) {
-        RefreshToken refreshToken = getRefreshToken(token);
-        return AccessTokenResponse.builder()
-                .accessToken(jwtTokenProvider
-                        .createAccessToken(refreshToken.getEmail()))
-                .build();
+    public BsmTokenResponse execute(final String bearerRefreshToken) {
+        if(bearerRefreshToken == null) throw RefreshTokenExpiredException.EXCEPTION;
+        RefreshToken redisRefreshToken = refreshTokenRepository.findByRefreshToken(bearerRefreshToken)
+                .orElseThrow(() -> RefreshTokenExpiredException.EXCEPTION);
+        return getNewAccessTokens(redisRefreshToken);
     }
 
-    private RefreshToken getRefreshToken(String token) {
-        return refreshTokenRepository.findById(token)
-                .orElseThrow(() -> ExpiredTokenException.EXCEPTION);
+    private BsmTokenResponse getNewAccessTokens(final RefreshToken redisRefreshToken) {
+        String newAccessToken = jwtProvider.createAccessToken(redisRefreshToken.getId(), redisRefreshToken.getRole());
+
+        return BsmTokenResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(redisRefreshToken.getRefreshToken())
+                .expiredAt(redisRefreshToken.getExpiredAt())
+                .build();
     }
 }

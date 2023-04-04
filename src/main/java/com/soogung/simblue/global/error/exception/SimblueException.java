@@ -3,9 +3,9 @@ package com.soogung.simblue.global.error.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
+@Getter
 public class SimblueException extends RuntimeException {
 
-    private final ErrorProperty errorProperty;
+    private final ErrorCode errorCode;
 }
