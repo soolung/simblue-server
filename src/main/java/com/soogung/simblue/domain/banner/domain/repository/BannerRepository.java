@@ -19,6 +19,6 @@ public interface BannerRepository extends CrudRepository<Banner, Long> {
 
     @Query("SELECT b FROM Banner b " +
             "JOIN FETCH b.teacher " +
-            "WHERE b.id = :id AND b.state = 'ACTIVE' AND b.endDate >= current_date")
+            "WHERE b.id = :id AND b.state = 'ACTIVE'")
     Optional<Banner> findBannerById(Long id);
 }

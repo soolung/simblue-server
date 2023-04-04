@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,7 @@ public class GoogleAuthService {
         Authority authority = validateEmailAndGetAuthority(email);
 
         Optional<User> nowUser = userRepository.findByEmail(email);
+        
         if (nowUser.isEmpty()) {
             isLogin = false;
 

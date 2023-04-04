@@ -18,6 +18,17 @@ spring:
     hibernate:
       ddl-auto: update
 
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: 6379
+    password: ${REDIS_PASSWORD}
+
   cache:
     type: redis
 
@@ -66,6 +77,22 @@ cloud:
 spring:
   config:
     activate:
+      on-profile: dev
+
+debug: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+---
+spring:
+  config:
+    activate:
       on-profile: local
 
   datasource:
@@ -76,45 +103,12 @@ spring:
 
   redis:
     host: localhost
-    port: 6379
-
-server:
-  port: 9090
-
-debug: true
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-
-  datasource:
-    url: jdbc:mysql://mysql:${DB_PORT}/${DB_NAME}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
-  redis:
-    host: redis
-    port: 6379
-
-debug: true
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-  datasource:
-    url: jdbc:mysql://simblue-database:${DB_PORT}/${DB_NAME}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
-  redis:
-    host: simblue-redis
-    port: 6379
+    password: soolung
 
   jpa:
     hibernate:
       ddl-auto: validate
+server:
+  port: 9090
+
+debug: true

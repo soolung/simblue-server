@@ -11,6 +11,7 @@ public enum QuestionType {
     LINK(false),
     RADIO(true),
     CHECKBOX(true),
+    PEOPLE(false),
     ;
 
     private final boolean hasAnswer;

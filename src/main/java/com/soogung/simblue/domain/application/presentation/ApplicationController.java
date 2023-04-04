@@ -70,7 +70,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}/result")
-    public ResultBlockResponse getApplicationResult(@PathVariable Long id) {
+    public ApplicationResultResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
     }
 

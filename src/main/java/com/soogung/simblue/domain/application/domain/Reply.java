@@ -1,5 +1,7 @@
 package com.soogung.simblue.domain.application.domain;
 
+import com.soogung.simblue.domain.application.domain.type.QuestionType;
+import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +40,13 @@ public class Reply {
     public void putReplyBlock(ReplyBlock replyBlock) {
         this.replyBlock = replyBlock;
         replyBlock.getReplies().add(this);
+    }
+
+    public String getAnswer(UserFacade userFacade) {
+        if (question.getType() == QuestionType.PEOPLE) {
+            return userFacade.getName(Long.valueOf(answer));
+        }
+
+        return answer;
     }
 }
