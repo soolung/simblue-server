@@ -8,8 +8,8 @@ import com.soogung.simblue.global.security.jwt.exception.RefreshTokenExpiredExce
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtProvider;

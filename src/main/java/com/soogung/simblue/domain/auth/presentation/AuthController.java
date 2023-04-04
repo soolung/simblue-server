@@ -1,14 +1,13 @@
 package com.soogung.simblue.domain.auth.presentation;
 
-import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
-import com.soogung.simblue.domain.auth.presentation.dto.response.AccessTokenResponse;
+import com.soogung.simblue.domain.auth.presentation.dto.RefreshTokenRequestBodyDto;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
 import com.soogung.simblue.domain.auth.service.*;
+import com.soogung.simblue.global.feign.auth.dto.response.BsmTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -18,7 +17,6 @@ public class AuthController {
 
     private final GoogleAuthLinkService googleAuthLinkService;
     private final GoogleAuthService googleAuthService;
-    private final BsmAuthService bsmAuthService;
     private final LoginService loginService;
     private final RefreshTokenService refreshTokenService;
 
@@ -33,17 +31,12 @@ public class AuthController {
     }
 
     @PostMapping("/bsm")
-    public TokenResponse userSignup(HttpServletRequest request) throws IOException {
+    public BsmTokenResponse userSignup(HttpServletRequest request) throws IOException {
         return loginService.execute(request.getHeader("authCode"));
     }
 
-    @PostMapping
-    public TokenResponse login(@RequestBody @Valid LoginRequest request) {
-        return loginService.execute(request);
-    }
-
-    @PutMapping
-    public AccessTokenResponse refreshToken(@RequestHeader(value = "Refresh-Token") String refreshToken) {
-        return refreshTokenService.execute(refreshToken);
+    @PutMapping("/refresh/access")
+    public BsmTokenResponse refreshAccessToken(@RequestBody RefreshTokenRequestBodyDto request){
+        return refreshTokenService.execute(request.getRefresh_token());
     }
 }

@@ -4,6 +4,7 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
+import com.soogung.simblue.global.annotation.ServiceWithTransactionalReadOnly;
 import leehj050211.bsmOauth.BsmOauth;
 import leehj050211.bsmOauth.dto.response.*;
 import leehj050211.bsmOauth.exceptions.BsmAuthCodeNotFoundException;
@@ -16,30 +17,24 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-
+@ServiceWithTransactionalReadOnly
 public class BsmAuthService {
 
-    private final BsmOauth bsmOauth = new BsmOauth(System.getenv("BSM_AUTH_CLIENT_ID"), System.getenv("BSM_AUTH_CLIENT_SECRET"));
+    private final BsmOauth bsmOauth;
     private final UserRepository userRepository;
 
     @Transactional
     public User execute(String authId) throws IOException {
         String token;
         BsmResourceResponse resource;
-
         try {
             token = bsmOauth.getToken(authId);
             resource = bsmOauth.getResource(token);
-
-        } catch (BsmAuthCodeNotFoundException | BsmAuthTokenNotFoundException e) {
+        } catch (BsmAuthCodeNotFoundException | BsmAuthTokenNotFoundException | BsmAuthInvalidClientException e) {
             throw UserNotFoundException.EXCEPTION;
-
-        } catch (BsmAuthInvalidClientException e) {
-            throw UserNotFoundException.EXCEPTION;
-
         }
-        return updateOrSignUp(resource);
 
+        return updateOrSignUp(resource);
     }
 
     @Transactional
@@ -54,7 +49,7 @@ public class BsmAuthService {
     }
 
     @Transactional
-    protected User saveUser(final BsmResourceResponse resource) {
+    public User saveUser(final BsmResourceResponse resource) {
         return userRepository.save(
             User.builder()
                     .email(resource.getEmail())
