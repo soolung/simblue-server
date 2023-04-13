@@ -86,7 +86,11 @@ public class UserFacade {
         if (user.getAuthority() == Authority.ROLE_TEACHER) {
             return user.getName() + " 선생님";
         }
-
         return findStudentByUser(user).getStudentNumber() + " " + user.getName();
+    }
+
+    public Student findStudentById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }
