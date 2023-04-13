@@ -2,7 +2,7 @@ package com.soogung.simblue.domain.notice.presentation.dto.request;
 
 import com.soogung.simblue.domain.application.domain.Application;
 import com.soogung.simblue.domain.notice.domain.Notice;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class CreateNoticeRequest {
     @Length(min = 2, max = 50)
     private String notice;
 
-    public Notice toEntity(Application application, Teacher teacher) {
+    public Notice toEntity(Application application, User teacher) {
         return Notice.builder()
                 .notice(notice)
                 .application(application)
