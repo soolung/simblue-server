@@ -3,7 +3,7 @@ package com.soogung.simblue.domain.banner.service;
 import com.soogung.simblue.domain.banner.domain.repository.BannerRepository;
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerDetailResponse;
 import com.soogung.simblue.domain.banner.presentation.dto.response.MyBannerListResponse;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class QueryMyBannerService {
 
     @Transactional(readOnly = true)
     public MyBannerListResponse execute() {
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User teacher = userFacade.getCurrentUser();
 
         return new MyBannerListResponse(
                 bannerRepository.findByTeacher(teacher).stream()

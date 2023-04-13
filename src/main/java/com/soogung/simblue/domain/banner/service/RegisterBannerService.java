@@ -3,7 +3,7 @@ package com.soogung.simblue.domain.banner.service;
 import com.soogung.simblue.domain.banner.domain.Banner;
 import com.soogung.simblue.domain.banner.domain.repository.BannerRepository;
 import com.soogung.simblue.domain.banner.presentation.dto.request.BannerRequest;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class RegisterBannerService {
 
     @Transactional
     public void execute(BannerRequest request) {
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User teacher = userFacade.getCurrentUser();
 
         bannerRepository.save(
                 Banner.builder()
