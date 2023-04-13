@@ -33,6 +33,12 @@ public class User extends BaseTimeEntity {
     @Column(length = 20, nullable = false)
     private Authority authority;
 
+    @Column(nullable = true, length = 4)
+    private String studentNumber;
+
+    @Column(nullable = true)
+    private Integer admissionYear;
+
     @Builder
     public User(String email, Authority authority) {
         this.email = email;
@@ -42,6 +48,11 @@ public class User extends BaseTimeEntity {
     public void updateInformation(String name, String password) {
         this.name = name;
         this.password = password;
+    }
+
+    public void updateStudentInformation(String studentNumber, Integer admissionYear) {
+        this.studentNumber = studentNumber;
+        this.admissionYear = admissionYear;
     }
 
     public void updateName(String name) {
