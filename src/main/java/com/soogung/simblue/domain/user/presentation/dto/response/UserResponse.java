@@ -11,5 +11,4 @@ public class UserResponse {
     private Authority authority;
     private String name;
     private String email;
-    private Long roleId;
 }

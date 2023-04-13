@@ -24,19 +24,6 @@ public class QueryCurrentUserService {
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
-                .roleId(getRoleId(user))
                 .build();
-    }
-
-    private Long getRoleId(User user) {
-        if (Objects.nonNull(user.getName()) && user.getName().equals("")) {
-            if (user.getAuthority() == Authority.ROLE_STUDENT) {
-                return userFacade.findStudentByUser(user).getId();
-            } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
-                return userFacade.findTeacherByUser(user).getId();
-            }
-        }
-
-        return null;
     }
 }
