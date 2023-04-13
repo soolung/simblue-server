@@ -10,8 +10,7 @@ import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.*;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
-import com.soogung.simblue.domain.user.domain.Student;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class QueryApplicationResultService {
 
     @Transactional(readOnly = true)
     public ApplicationResultResponse execute(Long id) {
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User teacher = userFacade.getCurrentUser();
         Application application = applicationFacade.findApplicationById(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
@@ -63,7 +62,7 @@ public class QueryApplicationResultService {
     }
 
     private ReplyBlockResponse createReplyList(ReplyBlock block) {
-        Student student = block.getStudent();
+        User student = block.getUser();
 
         List<ReplyResponse> replyList = new ArrayList<>();
 
@@ -71,8 +70,9 @@ public class QueryApplicationResultService {
                 .collect(Collectors.groupingBy(r -> r.getQuestion().getId(), TreeMap<Long, List<Reply>>::new, Collectors.toList()))
                 .forEach((k, v) -> replyList.add(getResult(k, v)));
 
+        // TODO :: 선생님도 답변할 수 있어져서 처리 필요
         return new ReplyBlockResponse(
-                student.getUser().getName(),
+                student.getName(),
                 student.getStudentNumber(),
                 replyList
         );

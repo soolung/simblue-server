@@ -13,7 +13,7 @@ import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.OwnerRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class UpdateApplicationService {
 
     @Transactional
     public void execute(Long id, ApplicationRequest request) {
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User teacher = userFacade.getCurrentUser();
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, teacher.getId());
@@ -71,7 +71,7 @@ public class UpdateApplicationService {
     private void saveApplicationOwner(
             List<OwnerRequest> ownerRequestList,
             Application application,
-            Teacher teacher
+            User teacher
     ) {
         ownerRepository.save(Owner.builder()
                 .teacher(teacher)
@@ -81,7 +81,7 @@ public class UpdateApplicationService {
         ownerRepository.saveAll(
                 ownerRequestList.stream().map(
                         (owner) -> Owner.builder()
-                                .teacher(userFacade.findTeacherById(owner.getTeacherId()))
+                                .teacher(userFacade.getUserById(owner.getTeacherId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())

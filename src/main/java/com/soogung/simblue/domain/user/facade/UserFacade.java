@@ -17,7 +17,7 @@ public class UserFacade {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public User findUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }

@@ -10,7 +10,7 @@ import com.soogung.simblue.domain.application.domain.repository.QuestionReposito
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.OwnerRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class CreateApplicationService {
     @Transactional
     public void execute(ApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User teacher = userFacade.getCurrentUser();
 
         saveApplicationOwner(request.getOwnerList(), application, teacher);
 
@@ -41,7 +41,7 @@ public class CreateApplicationService {
     }
 
     private void saveApplicationOwner(
-            List<OwnerRequest> ownerRequestList, Application application, Teacher teacher) {
+            List<OwnerRequest> ownerRequestList, Application application, User teacher) {
         ownerRepository.save(Owner.builder()
                 .teacher(teacher)
                 .application(application)
@@ -50,7 +50,7 @@ public class CreateApplicationService {
         ownerRepository.saveAll(
                 ownerRequestList.stream().map(
                         (owner) -> Owner.builder()
-                                .teacher(userFacade.findTeacherById(owner.getTeacherId()))
+                                .teacher(userFacade.getUserById(owner.getTeacherId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())
