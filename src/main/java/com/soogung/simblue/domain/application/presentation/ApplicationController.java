@@ -27,6 +27,7 @@ public class ApplicationController {
     private final QueryApplicationFormService queryApplicationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
+    private final SearchApplicationService searchApplicationService;
     private final UpdateApplicationService updateApplicationService;
     private final DeleteApplicationService deleteApplicationService;
     private final CloseApplicationService closeApplicationService;
@@ -72,6 +73,11 @@ public class ApplicationController {
     @GetMapping("/{id}/result")
     public ApplicationResultResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
+    }
+
+    @GetMapping("/search")
+    public ApplicationListResponse searchApplication(@RequestParam(name = "q") String q) {
+        return searchApplicationService.execute(q);
     }
 
     @PutMapping("/{id}")
