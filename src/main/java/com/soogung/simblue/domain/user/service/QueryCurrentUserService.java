@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.user.service;
 
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.domain.repository.UserRepository;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.domain.user.presentation.dto.response.UserResponse;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class QueryCurrentUserService {
 
     private final UserFacade userFacade;
-    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public UserResponse execute() {
@@ -29,6 +27,10 @@ public class QueryCurrentUserService {
     }
 
     private Long getRoleId(User user) {
+        if (user.getName() == null || user.getName().equals("")) {
+            return null;
+        }
+
         if (user.getAuthority() == Authority.ROLE_STUDENT) {
             return userFacade.findStudentByUser(user).getId();
         } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
