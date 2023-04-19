@@ -37,4 +37,5 @@ public class AuthProperties {
     public String getGoogleClientSecret() {
         return google.getClientSecret();
     }
+
 }

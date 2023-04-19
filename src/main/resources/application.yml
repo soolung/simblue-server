@@ -42,13 +42,24 @@ auth:
     client-id: ${GOOGLE_CLIENT}
     client-secret: ${GOOGLE_SECRET}
     redirect-url: ${GOOGLE_REDIRECT}
+  bsm:
+    client-id: ${BSM_AUTH_CLIENT_ID}
+    secret-key: ${BSM_AUTH_CLIENT_SECRET}
+    redirect-url: ${BSM_REDIRECT}
 
 jwt:
-  refresh-time: 2592000000 # 30일
-  access-time: 3600000 # 1시간
-  prefix: Bearer
   header: Authorization
-  secret-key: ${JWT_SECRET}
+  secret: ${JWT_SECRET}
+  accessExp: 3600000
+  refreshExp: 2592000000
+  prefix: Bearer
+
+
+#  refresh-time: 2592000000 # 30일
+#  access-time: 3600000 # 1시간
+#  prefix: Bearer
+#  header: Authorization
+#  secret-key: ${JWT_SECRET}
 
 cloud:
   aws:
@@ -94,6 +105,9 @@ spring:
     host: localhost
     password: soolung
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
 server:
   port: 9090
 

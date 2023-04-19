@@ -2,13 +2,13 @@ package com.soogung.simblue.global.security.auth;
 
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
+import com.soogung.simblue.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-@Service
+@ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {
 

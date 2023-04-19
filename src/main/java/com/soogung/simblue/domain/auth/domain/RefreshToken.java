@@ -1,25 +1,33 @@
 package com.soogung.simblue.domain.auth.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
+
+import javax.persistence.Id;
+import java.time.ZonedDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @RedisHash(value = "refreshToken", timeToLive = 2592000L)
 public class RefreshToken {
-
     @Id
-    private String token;
+    private String id;
 
-    private String email;
+    private String refreshToken;
 
-    @Builder
-    public RefreshToken(String token, String email) {
-        this.token = token;
-        this.email = email;
+    private String role;
+
+    @TimeToLive
+    private long ttl;
+
+    private ZonedDateTime expiredAt;
+
+    public RefreshToken update(final String refreshToken, final long ttl) {
+        this.refreshToken = refreshToken;
+        this.ttl = ttl;
+        return this;
     }
 }
