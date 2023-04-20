@@ -18,14 +18,14 @@ public class RegisterBannerService {
 
     @Transactional
     public void execute(BannerRequest request) {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
 
         bannerRepository.save(
                 Banner.builder()
                         .endDate(request.getEndDate())
                         .imageUri(request.getImageUri())
                         .linkTo(request.getLinkTo())
-                        .teacher(teacher)
+                        .user(user)
                         .build()
         );
     }

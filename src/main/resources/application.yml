@@ -12,11 +12,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
 
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
@@ -74,15 +73,20 @@ spring:
   config:
     activate:
       on-profile: prod
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
 ---
 spring:
   config:
     activate:
       on-profile: local
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
 
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/soolung_simblue

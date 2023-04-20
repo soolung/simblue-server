@@ -20,10 +20,10 @@ public class QueryMyBannerService {
 
     @Transactional(readOnly = true)
     public MyBannerListResponse execute() {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
 
         return new MyBannerListResponse(
-                bannerRepository.findByTeacher(teacher).stream()
+                bannerRepository.findByUser(user).stream()
                         .map(BannerDetailResponse::of)
                         .collect(Collectors.toList())
         );

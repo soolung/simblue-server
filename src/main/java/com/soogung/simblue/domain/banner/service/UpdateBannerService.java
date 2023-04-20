@@ -20,9 +20,9 @@ public class UpdateBannerService {
 
     @Transactional
     public void execute(Long id, @Valid BannerRequest request) {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
         Banner banner = bannerFacade.getBanner(id);
-        banner.validatePermission(teacher);
+        banner.validatePermission(user);
 
         banner.update(
                 request.getImageUri(),

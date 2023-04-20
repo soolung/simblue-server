@@ -23,14 +23,14 @@ public class QueryApplicationFormService {
     @Transactional(readOnly = true)
     public ApplicationFormResponse execute(Long id) {
         Application application = applicationFacade.findApplicationById(id);
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
         application.validateStatus();
-        application.validatePermission(ownerRepository, teacher.getId());
+        application.validatePermission(ownerRepository, user.getId());
 
         return ApplicationFormResponse.of(
                 application,
                 !replyBlockRepository.existsByApplication(application),
-                ownerRepository.findOwnerByApplicationWithoutTeacher(application, teacher)
+                ownerRepository.findOwnerByApplicationWithoutUser(application, user)
         );
     }
 }

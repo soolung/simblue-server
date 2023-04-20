@@ -30,16 +30,16 @@ public class Owner extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private User teacher;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
     @Builder
-    public Owner(User teacher, Application application) {
-        this.teacher = teacher;
+    public Owner(User user, Application application) {
+        this.user = user;
         this.application = application;
     }
 }

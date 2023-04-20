@@ -35,10 +35,10 @@ public class UpdateApplicationService {
 
     @Transactional
     public void execute(Long id, ApplicationRequest request) {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
-        application.validatePermission(ownerRepository, teacher.getId());
+        application.validatePermission(ownerRepository, user.getId());
         validateApplicationHasReplies(application);
 
         application.updateInformation(
@@ -57,7 +57,7 @@ public class UpdateApplicationService {
         questionRepository.deleteByApplication(application);
         questionRepository.flush();
 
-        saveApplicationOwner(request.getOwnerList(), application, teacher);
+        saveApplicationOwner(request.getOwnerList(), application, user);
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
@@ -71,17 +71,17 @@ public class UpdateApplicationService {
     private void saveApplicationOwner(
             List<OwnerRequest> ownerRequestList,
             Application application,
-            User teacher
+            User user
     ) {
         ownerRepository.save(Owner.builder()
-                .teacher(teacher)
+                .user(user)
                 .application(application)
                 .build());
 
         ownerRepository.saveAll(
                 ownerRequestList.stream().map(
                         (owner) -> Owner.builder()
-                                .teacher(userFacade.getUserById(owner.getTeacherId()))
+                                .user(userFacade.getUserById(owner.getUserId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())

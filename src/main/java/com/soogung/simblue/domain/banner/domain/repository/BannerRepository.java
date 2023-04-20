@@ -14,11 +14,11 @@ public interface BannerRepository extends CrudRepository<Banner, Long> {
     List<Banner> findByState(State state);
 
     @Query("SELECT b FROM Banner b " +
-            "WHERE b.teacher = :teacher AND b.state <> 'DELETED'")
-    List<Banner> findByTeacher(User teacher);
+            "WHERE b.user = :user AND b.state <> 'DELETED'")
+    List<Banner> findByUser(User user);
 
     @Query("SELECT b FROM Banner b " +
-            "JOIN FETCH b.teacher " +
+            "JOIN FETCH b.user " +
             "WHERE b.id = :id AND b.state = 'ACTIVE'")
     Optional<Banner> findBannerById(Long id);
 }

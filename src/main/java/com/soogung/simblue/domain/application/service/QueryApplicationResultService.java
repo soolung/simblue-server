@@ -34,10 +34,10 @@ public class QueryApplicationResultService {
 
     @Transactional(readOnly = true)
     public ApplicationResultResponse execute(Long id) {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
         Application application = applicationFacade.findApplicationById(id);
         application.validateStatus();
-        application.validatePermission(ownerRepository, teacher.getId());
+        application.validatePermission(ownerRepository, user.getId());
 
         List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
                 .stream().map(NoticeResponse::of)

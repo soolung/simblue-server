@@ -12,17 +12,17 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
     @Query("SELECT o FROM Owner o " +
             "JOIN FETCH o.application " +
-            "WHERE o.teacher = :teacher AND o.application.state <> 'DELETED' " +
+            "WHERE o.user = :user AND o.application.state <> 'DELETED' " +
             "ORDER BY o.id DESC")
-    List<Owner> findAllByTeacher(User teacher);
+    List<Owner> findAllByUser(User user);
 
     @Query("SELECT o FROM Owner o " +
-            "JOIN FETCH o.teacher " +
-            "WHERE o.application = :application AND o.teacher <> :teacher " +
+            "JOIN FETCH o.user " +
+            "WHERE o.application = :application AND o.user <> :user " +
             "ORDER BY o.id DESC")
-    List<Owner> findOwnerByApplicationWithoutTeacher(Application application, User teacher);
+    List<Owner> findOwnerByApplicationWithoutUser(Application application, User user);
 
-    boolean existsByApplicationIdAndTeacherId(Long application, Long teacher);
+    boolean existsByApplicationIdAndUserId(Long applicationId, Long userId);
 
     void deleteByApplication(Application application);
 }

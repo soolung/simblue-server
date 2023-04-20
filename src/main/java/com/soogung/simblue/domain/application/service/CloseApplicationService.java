@@ -20,10 +20,10 @@ public class CloseApplicationService {
 
     @Transactional
     public void execute(Long id) {
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
-        application.validatePermission(ownerRepository, teacher.getId());
+        application.validatePermission(ownerRepository, user.getId());
 
         application.close();
     }

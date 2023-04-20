@@ -32,25 +32,25 @@ public class CreateApplicationService {
     @Transactional
     public void execute(ApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        User teacher = userFacade.getCurrentUser();
+        User user = userFacade.getCurrentUser();
 
-        saveApplicationOwner(request.getOwnerList(), application, teacher);
+        saveApplicationOwner(request.getOwnerList(), application, user);
 
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
     private void saveApplicationOwner(
-            List<OwnerRequest> ownerRequestList, Application application, User teacher) {
+            List<OwnerRequest> ownerRequestList, Application application, User user) {
         ownerRepository.save(Owner.builder()
-                .teacher(teacher)
+                .user(user)
                 .application(application)
                 .build());
 
         ownerRepository.saveAll(
                 ownerRequestList.stream().map(
                         (owner) -> Owner.builder()
-                                .teacher(userFacade.getUserById(owner.getTeacherId()))
+                                .user(userFacade.getUserById(owner.getUserId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())

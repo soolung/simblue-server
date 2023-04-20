@@ -60,12 +60,12 @@ public class QueryMyApplicationService {
         return result;
     }
 
-    private HashMap<String, List<MyApplicationResponse>> getTeacherApplication(User teacher) {
+    private HashMap<String, List<MyApplicationResponse>> getTeacherApplication(User user) {
         HashMap<String, List<MyApplicationResponse>> result = new HashMap<>();
         Arrays.stream(Status.values())
                 .forEach(s -> result.put(s.name(), new ArrayList<>()));
 
-        ownerRepository.findAllByTeacher(teacher)
+        ownerRepository.findAllByUser(user)
                 .stream().map(Owner::getApplication)
                 .forEach(a -> result.get(a.getStatus().name())
                         .add(MyApplicationResponse.of(a, replyBlockRepository.countByApplication(a))));

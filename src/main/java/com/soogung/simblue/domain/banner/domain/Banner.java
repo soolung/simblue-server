@@ -49,16 +49,16 @@ public class Banner extends BaseTimeEntity {
     private State state;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private User teacher;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Builder
-    public Banner(String imageUri, String linkTo, LocalDate endDate, User teacher) {
+    public Banner(String imageUri, String linkTo, LocalDate endDate, User user) {
         this.imageUri = imageUri;
         this.linkTo = linkTo;
         this.endDate = endDate;
         this.state = State.ACTIVE;
-        this.teacher = teacher;
+        this.user = user;
     }
 
     public Status getStatus() {
@@ -69,8 +69,8 @@ public class Banner extends BaseTimeEntity {
         return Status.STARTED;
     }
 
-    public void validatePermission(User teacher) {
-        if (!Objects.equals(this.teacher.getId(), teacher.getId())) {
+    public void validatePermission(User user) {
+        if (!Objects.equals(this.user.getId(), user.getId())) {
             throw AuthorityMismatchException.EXCEPTION;
         }
     }

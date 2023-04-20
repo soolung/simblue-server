@@ -22,11 +22,11 @@ public class CreateNoticeRequest {
     @Length(min = 2, max = 50)
     private String notice;
 
-    public Notice toEntity(Application application, User teacher) {
+    public Notice toEntity(Application application, User user) {
         return Notice.builder()
                 .notice(notice)
                 .application(application)
-                .teacher(teacher)
+                .user(user)
                 .build();
     }
 }
