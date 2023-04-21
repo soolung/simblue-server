@@ -9,7 +9,7 @@ import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
-import com.soogung.simblue.domain.user.domain.Student;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class UpdateReplyService {
     public void execute(Long replyBlockId, ReplyBlockRequest request) {
         ReplyBlock block = replyBlockFacade.getReplyBlock(replyBlockId);
         Application application = block.getApplication();
-        Student student = userFacade.getCurrentStudent();
+        User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePeriod();
         application.validateReplyUpdatable();
-        block.validatePermission(student);
+        block.validatePermission(user);
 
         replyRepository.deleteByReplyBlock(block);
         replyRepository.flush();

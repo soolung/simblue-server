@@ -10,7 +10,7 @@ import com.soogung.simblue.domain.application.domain.repository.QuestionReposito
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.OwnerRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.QuestionRequest;
-import com.soogung.simblue.domain.user.domain.Teacher;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,25 +32,25 @@ public class CreateApplicationService {
     @Transactional
     public void execute(ApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        Teacher teacher = userFacade.getCurrentTeacher();
+        User user = userFacade.getCurrentUser();
 
-        saveApplicationOwner(request.getOwnerList(), application, teacher);
+        saveApplicationOwner(request.getOwnerList(), application, user);
 
         request.getQuestionList()
                 .forEach(q -> saveApplicationAnswer(q, application));
     }
 
     private void saveApplicationOwner(
-            List<OwnerRequest> ownerRequestList, Application application, Teacher teacher) {
+            List<OwnerRequest> ownerRequestList, Application application, User user) {
         ownerRepository.save(Owner.builder()
-                .teacher(teacher)
+                .user(user)
                 .application(application)
                 .build());
 
         ownerRepository.saveAll(
                 ownerRequestList.stream().map(
                         (owner) -> Owner.builder()
-                                .teacher(userFacade.findTeacherById(owner.getTeacherId()))
+                                .user(userFacade.getUserById(owner.getUserId()))
                                 .application(application)
                                 .build()
                 ).collect(Collectors.toList())

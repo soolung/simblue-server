@@ -6,8 +6,6 @@ import com.soogung.simblue.domain.application.domain.repository.ReplyBlockReposi
 import com.soogung.simblue.domain.application.domain.type.Status;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationStatusResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.MyApplicationResponse;
-import com.soogung.simblue.domain.user.domain.Student;
-import com.soogung.simblue.domain.user.domain.Teacher;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
@@ -36,14 +34,14 @@ public class QueryMyApplicationService {
 
         if (user.getAuthority() == Authority.ROLE_STUDENT) {
             return new ApplicationStatusResponse(
-                    getStudentApplication(userFacade.findStudentByUser(user)),
+                    getStudentApplication(user),
                     user.getAuthority()
             );
         }
 
         if (user.getAuthority() == Authority.ROLE_TEACHER) {
             return new ApplicationStatusResponse(
-                    getTeacherApplication(userFacade.findTeacherByUser(user)),
+                    getTeacherApplication(user),
                     user.getAuthority()
             );
         }
@@ -51,7 +49,7 @@ public class QueryMyApplicationService {
         throw AuthorityMismatchException.EXCEPTION;
     }
 
-    private HashMap<String, List<MyApplicationResponse>> getStudentApplication(Student student) {
+    private HashMap<String, List<MyApplicationResponse>> getStudentApplication(User student) {
         HashMap<String, List<MyApplicationResponse>> result = new HashMap<>();
         result.put("applicationList",
                 replyBlockRepository.findAllByStudent(student)
@@ -62,12 +60,12 @@ public class QueryMyApplicationService {
         return result;
     }
 
-    private HashMap<String, List<MyApplicationResponse>> getTeacherApplication(Teacher teacher) {
+    private HashMap<String, List<MyApplicationResponse>> getTeacherApplication(User user) {
         HashMap<String, List<MyApplicationResponse>> result = new HashMap<>();
         Arrays.stream(Status.values())
                 .forEach(s -> result.put(s.name(), new ArrayList<>()));
 
-        ownerRepository.findAllByTeacher(teacher)
+        ownerRepository.findAllByUser(user)
                 .stream().map(Owner::getApplication)
                 .forEach(a -> result.get(a.getStatus().name())
                         .add(MyApplicationResponse.of(a, replyBlockRepository.countByApplication(a))));

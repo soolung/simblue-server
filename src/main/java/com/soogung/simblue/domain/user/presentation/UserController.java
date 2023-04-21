@@ -4,12 +4,16 @@ import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.presentation.dto.request.UpdatePasswordRequest;
 import com.soogung.simblue.domain.user.presentation.dto.response.SearchUserResponse;
 import com.soogung.simblue.domain.user.presentation.dto.response.UserResponse;
-import com.soogung.simblue.domain.user.service.DeleteUserService;
 import com.soogung.simblue.domain.user.service.QueryCurrentUserService;
 import com.soogung.simblue.domain.user.service.SearchUserService;
 import com.soogung.simblue.domain.user.service.UpdatePasswordService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,7 +26,6 @@ public class UserController {
     private final QueryCurrentUserService queryCurrentUserService;
     private final SearchUserService searchUserService;
     private final UpdatePasswordService updatePasswordService;
-    private final DeleteUserService deleteUserService;
 
     @GetMapping
     public UserResponse getUser() {
@@ -40,10 +43,5 @@ public class UserController {
     @PatchMapping("/password")
     public void updatePassword(@RequestBody @Valid UpdatePasswordRequest request) {
         updatePasswordService.execute(request);
-    }
-
-    @DeleteMapping
-    public void deleteUser() {
-        deleteUserService.execute();
     }
 }

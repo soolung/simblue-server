@@ -98,8 +98,8 @@ public class Application extends BaseTimeEntity {
         }
     }
 
-    public void validatePermission(OwnerRepository ownerRepository, Long teacherId) {
-        if (!ownerRepository.existsByApplicationIdAndTeacherId(id, teacherId)) {
+    public void validatePermission(OwnerRepository ownerRepository, Long userId) {
+        if (!ownerRepository.existsByApplicationIdAndUserId(id, userId)) {
             throw AuthorityMismatchException.EXCEPTION;
         }
     }

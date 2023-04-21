@@ -8,7 +8,7 @@ import com.soogung.simblue.domain.application.presentation.dto.response.Applicat
 import com.soogung.simblue.domain.application.presentation.dto.response.ReplyListResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
-import com.soogung.simblue.domain.user.domain.Student;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class QueryReplyService {
 
     @Transactional(readOnly = true)
     public ApplicationDetailResponse execute(Long id) {
-        Student student = userFacade.getCurrentStudent();
+        User student = userFacade.getCurrentUser();
         ReplyBlock replyBlock = replyBlockFacade.getReplyBlock(id);
         Application application = replyBlock.getApplication();
         application.validateStatus();

@@ -11,7 +11,6 @@ import java.util.Optional;
 import static com.soogung.simblue.domain.application.domain.QApplication.application;
 import static com.soogung.simblue.domain.application.domain.QReply.reply;
 import static com.soogung.simblue.domain.application.domain.QReplyBlock.replyBlock;
-import static com.soogung.simblue.domain.user.domain.QStudent.student;
 import static com.soogung.simblue.domain.user.domain.QUser.user;
 
 @Repository
@@ -25,11 +24,10 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
         return queryFactory
                 .selectFrom(replyBlock)
                 .join(replyBlock.replies, reply).fetchJoin()
-                .join(replyBlock.student, student).fetchJoin()
-                .join(student.user, user).fetchJoin()
+                .join(replyBlock.user, user).fetchJoin()
                 .where(replyBlock.application.id.eq(applicationId))
                 .orderBy(
-                        student.studentNumber.asc(),
+                        user.studentNumber.asc(),
                         reply.id.asc()
                 )
                 .distinct()
@@ -40,7 +38,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     public ReplyBlock findSimpleReplyBlockById(Long replyBlockId) {
         return queryFactory
                 .selectFrom(replyBlock)
-                .join(replyBlock.student, student).fetchJoin()
+                .join(replyBlock.user, user).fetchJoin()
                 .join(replyBlock.application, application).fetchJoin()
                 .where(replyBlock.id.eq(replyBlockId))
                 .fetchOne();
@@ -52,7 +50,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
                 queryFactory
                         .selectFrom(replyBlock)
                         .join(replyBlock.replies, reply).fetchJoin()
-                        .join(replyBlock.student, student).fetchJoin()
+                        .join(replyBlock.user, user).fetchJoin()
                         .join(replyBlock.application, application).fetchJoin()
                         .where(replyBlock.id.eq(replyBlockId))
                         .fetchOne()

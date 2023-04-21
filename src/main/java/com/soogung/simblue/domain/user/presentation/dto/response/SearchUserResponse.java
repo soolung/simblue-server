@@ -1,6 +1,6 @@
 package com.soogung.simblue.domain.user.presentation.dto.response;
 
-import com.soogung.simblue.domain.user.domain.repository.vo.SearchUserVO;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +14,12 @@ public class SearchUserResponse {
     private String studentNumber;
     private Authority authority;
 
-    public static SearchUserResponse of(SearchUserVO vo) {
+    public static SearchUserResponse of(User user) {
         return SearchUserResponse.builder()
-                .userId(vo.getUserId())
-                .name(vo.getName())
-                .studentNumber(vo.getStudentNumber())
-                .authority(vo.getAuthority())
+                .userId(user.getId())
+                .name(user.getName())
+                .studentNumber(user.getStudentNumber())
+                .authority(user.getAuthority())
                 .build();
     }
 }

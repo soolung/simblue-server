@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OwnerRequest {
 
-    private Long teacherId;
+    private Long userId;
 }
