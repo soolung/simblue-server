@@ -34,9 +34,9 @@ public class GoogleAuthService {
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
         Authority authority = validateEmailAndGetAuthority(email);
 
-        Optional<User> nowUser = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         
-        if (nowUser.isEmpty()) {
+        if (user.isEmpty()) {
             isLogin = false;
 
             userRepository.save(
@@ -45,7 +45,7 @@ public class GoogleAuthService {
                             .authority(authority)
                             .build()
             );
-        } else if (nowUser.get().getName() == null || nowUser.get().getName().equals("")) {
+        } else if (user.get().getName() == null || user.get().getName().equals("")) {
             isLogin = false;
         }
 

@@ -67,7 +67,7 @@ public class UpdateReplyService {
             String answer
     ) {
         question.validateAnswer(answer);
-        Reply reply = request.toEntity(question, block, answer);
+        Reply reply = request.toEntity(question, answer);
         reply.putReplyBlock(block);
         return reply;
     }

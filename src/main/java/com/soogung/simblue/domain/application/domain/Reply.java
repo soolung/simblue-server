@@ -1,6 +1,8 @@
 package com.soogung.simblue.domain.application.domain;
 
 import com.soogung.simblue.domain.application.domain.type.QuestionType;
+import com.soogung.simblue.domain.application.domain.type.ReplyState;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,18 +25,25 @@ public class Reply {
     @Column(nullable = false)
     private String answer;
 
+    @Column(nullable = true)
+    private ReplyState state;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id")
+    @JoinColumn(nullable = false, name = "question_id")
     private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reply_block_id")
+    @JoinColumn(nullable = false, name = "reply_block_id")
     private ReplyBlock replyBlock;
 
     @Builder
     public Reply(String answer, Question question) {
         this.answer = answer;
         this.question = question;
+
+        if (question.getType() == QuestionType.APPROVAL) {
+            this.state = ReplyState.WAITING;
+        }
     }
 
     public void putReplyBlock(ReplyBlock replyBlock) {
@@ -45,6 +54,10 @@ public class Reply {
     public String getAnswer(UserFacade userFacade) {
         if (question.getType() == QuestionType.PEOPLE) {
             return userFacade.getName(Long.valueOf(answer));
+        }
+
+        if (question.getType() == QuestionType.APPROVAL) {
+            return state.getDescription();
         }
 
         return answer;
