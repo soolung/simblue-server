@@ -62,4 +62,12 @@ public class Reply {
 
         return answer;
     }
+
+    public void approve() {
+        this.state = ReplyState.APPROVED;
+    }
+
+    public void reject() {
+        this.state = ReplyState.REJECTED;
+    }
 }

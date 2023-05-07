@@ -3,6 +3,7 @@ package com.soogung.simblue.domain.application.presentation;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.service.CancelReplyService;
+import com.soogung.simblue.domain.application.service.HandleReplyService;
 import com.soogung.simblue.domain.application.service.QueryReplyService;
 import com.soogung.simblue.domain.application.service.ReplyApplicationService;
 import com.soogung.simblue.domain.application.service.UpdateReplyService;
@@ -20,6 +21,7 @@ public class ReplyController {
     private final QueryReplyService queryReplyService;
     private final ReplyApplicationService replyApplicationService;
     private final UpdateReplyService updateReplyService;
+    private final HandleReplyService handleReplyService;
     private final CancelReplyService cancelReplyService;
 
     @GetMapping("/{reply-block-id}")
@@ -42,6 +44,15 @@ public class ReplyController {
             @RequestBody @Valid ReplyBlockRequest request
     ) {
         updateReplyService.execute(replyBlockId, request);
+    }
+
+    @PutMapping("/{reply-id}/handle")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleReply(
+            @PathVariable(name = "reply-id") Long replyId,
+            @RequestParam boolean isApproved
+    ) {
+        handleReplyService.execute(replyId, isApproved);
     }
 
     @DeleteMapping("/{reply-block-id}")
