@@ -50,9 +50,9 @@ public class ReplyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void handleReply(
             @PathVariable(name = "reply-id") Long replyId,
-            @RequestParam boolean isApproved
+            @RequestParam boolean approve
     ) {
-        handleReplyService.execute(replyId, isApproved);
+        handleReplyService.execute(replyId, approve);
     }
 
     @DeleteMapping("/{reply-block-id}")

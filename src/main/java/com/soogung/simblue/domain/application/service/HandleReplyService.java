@@ -22,13 +22,13 @@ public class HandleReplyService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(Long replyId, boolean isApproved) {
+    public void execute(Long replyId, boolean approve) {
         Reply reply = replyRepository.findById(replyId)
                 .orElseThrow(() -> ReplyNotFoundException.EXCEPTION);
         User user = userFacade.getCurrentUser();
         validate(reply, user);
 
-        if (isApproved) {
+        if (approve) {
             reply.approve();
         } else {
             reply.reject();
