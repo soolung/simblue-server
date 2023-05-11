@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mysql:
-    container_name: soolung_simblue_local
+    container_name: simblue.local.db
     image: mysql/mysql-server:5.7
     environment:
       MYSQL_ROOT_HOST: "%"
@@ -17,8 +17,8 @@ services:
       - "--collation-server=utf8mb4_unicode_ci"
 
   redis:
-    image: redis:latest
-    container_name: soolung_simblue_redis
+    image: redis:7.0-alpine
+    container_name: simblue.local.redis
     hostname: soolung
     command: /bin/sh -c "redis-server --requirepass soolung"
     env_file:
