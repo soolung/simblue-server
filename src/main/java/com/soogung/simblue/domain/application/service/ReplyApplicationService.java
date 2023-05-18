@@ -85,7 +85,7 @@ public class ReplyApplicationService {
             return null;
         }
 
-        Reply reply = request.toEntity(question, block, answer);
+        Reply reply = request.toEntity(question, answer);
         reply.putReplyBlock(block);
         return reply;
     }

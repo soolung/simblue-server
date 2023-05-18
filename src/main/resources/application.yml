@@ -61,6 +61,10 @@ cloud:
       instance-profile: true
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_KEY}
+
+logging:
+  level:
+    com.amazonaws.util.EC2MetadataUtils: error
 ---
 spring:
   config:

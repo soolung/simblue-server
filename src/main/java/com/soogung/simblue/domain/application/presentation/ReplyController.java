@@ -2,7 +2,11 @@ package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ReplyBlockResponse;
 import com.soogung.simblue.domain.application.service.CancelReplyService;
+import com.soogung.simblue.domain.application.service.HandleReplyService;
+import com.soogung.simblue.domain.application.service.QueryAssignedReplyService;
 import com.soogung.simblue.domain.application.service.QueryReplyService;
 import com.soogung.simblue.domain.application.service.ReplyApplicationService;
 import com.soogung.simblue.domain.application.service.UpdateReplyService;
@@ -11,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/reply")
@@ -18,13 +23,22 @@ import javax.validation.Valid;
 public class ReplyController {
 
     private final QueryReplyService queryReplyService;
+    private final QueryAssignedReplyService queryAssignedReplyService;
     private final ReplyApplicationService replyApplicationService;
     private final UpdateReplyService updateReplyService;
+    private final HandleReplyService handleReplyService;
     private final CancelReplyService cancelReplyService;
 
     @GetMapping("/{reply-block-id}")
     public ApplicationDetailResponse getReply(@PathVariable("reply-block-id") Long replyBlockId) {
         return queryReplyService.execute(replyBlockId);
+    }
+
+    @GetMapping("/assigned")
+    public ApplicationResultResponse getAssignedReply(
+            @RequestParam(name = "application-id") Long applicationId
+    ) {
+        return queryAssignedReplyService.execute(applicationId);
     }
 
     @PostMapping
@@ -42,6 +56,15 @@ public class ReplyController {
             @RequestBody @Valid ReplyBlockRequest request
     ) {
         updateReplyService.execute(replyBlockId, request);
+    }
+
+    @PatchMapping("/{reply-id}/handle")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleReply(
+            @PathVariable(name = "reply-id") Long replyId,
+            @RequestParam boolean approve
+    ) {
+        handleReplyService.execute(replyId, approve);
     }
 
     @DeleteMapping("/{reply-block-id}")

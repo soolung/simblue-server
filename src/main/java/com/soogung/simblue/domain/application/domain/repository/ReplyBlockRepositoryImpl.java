@@ -1,7 +1,10 @@
 package com.soogung.simblue.domain.application.domain.repository;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
+import com.soogung.simblue.domain.application.domain.type.QuestionType;
+import com.soogung.simblue.domain.application.domain.type.ReplyState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +32,30 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
                 .orderBy(
                         user.studentNumber.asc(),
                         reply.id.asc()
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<ReplyBlock> findAssignedReply(Long applicationId, Long userId) {
+        return queryFactory
+                .selectFrom(replyBlock)
+                .join(replyBlock.replies, reply).fetchJoin()
+                .where(
+                        replyBlock.application.id.eq(applicationId).and(
+                                replyBlock.id.in(
+                                        JPAExpressions
+                                                .select(reply.replyBlock.id)
+                                                .from(reply)
+                                                .where(
+                                                        reply.answer.eq(String.valueOf(userId))
+                                                                .and(reply.question.type.eq(QuestionType.APPROVAL))
+                                                                .and(reply.state.eq(ReplyState.WAITING))
+                                                )
+
+                                )
+                        )
                 )
                 .distinct()
                 .fetch();
