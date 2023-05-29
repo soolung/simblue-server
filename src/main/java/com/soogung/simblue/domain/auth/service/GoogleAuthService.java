@@ -52,6 +52,7 @@ public class GoogleAuthService {
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(email))
                 .refreshToken(jwtTokenProvider.createRefreshToken(email))
+                .authority(authority)
                 .isLogin(isLogin)
                 .build();
     }
