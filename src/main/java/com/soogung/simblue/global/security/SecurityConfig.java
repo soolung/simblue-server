@@ -55,13 +55,37 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+
+                // auth
                 .antMatchers("/auth/**").permitAll()
+
+                // application
                 .antMatchers(HttpMethod.GET, "/application/my").authenticated()
+                .antMatchers(HttpMethod.PUT, "/application/{\\d+}").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.DELETE, "/application/{\\d+}").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.GET, "/application/{\\d+}/form").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.GET, "/application/{\\d+}/result").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.PUT, "/application/{\\d+}/close").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.POST, "/application").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.GET, "/application/**").permitAll()
+
+                // notice
+                .antMatchers(HttpMethod.POST, "/notice").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.PUT, "/notice/{\\d+}").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.PUT, "/notice/{\\d+}/pinned").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.DELETE, "/notice/{\\d+}").hasRole(Authority.ROLE_TEACHER.getRole())
+
+                // reply
+                .antMatchers(HttpMethod.GET, "/reply/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.GET, "/reply/assigned").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.POST, "/reply").authenticated()
+                .antMatchers(HttpMethod.PUT, "/reply/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/reply/{\\d+}/handle").hasRole(Authority.ROLE_TEACHER.getRole())
+                .antMatchers(HttpMethod.DELETE, "/reply/{\\d+}").authenticated()
+
+                // banner
                 .antMatchers(HttpMethod.GET, "/banner").permitAll()
+
                 .anyRequest().authenticated()
 
                 .and()
