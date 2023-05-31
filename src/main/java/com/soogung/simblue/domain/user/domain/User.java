@@ -20,7 +20,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false )
     private String name;
 
     @Column(length = 50, nullable = false)
@@ -40,7 +40,8 @@ public class User extends BaseTimeEntity {
     private Integer admissionYear;
 
     @Builder
-    public User(String email, Authority authority) {
+    public User(String name, String email, Authority authority) {
+        this.name = name;
         this.email = email;
         this.authority = authority;
     }

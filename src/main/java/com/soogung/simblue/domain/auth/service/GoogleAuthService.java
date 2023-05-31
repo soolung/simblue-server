@@ -10,11 +10,13 @@ import com.soogung.simblue.global.config.properties.AuthProperties;
 import com.soogung.simblue.global.feign.auth.GoogleAuthClient;
 import com.soogung.simblue.global.feign.auth.GoogleInformationClient;
 import com.soogung.simblue.global.feign.auth.dto.request.GoogleAuthRequest;
+import com.soogung.simblue.global.feign.auth.dto.response.GoogleInformationResponse;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,7 +34,8 @@ public class GoogleAuthService {
         boolean isLogin = true;
         String accessToken = googleAuthClient.getAccessToken(
                 createGoogleAuthRequest(code, type)).getAccessToken();
-        String email = googleInformationClient.getUserInformation(accessToken).getEmail();
+        GoogleInformationResponse response = googleInformationClient.getUserInformation(accessToken);
+        String email = response.getEmail();
         Authority authority = validateEmailAndGetAuthority(email);
 
         Optional<User> user = userRepository.findByEmail(email);
@@ -42,11 +45,12 @@ public class GoogleAuthService {
 
             userRepository.save(
                     User.builder()
+                            .name(response.getName())
                             .email(email)
                             .authority(authority)
                             .build()
             );
-        } else if (user.get().getName() == null || user.get().getName().equals("")) {
+        } else if (authority.equals(Authority.ROLE_STUDENT) && Objects.isNull(user.get().getStudentNumber())) {
             isLogin = false;
         }
 
