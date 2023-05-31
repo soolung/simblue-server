@@ -19,7 +19,8 @@ public class AuthProperties {
         private String baseUrl;
         private String clientId;
         private String clientSecret;
-        private String redirectUrl;
+        private String simblueRedirectUrl;
+        private String ssamblueRedirectUrl;
     }
 
     public String getGoogleBaseUrl() {
@@ -30,8 +31,12 @@ public class AuthProperties {
         return google.getClientId();
     }
 
-    public String getGoogleRedirectUrl() {
-        return google.getRedirectUrl();
+    public String getGoogleSimblueRedirectUrl() {
+        return google.getSimblueRedirectUrl();
+    }
+
+    public String getGoogleSsamblueRedirectUrl() {
+        return google.getSsamblueRedirectUrl();
     }
 
     public String getGoogleClientSecret() {

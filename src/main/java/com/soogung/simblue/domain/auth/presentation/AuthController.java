@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.auth.presentation;
 
+import com.soogung.simblue.domain.auth.domain.type.AuthType;
 import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
 import com.soogung.simblue.domain.auth.presentation.dto.response.AccessTokenResponse;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
@@ -23,13 +24,13 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @GetMapping("/google")
-    public String getGoogleAuthLink() {
-        return googleAuthLinkService.execute();
+    public String getGoogleAuthLink(@RequestParam AuthType type) {
+        return googleAuthLinkService.execute(type);
     }
 
     @PostMapping("/google/callback")
-    public TokenResponse authGoogle(@RequestParam String code) {
-        return googleAuthService.execute(code);
+    public TokenResponse authGoogle(@RequestParam String code, @RequestParam AuthType type) {
+        return googleAuthService.execute(code, type);
     }
 
     @PostMapping

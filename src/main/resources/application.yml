@@ -40,7 +40,8 @@ auth:
     base-url: ${GOOGLE_BASE_URL}
     client-id: ${GOOGLE_CLIENT}
     client-secret: ${GOOGLE_SECRET}
-    redirect-url: ${GOOGLE_REDIRECT}
+    simblue-redirect-url: ${SIMBLUE_GOOGLE_REDIRECT}
+    ssamblue-redirect-url: ${SSAMBLUE_GOOGLE_REDIRECT}
 
 jwt:
   refresh-time: 2592000000 # 30일

@@ -1,5 +1,6 @@
 package com.soogung.simblue.domain.auth.service;
 
+import com.soogung.simblue.domain.auth.domain.type.AuthType;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
@@ -27,10 +28,10 @@ public class GoogleAuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public TokenResponse execute(String code) {
+    public TokenResponse execute(String code, AuthType type) {
         boolean isLogin = true;
         String accessToken = googleAuthClient.getAccessToken(
-                createGoogleAuthRequest(code)).getAccessToken();
+                createGoogleAuthRequest(code, type)).getAccessToken();
         String email = googleInformationClient.getUserInformation(accessToken).getEmail();
         Authority authority = validateEmailAndGetAuthority(email);
 
@@ -66,12 +67,12 @@ public class GoogleAuthService {
         return splitEmail[0].startsWith("teacher") ? Authority.ROLE_TEACHER : Authority.ROLE_STUDENT;
     }
 
-    private GoogleAuthRequest createGoogleAuthRequest(String code) {
+    private GoogleAuthRequest createGoogleAuthRequest(String code, AuthType type) {
         return GoogleAuthRequest.builder()
                 .code(code)
                 .clientId(authProperties.getGoogleClientId())
                 .clientSecret(authProperties.getGoogleClientSecret())
-                .redirectUri(authProperties.getGoogleRedirectUrl())
+                .redirectUri(type.equals(AuthType.SIMBLUE) ? authProperties.getGoogleSimblueRedirectUrl() : authProperties.getGoogleSsamblueRedirectUrl())
                 .build();
     }
 }
