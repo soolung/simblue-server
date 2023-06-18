@@ -25,7 +25,8 @@ public class Reply {
     @Column(nullable = false)
     private String answer;
 
-    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true, length = 10)
     private ReplyState state;
 
     @ManyToOne(fetch = FetchType.LAZY)

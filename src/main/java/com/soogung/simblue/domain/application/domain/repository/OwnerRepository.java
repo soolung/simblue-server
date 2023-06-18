@@ -5,6 +5,7 @@ import com.soogung.simblue.domain.application.domain.Owner;
 import com.soogung.simblue.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
             "JOIN FETCH o.application " +
             "WHERE o.user = :user AND o.application.state <> 'DELETED' " +
             "ORDER BY o.id DESC")
-    List<Owner> findAllByUser(User user);
+    List<Owner> findAllByUser(@Param("user") User user);
 
     @Query("SELECT o FROM Owner o " +
             "JOIN FETCH o.user " +
