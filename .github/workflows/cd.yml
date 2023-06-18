@@ -74,7 +74,8 @@ jobs:
             
             echo GOOGLE_BASE_URL=${{ secrets.GOOGLE_BASE_URL }} >> .env
             echo GOOGLE_CLIENT=${{ secrets.GOOGLE_CLIENT }} >> .env
-            echo GOOGLE_REDIRECT=${{ secrets.GOOGLE_REDIRECT }} >> .env
+            echo SIMBLUE_GOOGLE_REDIRECT=${{ secrets.SIMBLUE_GOOGLE_REDIRECT }} >> .env
+            echo SSAMBLUE_GOOGLE_REDIRECT=${{ secrets.SSAMBLUE_GOOGLE_REDIRECT }} >> .env
             echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
             echo BUCKET_NAME=${{ secrets.BUCKET_NAME }} >> .env
             echo S3_REGION=${{ secrets.S3_REGION }} >> .env
