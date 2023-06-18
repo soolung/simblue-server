@@ -20,7 +20,7 @@ public class NoticeResponse {
         return NoticeResponse.builder()
                 .id(notice.getId())
                 .notice(notice.getNotice())
-                .author(notice.getTeacher().getUser().getName())
+                .author(notice.getUser().getName())
                 .createdAt(notice.getCreatedAt())
                 .isPinned(notice.getIsPinned())
                 .build();

@@ -66,4 +66,18 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .orderBy(application.endDate.asc())
                 .fetch();
     }
+
+    @Override
+    public List<Application> searchApplication(String q) {
+        return queryFactory
+                .selectFrom(application)
+                .where(application.state.eq(State.ALWAYS)
+                        .or(application.state.eq(State.OPENED))
+                        .and(
+                                application.title.contains(q)
+                                        .or(application.description.contains(q))
+                        )
+                )
+                .fetch();
+    }
 }

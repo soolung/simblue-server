@@ -7,7 +7,11 @@ import com.soogung.simblue.domain.application.domain.repository.OwnerRepository;
 import com.soogung.simblue.domain.application.domain.repository.QuestionRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
-import com.soogung.simblue.domain.application.presentation.dto.response.*;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ReplyBlockResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ReplyResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.SimpleQuestionResponse;
 import com.soogung.simblue.domain.notice.domain.repository.NoticeRepository;
 import com.soogung.simblue.domain.notice.presentation.dto.response.NoticeResponse;
 import com.soogung.simblue.domain.user.domain.User;
@@ -23,32 +27,32 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QueryApplicationResultService {
+public class QueryAssignedReplyService {
 
     private final UserFacade userFacade;
     private final ApplicationFacade applicationFacade;
-    private final NoticeRepository noticeRepository;
     private final OwnerRepository ownerRepository;
+    private final NoticeRepository noticeRepository;
     private final QuestionRepository questionRepository;
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationResultResponse execute(Long id) {
+    public ApplicationResultResponse execute(Long applicationId) {
         User user = userFacade.getCurrentUser();
-        Application application = applicationFacade.findApplicationById(id);
+        Application application = applicationFacade.findApplicationById(applicationId);
         application.validateStatus();
         application.validatePermission(ownerRepository, user.getId());
 
-        List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(id)
+        List<NoticeResponse> noticeList = noticeRepository.findAllByApplicationIdOrderByIsPinnedDesc(applicationId)
                 .stream().map(NoticeResponse::of)
                 .collect(Collectors.toList());
 
-        List<SimpleQuestionResponse> questionList = questionRepository.findByApplicationIdOrderById(id).stream()
+        List<SimpleQuestionResponse> questionList = questionRepository.findByApplicationIdOrderById(applicationId).stream()
                 .map(SimpleQuestionResponse::of)
                 .collect(Collectors.toList());
 
-        List<ReplyBlockResponse> resultList = replyBlockRepository
-                .findApplicationResult(id).stream()
+        List<ReplyBlockResponse> assignedReplyList = replyBlockRepository
+                .findAssignedReply(applicationId, user.getId()).stream()
                 .map(this::createReplyList)
                 .collect(Collectors.toList());
 
@@ -56,7 +60,7 @@ public class QueryApplicationResultService {
                 ApplicationResponse.of(application),
                 noticeList,
                 questionList,
-                resultList
+                assignedReplyList
         );
     }
 

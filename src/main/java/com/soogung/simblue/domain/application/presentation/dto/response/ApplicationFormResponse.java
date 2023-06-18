@@ -45,7 +45,7 @@ public class ApplicationFormResponse {
                                 .collect(Collectors.toList()))
                 .ownerList(
                         ownerList.stream()
-                                .map(Owner::getTeacher)
+                                .map(Owner::getUser)
                                 .map(OwnerResponse::of)
                                 .collect(Collectors.toList())
                 )

@@ -82,6 +82,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/reply/{\\d+}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/reply/{\\d+}/handle").hasRole(Authority.ROLE_TEACHER.getRole())
                 .antMatchers(HttpMethod.DELETE, "/reply/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/reply/{\\d+}/handle").hasRole(Authority.ROLE_TEACHER.getRole())
 
                 // banner
                 .antMatchers(HttpMethod.GET, "/banner").permitAll()

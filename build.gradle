@@ -38,6 +38,9 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// fix unknown enum constant When.MAYBE error
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 tasks.named('test') {

@@ -1,14 +1,39 @@
 package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
-import com.soogung.simblue.domain.application.presentation.dto.response.*;
-import com.soogung.simblue.domain.application.service.*;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationFormResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationResultResponse;
+import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationStatusResponse;
+import com.soogung.simblue.domain.application.service.CloseApplicationService;
+import com.soogung.simblue.domain.application.service.CreateApplicationService;
+import com.soogung.simblue.domain.application.service.DeleteApplicationService;
+import com.soogung.simblue.domain.application.service.QueryAlwaysApplicationService;
+import com.soogung.simblue.domain.application.service.QueryApplicationDetailService;
+import com.soogung.simblue.domain.application.service.QueryApplicationFormService;
+import com.soogung.simblue.domain.application.service.QueryApplicationResultService;
+import com.soogung.simblue.domain.application.service.QueryDeadlineApplicationService;
+import com.soogung.simblue.domain.application.service.QueryLatestApplicationService;
+import com.soogung.simblue.domain.application.service.QueryMyApplicationService;
+import com.soogung.simblue.domain.application.service.QueryPagingApplication;
+import com.soogung.simblue.domain.application.service.SearchApplicationService;
+import com.soogung.simblue.domain.application.service.UpdateApplicationService;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,6 +52,7 @@ public class ApplicationController {
     private final QueryApplicationFormService queryApplicationFormService;
     private final QueryMyApplicationService queryMyApplicationService;
     private final QueryApplicationResultService queryApplicationResultService;
+    private final SearchApplicationService searchApplicationService;
     private final UpdateApplicationService updateApplicationService;
     private final DeleteApplicationService deleteApplicationService;
     private final CloseApplicationService closeApplicationService;
@@ -72,6 +98,11 @@ public class ApplicationController {
     @GetMapping("/{id}/result")
     public ApplicationResultResponse getApplicationResult(@PathVariable Long id) {
         return queryApplicationResultService.execute(id);
+    }
+
+    @GetMapping("/search")
+    public ApplicationListResponse searchApplication(@RequestParam(name = "q") String q) {
+        return searchApplicationService.execute(q);
     }
 
     @PutMapping("/{id}")

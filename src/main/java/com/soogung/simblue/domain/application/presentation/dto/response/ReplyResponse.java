@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ReplyResponse {
 
+    private Long replyId;
     private Long questionId;
     private String reply;
 }

@@ -3,7 +3,6 @@ package com.soogung.simblue.domain.auth.service;
 import com.soogung.simblue.domain.auth.presentation.dto.request.LoginRequest;
 import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
@@ -20,12 +19,13 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
 
     public TokenResponse execute(LoginRequest request) {
-        User user = userFacade.findUserByEmail(request.getEmail());
+        User user = userFacade.getUserByEmail(request.getEmail());
         checkPassword(request.getPassword(), user.getPassword());
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
                 .refreshToken(jwtTokenProvider.createRefreshToken(user.getEmail()))
+                .authority(user.getAuthority())
                 .isLogin(!(user.getName() == null || user.getName().equals("")))
                 .build();
     }

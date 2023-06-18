@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class QueryCurrentUserService {
@@ -22,21 +24,6 @@ public class QueryCurrentUserService {
                 .authority(user.getAuthority())
                 .name(user.getName())
                 .email(user.getEmail())
-                .roleId(getRoleId(user))
                 .build();
-    }
-
-    private Long getRoleId(User user) {
-        if (user.getName() == null || user.getName().equals("")) {
-            return null;
-        }
-
-        if (user.getAuthority() == Authority.ROLE_STUDENT) {
-            return userFacade.findStudentByUser(user).getId();
-        } else if (user.getAuthority() == Authority.ROLE_TEACHER) {
-            return userFacade.findTeacherByUser(user).getId();
-        }
-
-        return null;
     }
 }

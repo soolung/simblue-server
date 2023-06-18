@@ -11,4 +11,5 @@ public interface ApplicationRepositoryCustom {
     List<Application> findAlwaysApplication();
     List<Application> findTheLatestApplication();
     List<Application> findApplicationClosingDeadline();
+    List<Application> searchApplication(String q);
 }

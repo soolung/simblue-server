@@ -20,7 +20,7 @@ public class ReplyRequest {
 
     private List<String> replyDetailList;
 
-    public Reply toEntity(Question question, ReplyBlock block, String a) {
+    public Reply toEntity(Question question, String a) {
         return Reply.builder()
                 .answer(a)
                 .question(question)

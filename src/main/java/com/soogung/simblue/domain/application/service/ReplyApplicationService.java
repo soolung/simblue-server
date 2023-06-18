@@ -7,10 +7,11 @@ import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
 import com.soogung.simblue.domain.application.exception.AlreadyReplyException;
+import com.soogung.simblue.domain.application.exception.ReplyCountOverException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
-import com.soogung.simblue.domain.user.domain.Student;
+import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,26 +34,35 @@ public class ReplyApplicationService {
     @Transactional
     public void execute(ReplyBlockRequest request) {
         Application application = applicationFacade.findApplicationById(request.getApplicationId());
-        Student student = userFacade.getCurrentStudent();
+        User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePeriod();
-        validateFirstResponse(application, student);
+        validateReplyCount(application);
+        validateFirstResponse(application, user);
 
-        ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, student));
+        ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, user));
         replyRepository.saveAll(
                 toReplyFrom(request.getReplyList(), block));
     }
 
-    private void validateFirstResponse(Application application, Student student) {
-        if (!application.getAllowsDuplication() && replyBlockRepository.existsByApplicationAndStudent(application, student)) {
+    private void validateReplyCount(Application application) {
+        if (application.getMaxReplyCount() == null) return;
+
+        if (replyBlockRepository.countByApplication(application) >= application.getMaxReplyCount()) {
+            throw ReplyCountOverException.EXCEPTION;
+        }
+    }
+
+    private void validateFirstResponse(Application application, User user) {
+        if (!application.getAllowsDuplication() && replyBlockRepository.existsByApplicationAndUser(application, user)) {
             throw AlreadyReplyException.EXCEPTION;
         }
     }
 
-    private ReplyBlock createReplyBlock(Application application, Student student) {
+    private ReplyBlock createReplyBlock(Application application, User user) {
         return ReplyBlock.builder()
                 .application(application)
-                .student(student)
+                .user(user)
                 .build();
     }
 
@@ -85,7 +95,7 @@ public class ReplyApplicationService {
             return null;
         }
 
-        Reply reply = request.toEntity(question, block, answer);
+        Reply reply = request.toEntity(question, answer);
         reply.putReplyBlock(block);
         return reply;
     }

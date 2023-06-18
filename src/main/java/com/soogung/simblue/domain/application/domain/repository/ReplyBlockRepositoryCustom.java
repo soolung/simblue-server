@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ReplyBlockRepositoryCustom {
 
     List<ReplyBlock> findApplicationResult(Long applicationId);
+    List<ReplyBlock> findAssignedReply(Long applicationId, Long userId);
     ReplyBlock findSimpleReplyBlockById(Long replyBlockId);
     Optional<ReplyBlock> findReplyBlockById(Long replyBlockId);
 }

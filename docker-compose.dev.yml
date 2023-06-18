@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mysql:
-    container_name: ${DB_NAME}
+    container_name: simblue.dev.db
     image: mysql:8.0
     environment:
       MYSQL_ROOT_HOST: "%"
@@ -22,7 +22,7 @@ services:
 
   redis:
     image: redis:7.0-alpine
-    container_name: soolung_simblue_redis
+    container_name: simblue.dev.redis
     hostname: soolung
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     env_file:
@@ -31,6 +31,7 @@ services:
       - ${REDIS_PORT}:6379
 
   application:
+    container_name: simblue.dev.app
     image: ${DOCKER_USERNAME}/${DOCKER_REPO}
     expose:
       - 8080

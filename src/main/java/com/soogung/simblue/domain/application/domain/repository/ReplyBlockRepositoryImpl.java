@@ -1,7 +1,10 @@
 package com.soogung.simblue.domain.application.domain.repository;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soogung.simblue.domain.application.domain.ReplyBlock;
+import com.soogung.simblue.domain.application.domain.type.QuestionType;
+import com.soogung.simblue.domain.application.domain.type.ReplyState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +14,6 @@ import java.util.Optional;
 import static com.soogung.simblue.domain.application.domain.QApplication.application;
 import static com.soogung.simblue.domain.application.domain.QReply.reply;
 import static com.soogung.simblue.domain.application.domain.QReplyBlock.replyBlock;
-import static com.soogung.simblue.domain.user.domain.QStudent.student;
 import static com.soogung.simblue.domain.user.domain.QUser.user;
 
 @Repository
@@ -25,12 +27,35 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
         return queryFactory
                 .selectFrom(replyBlock)
                 .join(replyBlock.replies, reply).fetchJoin()
-                .join(replyBlock.student, student).fetchJoin()
-                .join(student.user, user).fetchJoin()
+                .join(replyBlock.user, user).fetchJoin()
                 .where(replyBlock.application.id.eq(applicationId))
                 .orderBy(
-                        student.studentNumber.asc(),
+                        user.studentNumber.asc(),
                         reply.id.asc()
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<ReplyBlock> findAssignedReply(Long applicationId, Long userId) {
+        return queryFactory
+                .selectFrom(replyBlock)
+                .join(replyBlock.replies, reply).fetchJoin()
+                .where(
+                        replyBlock.application.id.eq(applicationId).and(
+                                replyBlock.id.in(
+                                        JPAExpressions
+                                                .select(reply.replyBlock.id)
+                                                .from(reply)
+                                                .where(
+                                                        reply.answer.eq(String.valueOf(userId))
+                                                                .and(reply.question.type.eq(QuestionType.APPROVAL))
+                                                                .and(reply.state.eq(ReplyState.WAITING))
+                                                )
+
+                                )
+                        )
                 )
                 .distinct()
                 .fetch();
@@ -40,7 +65,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     public ReplyBlock findSimpleReplyBlockById(Long replyBlockId) {
         return queryFactory
                 .selectFrom(replyBlock)
-                .join(replyBlock.student, student).fetchJoin()
+                .join(replyBlock.user, user).fetchJoin()
                 .join(replyBlock.application, application).fetchJoin()
                 .where(replyBlock.id.eq(replyBlockId))
                 .fetchOne();
@@ -52,7 +77,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
                 queryFactory
                         .selectFrom(replyBlock)
                         .join(replyBlock.replies, reply).fetchJoin()
-                        .join(replyBlock.student, student).fetchJoin()
+                        .join(replyBlock.user, user).fetchJoin()
                         .join(replyBlock.application, application).fetchJoin()
                         .where(replyBlock.id.eq(replyBlockId))
                         .fetchOne()
