@@ -46,6 +46,9 @@ public class Application extends BaseTimeEntity {
     @Column(nullable = false, length = 10)
     private String emoji;
 
+    @Column(nullable = true)
+    private Integer maxReplyCount;
+
     @Column(nullable = false)
     private Boolean allowsDuplication;
 
@@ -63,12 +66,13 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
+    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Integer maxReplyCount, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emoji = emoji;
+        this.maxReplyCount = maxReplyCount;
         this.allowsDuplication = allowsDuplication;
         this.allowsUpdatingReply = allowsUpdatingReply;
         this.state = state;

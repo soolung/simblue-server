@@ -39,6 +39,9 @@ public class ApplicationRequest {
     @NotNull
     private Boolean isAlways;
 
+    @Nullable
+    private Integer maxReplyCount;
+
     @NotNull
     private Boolean allowsDuplication;
 
@@ -59,6 +62,7 @@ public class ApplicationRequest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .emoji(emoji)
+                .maxReplyCount(maxReplyCount)
                 .allowsDuplication(allowsDuplication)
                 .allowsUpdatingReply(allowsUpdatingReply)
                 .state(isAlways ? State.ALWAYS : State.OPENED)
