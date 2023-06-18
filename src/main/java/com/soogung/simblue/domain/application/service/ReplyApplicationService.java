@@ -7,6 +7,7 @@ import com.soogung.simblue.domain.application.domain.ReplyBlock;
 import com.soogung.simblue.domain.application.domain.repository.ReplyBlockRepository;
 import com.soogung.simblue.domain.application.domain.repository.ReplyRepository;
 import com.soogung.simblue.domain.application.exception.AlreadyReplyException;
+import com.soogung.simblue.domain.application.exception.ReplyCountOverException;
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
@@ -36,11 +37,20 @@ public class ReplyApplicationService {
         User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePeriod();
+        validateReplyCount(application);
         validateFirstResponse(application, user);
 
         ReplyBlock block = replyBlockRepository.save(createReplyBlock(application, user));
         replyRepository.saveAll(
                 toReplyFrom(request.getReplyList(), block));
+    }
+
+    private void validateReplyCount(Application application) {
+        if (application.getMaxReplyCount() == null) return;
+
+        if (replyBlockRepository.countByApplication(application) >= application.getMaxReplyCount()) {
+            throw ReplyCountOverException.EXCEPTION;
+        }
     }
 
     private void validateFirstResponse(Application application, User user) {

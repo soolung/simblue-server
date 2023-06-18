@@ -20,6 +20,7 @@ public enum ApplicationErrorProperty implements ErrorProperty {
     CAN_NOT_UPDATE_APPLICATION(422, "이미 응답이 있어 신청을 수정할 수 없습니다"),
     NOT_APPROVAL_REPLY(422, "처리가 가능한 응답이 아닙니다."),
     REPLY_ALREADY_HANDLED(422, "응답이 이미 처리되었습니다."),
+    REPLY_COUNT_OVER(422, "신청 인원이 가득 찼습니다."),
     ;
 
     private final int status;
