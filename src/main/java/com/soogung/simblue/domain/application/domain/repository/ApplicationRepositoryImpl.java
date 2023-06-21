@@ -6,7 +6,7 @@ import com.soogung.simblue.domain.application.domain.type.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +39,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     @Override
     public List<Application> findTheLatestApplication() {
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
 
         return queryFactory
                 .selectFrom(application)
@@ -55,7 +55,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     @Override
     public List<Application> findApplicationClosingDeadline() {
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
 
         return queryFactory
                 .selectFrom(application)

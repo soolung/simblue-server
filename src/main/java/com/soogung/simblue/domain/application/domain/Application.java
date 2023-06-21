@@ -15,8 +15,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +47,10 @@ public class Application extends BaseTimeEntity {
     private String description;
 
     @Column(nullable = true)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = true)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(nullable = false, length = 10)
     private String emoji;
@@ -66,7 +75,7 @@ public class Application extends BaseTimeEntity {
     private List<Notice> noticeList = new ArrayList<>();
 
     @Builder
-    public Application(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Integer maxReplyCount, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
+    public Application(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String emoji, Integer maxReplyCount, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -87,11 +96,11 @@ public class Application extends BaseTimeEntity {
     public void validatePeriod() {
         if (state == State.ALWAYS) return;
 
-        if (LocalDate.now().isBefore(startDate)) {
+        if (LocalDateTime.now().isBefore(startDate)) {
             throw ApplicationHasNotStartedYetException.EXCEPTION;
         }
 
-        if (LocalDate.now().isAfter(endDate)) {
+        if (LocalDateTime.now().isAfter(endDate)) {
             throw ApplicationHasAlreadyEndedException.EXCEPTION;
         }
     }
@@ -116,7 +125,7 @@ public class Application extends BaseTimeEntity {
         this.state = State.CLOSED;
     }
 
-    public void updateInformation(String title, String description, LocalDate startDate, LocalDate endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
+    public void updateInformation(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String emoji, Boolean allowsDuplication, Boolean allowsUpdatingReply, State state) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -128,20 +137,24 @@ public class Application extends BaseTimeEntity {
     }
 
     public Status getStatus() {
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
 
         if (state == State.ALWAYS) {
             return Status.ALWAYS;
-        }
-
-        else if (state == State.CLOSED || endDate.isBefore(now)) {
+        } else if (state == State.CLOSED || endDate.isBefore(now)) {
             return Status.DONE;
-        }
-
-        else if (startDate.isAfter(now)) {
+        } else if (startDate.isAfter(now)) {
             return Status.NOT_STARTED;
         }
 
         return Status.IN_PROGRESS;
+    }
+
+    public LocalDate getStartDate() {
+        return state == State.ALWAYS ? null : startDate.toLocalDate();
+    }
+
+    public LocalDate getEndDate() {
+        return state == State.ALWAYS ? null : endDate.toLocalDate();
     }
 }
