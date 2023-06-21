@@ -57,7 +57,7 @@ public class ApplicationDetailResponse {
                 .questionList(
                         application.getQuestionList().stream()
                                 .map((q) -> QuestionResponse.of(q,
-                                        replyList.stream().filter(r -> r.getQuestionId() == q.getId())
+                                        replyList.stream().filter(r -> Objects.equals(r.getQuestionId(), q.getId()))
                                                 .findFirst()
                                                 .orElse(null)
                                 ))

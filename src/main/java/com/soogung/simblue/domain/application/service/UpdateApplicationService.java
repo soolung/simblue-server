@@ -44,8 +44,8 @@ public class UpdateApplicationService {
         application.updateInformation(
                 request.getTitle(),
                 request.getDescription(),
-                request.getStartDate(),
-                request.getEndDate(),
+                request.getStartDate() != null ? request.getStartDate().atStartOfDay() : null,
+                request.getEndDate() != null ? request.getEndDate().atStartOfDay() : null,
                 request.getEmoji(),
                 request.getAllowsDuplication(),
                 request.getAllowsUpdatingReply(),
