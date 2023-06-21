@@ -21,7 +21,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
             "JOIN FETCH o.user " +
             "WHERE o.application = :application AND o.user <> :user " +
             "ORDER BY o.id DESC")
-    List<Owner> findOwnerByApplicationWithoutUser(Application application, User user);
+    List<Owner> findOwnerByApplicationWithoutUser(@Param("application") Application application, @Param("user") User user);
 
     boolean existsByApplicationIdAndUserId(Long applicationId, Long userId);
 
