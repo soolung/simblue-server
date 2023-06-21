@@ -26,7 +26,7 @@ public class ReplyBlockRepositoryImpl implements ReplyBlockRepositoryCustom {
     public List<ReplyBlock> findApplicationResult(Long applicationId) {
         return queryFactory
                 .selectFrom(replyBlock)
-                .join(replyBlock.replies, reply).fetchJoin()
+                .leftJoin(replyBlock.replies, reply).fetchJoin()
                 .join(replyBlock.user, user).fetchJoin()
                 .where(replyBlock.application.id.eq(applicationId))
                 .orderBy(
