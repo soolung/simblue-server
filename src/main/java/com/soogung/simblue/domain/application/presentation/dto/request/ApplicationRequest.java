@@ -19,7 +19,7 @@ import java.util.List;
 public class ApplicationRequest {
 
     @NotNull
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 100)
     private String title;
 
     @Nullable
