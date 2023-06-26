@@ -40,7 +40,7 @@ public class Application extends BaseTimeEntity {
     @Column(name = "application_id")
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @Column(nullable = true, length = 500)
