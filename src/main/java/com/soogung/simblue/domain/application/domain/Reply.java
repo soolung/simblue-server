@@ -2,14 +2,23 @@ package com.soogung.simblue.domain.application.domain;
 
 import com.soogung.simblue.domain.application.domain.type.QuestionType;
 import com.soogung.simblue.domain.application.domain.type.ReplyState;
-import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_reply")
@@ -53,12 +62,10 @@ public class Reply {
     }
 
     public String getAnswer(UserFacade userFacade) {
-        if (question.getType() == QuestionType.PEOPLE) {
+        if (question.getType() == QuestionType.PEOPLE ||
+                question.getType() == QuestionType.APPROVAL
+        ) {
             return userFacade.getName(Long.valueOf(answer));
-        }
-
-        if (question.getType() == QuestionType.APPROVAL) {
-            return state.getDescription();
         }
 
         return answer;

@@ -83,7 +83,8 @@ public class QueryApplicationResultService {
                 questionId,
                 request.stream()
                         .map(r -> r.getAnswer(userFacade))
-                        .collect(Collectors.joining(", "))
+                        .collect(Collectors.joining(", ")),
+                request.get(0).getState()
         );
     }
 }
