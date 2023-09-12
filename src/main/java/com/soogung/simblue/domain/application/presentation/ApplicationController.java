@@ -1,6 +1,8 @@
 package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.FilterListRequest;
+import com.soogung.simblue.domain.application.presentation.dto.request.FilterRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationFormResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
@@ -96,8 +98,11 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}/result")
-    public ApplicationResultResponse getApplicationResult(@PathVariable Long id) {
-        return queryApplicationResultService.execute(id);
+    public ApplicationResultResponse getApplicationResult(
+            @PathVariable Long id,
+            @RequestBody @Valid FilterListRequest filterList
+    ) {
+        return queryApplicationResultService.execute(id, filterList);
     }
 
     @GetMapping("/search")
