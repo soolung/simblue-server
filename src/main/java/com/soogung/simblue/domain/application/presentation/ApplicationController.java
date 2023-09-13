@@ -100,7 +100,7 @@ public class ApplicationController {
     @GetMapping("/{id}/result")
     public ApplicationResultResponse getApplicationResult(
             @PathVariable Long id,
-            @RequestBody @Valid FilterListRequest filterList
+            @RequestBody(required = false) @Valid FilterListRequest filterList
     ) {
         return queryApplicationResultService.execute(id, filterList);
     }

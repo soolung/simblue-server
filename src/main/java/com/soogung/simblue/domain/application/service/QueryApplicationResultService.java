@@ -71,6 +71,7 @@ public class QueryApplicationResultService {
 
     private boolean filtering(ReplyBlock block, FilterListRequest request) {
         if (
+                request == null ||
                 request.getFilterList() == null ||
                         request.getFilterList().isEmpty()) {
             return true;
