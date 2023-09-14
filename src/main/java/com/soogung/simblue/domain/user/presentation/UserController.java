@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<SearchUserResponse> searchTeacher(
+    public List<SearchUserResponse> searchUser(
             @RequestParam(name = "q") String q,
             @RequestParam(name = "authority", required = false) Authority authority
     ) {
