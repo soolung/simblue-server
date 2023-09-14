@@ -9,7 +9,7 @@ public enum ReplyState {
 
     APPROVED("수락됨"),
     REJECTED("거절됨"),
-    WAITING("대기 중"),
+    WAITING("대기중"),
     ;
 
     private final String description;
