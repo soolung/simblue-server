@@ -97,10 +97,11 @@ public class ApplicationController {
         return queryMyApplicationService.execute();
     }
 
-    @GetMapping("/{id}/result")
+    // TODO :: HTTP method mismatched
+    @PostMapping("/{id}/result")
     public ApplicationResultResponse getApplicationResult(
             @PathVariable Long id,
-            @RequestBody(required = false) @Valid FilterListRequest filterList
+            @RequestBody(required = false) FilterListRequest filterList
     ) {
         return queryApplicationResultService.execute(id, filterList);
     }

@@ -17,7 +17,8 @@ public enum Operator {
     BEFORE((target, other) -> (LocalDate.parse((String) target)).isBefore((LocalDate.parse((String) other)))),
     AFTER((target, other) -> (LocalDate.parse((String) target)).isAfter((LocalDate.parse((String) other)))),
     BEFORE_OR_EQUAL((target, other) -> !AFTER.comparator.execute(target, other)),
-    AFTER_OR_EQUAL((target, other) -> !BEFORE.comparator.execute(target, other));
+    AFTER_OR_EQUAL((target, other) -> !BEFORE.comparator.execute(target, other)),
+    CONTAINS((target, other) -> ((String) other).contains((String) target));
 
     private final Comparator<Object> comparator;
 }

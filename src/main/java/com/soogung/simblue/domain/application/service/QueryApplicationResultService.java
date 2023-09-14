@@ -20,6 +20,7 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
+import com.soogung.simblue.global.util.Operator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,7 @@ public class QueryApplicationResultService {
                 .findApplicationResult(id).stream()
                 .filter(r -> filtering(r, filterList))
                 .map(this::createReplyList)
+                .filter(r -> filteringContains(r, filterList))
                 .collect(Collectors.toList());
 
         return new ApplicationResultResponse(
@@ -70,14 +72,13 @@ public class QueryApplicationResultService {
     }
 
     private boolean filtering(ReplyBlock block, FilterListRequest request) {
-        if (
-                request == null ||
-                request.getFilterList() == null ||
-                        request.getFilterList().isEmpty()) {
-            return true;
-        }
+        if (validate(request)) return true;
 
         for (FilterRequest filter : request.getFilterList()) {
+            if (filter.getOperator() == Operator.CONTAINS) {
+                continue;
+            }
+
             Reply reply = getReplyByQuestionId(block.getReplies(), filter.getQuestionId());
             if (!filter.getOperator().getComparator()
                     .execute(filter.getTarget(), reply.getAnswer())) {
@@ -88,9 +89,40 @@ public class QueryApplicationResultService {
         return true;
     }
 
+    private boolean filteringContains(ReplyBlockResponse block, FilterListRequest request) {
+        if (validate(request)) return true;
+
+        for (FilterRequest filter : request.getFilterList()) {
+            if (filter.getOperator() != Operator.CONTAINS) {
+                continue;
+            }
+
+            ReplyResponse reply = getReplyResponseByQuestionId(block.getReplyList(), filter.getQuestionId());
+            if (!filter.getOperator().getComparator()
+                    .execute(filter.getTarget(), reply.getReply())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean validate(FilterListRequest request) {
+        return request == null ||
+                request.getFilterList() == null ||
+                request.getFilterList().isEmpty();
+    }
+
     private Reply getReplyByQuestionId(List<Reply> replyList, Long questionId) {
         return replyList.stream()
                 .filter(r -> r.getQuestion().getId().equals(questionId))
+                .findFirst()
+                .orElseThrow(() -> new SimblueException(ErrorCode.BAD_REQUEST));
+    }
+
+    private ReplyResponse getReplyResponseByQuestionId(List<ReplyResponse> replyList, Long questionId) {
+        return replyList.stream()
+                .filter(r -> r.getQuestionId().equals(questionId))
                 .findFirst()
                 .orElseThrow(() -> new SimblueException(ErrorCode.BAD_REQUEST));
     }
