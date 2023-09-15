@@ -15,7 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3000",
                         "http://localhost:3001",
                         "http://localhost:3002",
-                        "https://www.simblue.kro.kr"
+                        "https://www.simblue.kro.kr",
+                        "https://www.ssamblue.kro.kr"
                 )
                 .allowedMethods(
                         HttpMethod.GET.name(),
