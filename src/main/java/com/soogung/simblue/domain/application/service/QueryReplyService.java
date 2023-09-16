@@ -28,12 +28,11 @@ public class QueryReplyService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationDetailResponse execute(Long id) {
-        User student = userFacade.getCurrentUser();
+    public ApplicationDetailResponse execute(User user, Long id) {
         ReplyBlock replyBlock = replyBlockFacade.getReplyBlock(id);
         Application application = replyBlock.getApplication();
         application.validateStatus();
-        replyBlock.validatePermission(student);
+        replyBlock.validatePermission(user);
 
         List<ReplyListResponse> replyList = createReplyDetailList(replyBlock);
 

@@ -3,7 +3,6 @@ package com.soogung.simblue.domain.banner.service;
 import com.soogung.simblue.domain.banner.domain.Banner;
 import com.soogung.simblue.domain.banner.facade.BannerFacade;
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeleteBannerService {
 
-    private final UserFacade userFacade;
     private final BannerFacade bannerFacade;
 
     @Transactional
-    public void execute(Long id) {
-        User user = userFacade.getCurrentUser();
+    public void execute(User user, Long id) {
         Banner banner = bannerFacade.getBanner(id);
         banner.validatePermission(user);
         banner.delete();

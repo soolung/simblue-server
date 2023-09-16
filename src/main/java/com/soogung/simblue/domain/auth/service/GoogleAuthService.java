@@ -11,7 +11,7 @@ import com.soogung.simblue.global.feign.auth.GoogleAuthClient;
 import com.soogung.simblue.global.feign.auth.GoogleInformationClient;
 import com.soogung.simblue.global.feign.auth.dto.request.GoogleAuthRequest;
 import com.soogung.simblue.global.feign.auth.dto.response.GoogleInformationResponse;
-import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
+import com.soogung.simblue.global.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class GoogleAuthService {
     private final GoogleAuthClient googleAuthClient;
     private final GoogleInformationClient googleInformationClient;
     private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     @Transactional
     public TokenResponse execute(String code, AuthType type) {
@@ -55,8 +55,8 @@ public class GoogleAuthService {
         }
 
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.createAccessToken(email))
-                .refreshToken(jwtTokenProvider.createRefreshToken(email))
+                .accessToken(tokenService.createAccessToken(email))
+                .refreshToken(tokenService.createRefreshToken(email))
                 .authority(authority)
                 .isLogin(isLogin)
                 .build();

@@ -34,8 +34,7 @@ public class UpdateApplicationService {
     private final AnswerRepository answerRepository;
 
     @Transactional
-    public void execute(Long id, ApplicationRequest request) {
-        User user = userFacade.getCurrentUser();
+    public void execute(User user, Long id, ApplicationRequest request) {
         Application application = applicationFacade.getSimpleApplication(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, user.getId());

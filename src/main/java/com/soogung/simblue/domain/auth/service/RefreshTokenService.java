@@ -3,8 +3,8 @@ package com.soogung.simblue.domain.auth.service;
 import com.soogung.simblue.domain.auth.domain.RefreshToken;
 import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
 import com.soogung.simblue.domain.auth.presentation.dto.response.AccessTokenResponse;
-import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
-import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
+import com.soogung.simblue.global.auth.service.TokenService;
+import com.soogung.simblue.global.auth.exception.ExpiredTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     public AccessTokenResponse execute(String token) {
         RefreshToken refreshToken = getRefreshToken(token);
         return AccessTokenResponse.builder()
-                .accessToken(jwtTokenProvider
+                .accessToken(tokenService
                         .createAccessToken(refreshToken.getEmail()))
                 .build();
     }

@@ -4,9 +4,7 @@ import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.repository.UserRepository;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.UserNotFoundException;
-import com.soogung.simblue.global.security.auth.AuthDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +24,6 @@ public class UserFacade {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-    }
-
-    public User getCurrentUser() {
-        AuthDetails auth = (AuthDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return auth.getUser();
     }
 
     @Transactional(readOnly = true)

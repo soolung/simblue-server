@@ -12,7 +12,6 @@ import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +26,12 @@ import java.util.stream.Collectors;
 public class ReplyApplicationService {
 
     private final ApplicationFacade applicationFacade;
-    private final UserFacade userFacade;
     private final ReplyBlockRepository replyBlockRepository;
     private final ReplyRepository replyRepository;
 
     @Transactional
-    public void execute(ReplyBlockRequest request) {
+    public void execute(User user, ReplyBlockRequest request) {
         Application application = applicationFacade.findApplicationById(request.getApplicationId());
-        User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePeriod();
         validateReplyCount(application);

@@ -5,7 +5,7 @@ import com.soogung.simblue.domain.auth.presentation.dto.response.TokenResponse;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.exception.PasswordMismatchException;
 import com.soogung.simblue.domain.user.facade.UserFacade;
-import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
+import com.soogung.simblue.global.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private final UserFacade userFacade;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
     public TokenResponse execute(LoginRequest request) {
@@ -23,8 +23,8 @@ public class LoginService {
         checkPassword(request.getPassword(), user.getPassword());
 
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.createAccessToken(user.getEmail()))
-                .refreshToken(jwtTokenProvider.createRefreshToken(user.getEmail()))
+                .accessToken(tokenService.createAccessToken(user.getEmail()))
+                .refreshToken(tokenService.createRefreshToken(user.getEmail()))
                 .authority(user.getAuthority())
                 .isLogin(!(user.getName() == null || user.getName().equals("")))
                 .build();

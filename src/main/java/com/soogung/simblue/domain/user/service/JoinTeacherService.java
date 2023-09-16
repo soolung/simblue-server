@@ -1,7 +1,6 @@
 package com.soogung.simblue.domain.user.service;
 
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import com.soogung.simblue.domain.user.presentation.dto.request.TeacherRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,12 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class JoinTeacherService {
 
-    private final UserFacade userFacade;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void execute(TeacherRequest request) {
-        User user = userFacade.getCurrentUser();
-        user.updateInformation(request.getName(), passwordEncoder.encode(request.getPassword()));
+    public void execute(User user, TeacherRequest request) {
+        user.updatePassword(passwordEncoder.encode(request.getPassword()));
     }
 }

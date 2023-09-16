@@ -10,7 +10,6 @@ import com.soogung.simblue.domain.application.facade.ReplyBlockFacade;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyBlockRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.ReplyRequest;
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,16 +22,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UpdateReplyService {
 
-    private final UserFacade userFacade;
     private final ReplyBlockFacade replyBlockFacade;
     private final ReplyRepository replyRepository;
     private final ApplicationFacade applicationFacade;
 
     @Transactional
-    public void execute(Long replyBlockId, ReplyBlockRequest request) {
+    public void execute(User user, Long replyBlockId, ReplyBlockRequest request) {
         ReplyBlock block = replyBlockFacade.getReplyBlock(replyBlockId);
         Application application = block.getApplication();
-        User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePeriod();
         application.validateReplyUpdatable();

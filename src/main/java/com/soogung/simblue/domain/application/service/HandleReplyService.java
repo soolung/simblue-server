@@ -9,7 +9,6 @@ import com.soogung.simblue.domain.application.exception.ReplyAlreadyHandledExcep
 import com.soogung.simblue.domain.application.exception.ReplyNotFoundException;
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class HandleReplyService {
 
     private final ReplyRepository replyRepository;
-    private final UserFacade userFacade;
 
     @Transactional
-    public void execute(Long replyId, boolean approve) {
+    public void execute(User user, Long replyId, boolean approve) {
         Reply reply = replyRepository.findById(replyId)
                 .orElseThrow(() -> ReplyNotFoundException.EXCEPTION);
-        User user = userFacade.getCurrentUser();
         validate(reply, user);
 
         if (approve) {

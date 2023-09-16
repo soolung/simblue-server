@@ -1,5 +1,6 @@
 package com.soogung.simblue.global.error;
 
+import com.soogung.simblue.global.error.exception.SimblueException;
 import com.soogung.simblue.infrastructure.s3.exception.OverFileSizeLimitException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
@@ -52,5 +53,12 @@ public class SimblueExceptionHandler {
     @ResponseStatus(value = HttpStatus.PAYLOAD_TOO_LARGE)
     public ErrorResponse handleMultipartExceptionPayloadTooLarge(){
         return new ErrorResponse(OverFileSizeLimitException.EXCEPTION.getErrorProperty());
+    }
+
+    @ExceptionHandler(SimblueException.class)
+    public ResponseEntity<ErrorResponse> handleMaruException(SimblueException e) {
+        return ResponseEntity
+                .status(e.getErrorProperty().getStatus())
+                .body(new ErrorResponse(e.getErrorProperty()));
     }
 }

@@ -9,7 +9,6 @@ import com.soogung.simblue.domain.application.presentation.dto.response.MyApplic
 import com.soogung.simblue.domain.user.domain.User;
 import com.soogung.simblue.domain.user.domain.type.Authority;
 import com.soogung.simblue.domain.user.exception.AuthorityMismatchException;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +25,9 @@ public class QueryMyApplicationService {
 
     private final OwnerRepository ownerRepository;
     private final ReplyBlockRepository replyBlockRepository;
-    private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
-    public ApplicationStatusResponse execute() {
-        User user = userFacade.getCurrentUser();
-
+    public ApplicationStatusResponse execute(User user) {
         if (user.getAuthority() == Authority.ROLE_STUDENT) {
             return new ApplicationStatusResponse(
                     getStudentApplication(user),
