@@ -38,7 +38,7 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
     private void validateAuthority(User user, AuthenticationPrincipal authenticationPrincipal) {
         if (
                 !authenticationPrincipal.authority().equals(Authority.ALL) &&
-                !user.getAuthority().name().equals(authenticationPrincipal.authority().name())
+                !user.getAuthority().getRole().equals(authenticationPrincipal.authority().name())
         ) {
             throw AuthorityMismatchException.EXCEPTION;
         }
