@@ -1,5 +1,6 @@
 package com.soogung.simblue.global.config;
 
+import com.soogung.simblue.global.auth.annotation.AuthenticationPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,6 +20,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
                 .select()
