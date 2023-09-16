@@ -22,7 +22,7 @@ public class StudentController {
 
     @PostMapping
     public void joinStudent(
-            @AuthenticationPrincipal(authority = Authority.USER) User user,
+            @AuthenticationPrincipal(authority = Authority.STUDENT) User user,
             @RequestBody @Valid StudentRequest request
     ) {
         joinStudentService.execute(user, request);
@@ -30,7 +30,7 @@ public class StudentController {
 
     @PutMapping
     public void updateStudent(
-            @AuthenticationPrincipal(authority = Authority.USER) User user,
+            @AuthenticationPrincipal(authority = Authority.STUDENT) User user,
             @RequestBody @Valid UpdateStudentRequest request
     ) {
         updateStudentService.execute(user, request);
