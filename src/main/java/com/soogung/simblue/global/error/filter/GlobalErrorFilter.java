@@ -5,7 +5,7 @@ import com.soogung.simblue.global.error.ErrorResponse;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.ErrorProperty;
 import com.soogung.simblue.global.error.exception.SimblueException;
-import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
+import com.soogung.simblue.global.auth.exception.ExpiredTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

@@ -30,9 +30,8 @@ public class CreateApplicationService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(ApplicationRequest request) {
+    public void execute(User user, ApplicationRequest request) {
         Application application = applicationRepository.save(request.toEntity());
-        User user = userFacade.getCurrentUser();
 
         saveApplicationOwner(request.getOwnerList(), application, user);
 

@@ -2,7 +2,6 @@ package com.soogung.simblue.domain.application.presentation;
 
 import com.soogung.simblue.domain.application.presentation.dto.request.ApplicationRequest;
 import com.soogung.simblue.domain.application.presentation.dto.request.FilterListRequest;
-import com.soogung.simblue.domain.application.presentation.dto.request.FilterRequest;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationDetailResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationFormResponse;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationListResponse;
@@ -22,6 +21,9 @@ import com.soogung.simblue.domain.application.service.QueryMyApplicationService;
 import com.soogung.simblue.domain.application.service.QueryPagingApplication;
 import com.soogung.simblue.domain.application.service.SearchApplicationService;
 import com.soogung.simblue.domain.application.service.UpdateApplicationService;
+import com.soogung.simblue.domain.user.domain.User;
+import com.soogung.simblue.global.auth.annotation.AuthenticationPrincipal;
+import com.soogung.simblue.global.auth.annotation.Authority;
 import com.soogung.simblue.global.error.exception.ErrorCode;
 import com.soogung.simblue.global.error.exception.SimblueException;
 import lombok.RequiredArgsConstructor;
@@ -60,12 +62,17 @@ public class ApplicationController {
     private final CloseApplicationService closeApplicationService;
 
     @PostMapping
-    public void createApplication(@RequestBody @Valid ApplicationRequest request) {
-        applicationService.execute(request);
+    public void createApplication(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
+            @RequestBody @Valid ApplicationRequest request
+    ) {
+        applicationService.execute(user, request);
     }
 
     @GetMapping
-    public List<ApplicationResponse> getApplications(@RequestParam(name = "type", required = true) String applicationType) {
+    public List<ApplicationResponse> getApplications(
+            @RequestParam(name = "type") String applicationType
+    ) {
         if (applicationType.equals("deadline")) {
             return queryDeadlineApplicationService.execute();
         } else if (applicationType.equals("latest")) {
@@ -88,22 +95,28 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}/form")
-    public ApplicationFormResponse getApplicationForm(@PathVariable Long id) {
-        return queryApplicationFormService.execute(id);
+    public ApplicationFormResponse getApplicationForm(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
+            @PathVariable Long id
+    ) {
+        return queryApplicationFormService.execute(user, id);
     }
 
     @GetMapping("/my")
-    public ApplicationStatusResponse getMyApplication() {
-        return queryMyApplicationService.execute();
+    public ApplicationStatusResponse getMyApplication(
+            @AuthenticationPrincipal User user
+    ) {
+        return queryMyApplicationService.execute(user);
     }
 
     // TODO :: HTTP method mismatched
     @PostMapping("/{id}/result")
     public ApplicationResultResponse getApplicationResult(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
             @PathVariable Long id,
             @RequestBody(required = false) FilterListRequest filterList
     ) {
-        return queryApplicationResultService.execute(id, filterList);
+        return queryApplicationResultService.execute(user, id, filterList);
     }
 
     @GetMapping("/search")
@@ -113,19 +126,26 @@ public class ApplicationController {
 
     @PutMapping("/{id}")
     public void updateApplication(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
             @PathVariable Long id,
             @RequestBody @Valid ApplicationRequest request
     ) {
-        updateApplicationService.execute(id, request);
+        updateApplicationService.execute(user, id, request);
     }
 
     @PutMapping("/{id}/close")
-    public void closeApplication(@PathVariable Long id) {
-        closeApplicationService.execute(id);
+    public void closeApplication(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
+            @PathVariable Long id
+    ) {
+        closeApplicationService.execute(user, id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteApplication(@PathVariable Long id) {
-        deleteApplicationService.execute(id);
+    public void deleteApplication(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
+            @PathVariable Long id
+    ) {
+        deleteApplicationService.execute(user, id);
     }
 }

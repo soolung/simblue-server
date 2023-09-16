@@ -39,7 +39,9 @@ public class AuthController {
     }
 
     @PutMapping
-    public AccessTokenResponse refreshToken(@RequestHeader(value = "Refresh-Token") String refreshToken) {
+    public AccessTokenResponse refreshToken(
+            @RequestHeader(value = "Refresh-Token") String refreshToken
+    ) {
         return refreshTokenService.execute(refreshToken);
     }
 }

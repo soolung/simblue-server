@@ -1,32 +1,33 @@
-package com.soogung.simblue.global.security.jwt;
+package com.soogung.simblue.global.auth.service;
 
 import com.soogung.simblue.domain.auth.domain.RefreshToken;
 import com.soogung.simblue.domain.auth.domain.repository.RefreshTokenRepository;
+import com.soogung.simblue.domain.user.domain.User;
+import com.soogung.simblue.domain.user.facade.UserFacade;
+import com.soogung.simblue.global.auth.exception.ExpiredTokenException;
+import com.soogung.simblue.global.auth.exception.InvalidTokenException;
 import com.soogung.simblue.global.config.properties.JwtProperties;
-import com.soogung.simblue.global.security.jwt.exception.ExpiredTokenException;
-import com.soogung.simblue.global.security.jwt.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class TokenService {
 
     private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserFacade userFacade;
 
-    private Key getSigningKey(String secretKey) {
-        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+    private Key getSigningKey() {
+        byte[] keyBytes = jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -56,14 +57,23 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + time))
-                .signWith(getSigningKey(jwtProperties.getSecretKey()), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey())
                 .compact();
     }
 
-    public Claims extractAllClaims(String token) {
+    public User getUser(String token) {
+        return userFacade.getUserByEmail(getEmail(token));
+    }
+
+    private String getEmail(String token) {
+        return extractAllClaims(token)
+                .get("email", String.class);
+    }
+
+    private Claims extractAllClaims(String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey(jwtProperties.getSecretKey()))
+                    .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -72,16 +82,5 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             throw InvalidTokenException.EXCEPTION;
         }
-    }
-
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader(jwtProperties.getHeader());
-        return parseToken(bearer);
-    }
-
-    public String parseToken(String bearerToken) {
-        if (bearerToken != null && bearerToken.startsWith(jwtProperties.getPrefix()))
-            return bearerToken.replace(jwtProperties.getPrefix(), "");
-        return null;
     }
 }

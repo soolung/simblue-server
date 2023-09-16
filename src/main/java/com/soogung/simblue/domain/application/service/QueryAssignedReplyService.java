@@ -37,8 +37,7 @@ public class QueryAssignedReplyService {
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationResultResponse execute(Long applicationId) {
-        User user = userFacade.getCurrentUser();
+    public ApplicationResultResponse execute(User user, Long applicationId) {
         Application application = applicationFacade.findApplicationById(applicationId);
         application.validateStatus();
         application.validatePermission(ownerRepository, user.getId());
@@ -65,7 +64,7 @@ public class QueryAssignedReplyService {
     }
 
     private ReplyBlockResponse createReplyList(ReplyBlock block) {
-        User student = block.getUser();
+        User user = block.getUser();
 
         List<ReplyResponse> replyList = new ArrayList<>();
 
@@ -75,8 +74,8 @@ public class QueryAssignedReplyService {
 
         // TODO :: 선생님도 답변할 수 있어져서 처리 필요
         return new ReplyBlockResponse(
-                student.getName(),
-                student.getStudentNumber(),
+                user.getName(),
+                user.getStudentNumber(),
                 replyList
         );
     }

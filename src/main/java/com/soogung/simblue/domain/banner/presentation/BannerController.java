@@ -5,6 +5,9 @@ import com.soogung.simblue.domain.banner.presentation.dto.response.BannerImageRe
 import com.soogung.simblue.domain.banner.presentation.dto.response.BannerListResponse;
 import com.soogung.simblue.domain.banner.presentation.dto.response.MyBannerListResponse;
 import com.soogung.simblue.domain.banner.service.*;
+import com.soogung.simblue.domain.user.domain.User;
+import com.soogung.simblue.global.auth.annotation.AuthenticationPrincipal;
+import com.soogung.simblue.global.auth.annotation.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,19 +33,24 @@ public class BannerController {
     }
 
     @GetMapping("/my")
-    public MyBannerListResponse getMyBannerList() {
-        return queryMyBannerService.execute();
+    public MyBannerListResponse getMyBannerList(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user
+
+    ) {
+        return queryMyBannerService.execute(user);
     }
 
     @PostMapping
     public void registerBanner(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
             @RequestBody @Valid BannerRequest request
     ) {
-        registerBannerService.execute(request);
+        registerBannerService.execute(user, request);
     }
 
     @PostMapping("/image")
     public BannerImageResponse uploadBannerImage(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
             @RequestPart(value = "image") MultipartFile image
     ) {
         return uploadBannerImageService.execute(image);
@@ -50,14 +58,18 @@ public class BannerController {
 
     @PutMapping("/{id}")
     public void updateBanner(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
             @PathVariable Long id,
             @RequestBody @Valid BannerRequest request
     ) {
-        updateBannerService.execute(id, request);
+        updateBannerService.execute(user, id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBanner(@PathVariable Long id) {
-        deleteBannerService.execute(id);
+    public void deleteBanner(
+            @AuthenticationPrincipal(authority = Authority.TEACHER) User user,
+            @PathVariable Long id
+    ) {
+        deleteBannerService.execute(user, id);
     }
 }

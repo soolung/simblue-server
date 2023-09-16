@@ -1,7 +1,7 @@
-package com.soogung.simblue.global.security.jwt.exception;
+package com.soogung.simblue.global.auth.exception;
 
 import com.soogung.simblue.global.error.exception.SimblueException;
-import com.soogung.simblue.global.security.jwt.exception.error.JwtErrorProperty;
+import com.soogung.simblue.global.auth.exception.error.JwtErrorProperty;
 
 public class InvalidTokenException extends SimblueException {
 

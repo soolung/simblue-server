@@ -6,7 +6,6 @@ import com.soogung.simblue.domain.application.domain.repository.ReplyBlockReposi
 import com.soogung.simblue.domain.application.facade.ApplicationFacade;
 import com.soogung.simblue.domain.application.presentation.dto.response.ApplicationFormResponse;
 import com.soogung.simblue.domain.user.domain.User;
-import com.soogung.simblue.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class QueryApplicationFormService {
 
     private final ApplicationFacade applicationFacade;
-    private final UserFacade userFacade;
     private final OwnerRepository ownerRepository;
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationFormResponse execute(Long id) {
+    public ApplicationFormResponse execute(User user, Long id) {
         Application application = applicationFacade.findApplicationById(id);
-        User user = userFacade.getCurrentUser();
         application.validateStatus();
         application.validatePermission(ownerRepository, user.getId());
 

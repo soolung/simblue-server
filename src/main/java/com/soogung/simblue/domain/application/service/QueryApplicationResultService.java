@@ -42,8 +42,7 @@ public class QueryApplicationResultService {
     private final ReplyBlockRepository replyBlockRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationResultResponse execute(Long id, FilterListRequest filterList) {
-        User user = userFacade.getCurrentUser();
+    public ApplicationResultResponse execute(User user, Long id, FilterListRequest filterList) {
         Application application = applicationFacade.findApplicationById(id);
         application.validateStatus();
         application.validatePermission(ownerRepository, user.getId());
