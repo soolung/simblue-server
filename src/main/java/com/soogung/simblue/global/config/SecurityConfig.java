@@ -1,12 +1,6 @@
-package com.soogung.simblue.global.security;
+package com.soogung.simblue.global.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soogung.simblue.domain.user.domain.type.Authority;
-import com.soogung.simblue.global.error.filter.GlobalErrorFilter;
-import com.soogung.simblue.global.security.auth.AuthDetailsService;
-import com.soogung.simblue.global.security.jwt.JwtTokenProvider;
-import com.soogung.simblue.global.security.jwt.JwtValidateService;
-import com.soogung.simblue.global.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,18 +12,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final AuthDetailsService authDetailsService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final JwtValidateService jwtValidateService;
-    private final ObjectMapper mapper;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -87,12 +75,7 @@ public class SecurityConfig {
                 // banner
                 .antMatchers(HttpMethod.GET, "/banner").permitAll()
 
-                .anyRequest().authenticated()
-
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(authDetailsService, jwtTokenProvider, jwtValidateService),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new GlobalErrorFilter(mapper), JwtAuthenticationFilter.class);
+                .anyRequest().authenticated();
 
         return http.build();
     }
