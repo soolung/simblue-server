@@ -60,7 +60,7 @@ public class QueryReplyService {
         return new ReplyListResponse(
                 questionId,
                 request.stream()
-                        .map(r -> r.getAnswer(userFacade))
+                        .map(r -> r.getAnswer(userFacade, true))
                         .collect(Collectors.toList())
         );
     }

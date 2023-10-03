@@ -61,8 +61,10 @@ public class Reply {
         replyBlock.getReplies().add(this);
     }
 
-    public String getAnswer(UserFacade userFacade) {
-        if (question.getType() == QuestionType.PEOPLE ||
+    public String getAnswer(UserFacade userFacade, boolean hasState) {
+        if (hasState && question.getType() == QuestionType.APPROVAL) {
+            return userFacade.getName(Long.valueOf(answer)) + " (" + state.getDescription() + ")";
+        } else if (question.getType() == QuestionType.PEOPLE ||
                 question.getType() == QuestionType.APPROVAL
         ) {
             return userFacade.getName(Long.valueOf(answer));
