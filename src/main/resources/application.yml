@@ -7,25 +7,22 @@ spring:
       matching-strategy: ant_path_matcher
 
   jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
     generate-ddl: true
     hibernate:
       ddl-auto: validate
 
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   redis:
     host: ${REDIS_HOST}
-    port: 6379
+    port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
 
   cache:
@@ -94,8 +91,8 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/soolung_simblue
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/soolung_simblue
+    driver-class-name: org.postgresql.Driver
     username: soolung
     password: soolung
 

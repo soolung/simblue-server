@@ -1,20 +1,15 @@
 version: '3'
 
 services:
-  mysql:
+  postgresql:
     container_name: simblue.local.db
-    image: mysql/mysql-server:5.7
+    image: postgres:15-alpine
     environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_USER: "soolung"
-      MYSQL_PASSWORD: "soolung"
-      MYSQL_DATABASE: "soolung_simblue"
+      POSTGRES_USER: "soolung"
+      POSTGRES_PASSWORD: "soolung"
+      POSTGRES_DB: "soolung_simblue"
     ports:
-      - "3307:3306"
-    command:
-      - "mysqld"
-      - "--character-set-server=utf8mb4"
-      - "--collation-server=utf8mb4_unicode_ci"
+      - "5432:5432"
 
   redis:
     image: redis:7.0-alpine
