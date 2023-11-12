@@ -6,101 +6,75 @@ on:
 
 jobs:
   CD:
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      ## jdk setting
-      - uses: actions/checkout@v3
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
         with:
-          java-version: '11'
-          distribution: 'temurin' # https://github.com/actions/setup-java
-
-      ## gradle caching
-      - name: Gradle Caching
-        uses: actions/cache@v3
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      ## gradle build
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-
-      ## text application build
-      - name: Test with Gradle
-        run: ./gradlew test
-
-      ## docker build & push to production
-      - name: Docker build & push to prod
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-
-      ## deploy to production
-      - name: Deploy to prod
-        uses: appleboy/ssh-action@master
-        id: deploy-prod
-        with:
-          host: ${{ secrets.HOST_PROD }}
-          username: ubuntu
-          key: ${{ secrets.PRIVATE_KEY }}
-          envs: GITHUB_SHA
-          script: |
-            sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            
-            cd simblue-server
-            git pull origin main
-            
-            rm -rf .env
-            touch .env
-            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
-            echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-            echo DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            
-            echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-            
-            echo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} >> .env
-            echo DOCKER_REPO=${{ secrets.DOCKER_REPO }} >> .env
-            
-            echo GOOGLE_BASE_URL=${{ secrets.GOOGLE_BASE_URL }} >> .env
-            echo GOOGLE_CLIENT=${{ secrets.GOOGLE_CLIENT }} >> .env
-            echo SIMBLUE_GOOGLE_REDIRECT=${{ secrets.SIMBLUE_GOOGLE_REDIRECT }} >> .env
-            echo SSAMBLUE_GOOGLE_REDIRECT=${{ secrets.SSAMBLUE_GOOGLE_REDIRECT }} >> .env
-            echo GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} >> .env
-            echo BUCKET_NAME=${{ secrets.BUCKET_NAME }} >> .env
-            echo S3_REGION=${{ secrets.S3_REGION }} >> .env
-            echo S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} >> .env
-            echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
-            
-            echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
-            echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
-            echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
-            
-            docker-compose up -d
-            docker image prune -f
-
-  ## time
-  current-time:
-    needs: CD
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Current Time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH:mm:ss
-          utcOffset: "+09:00" # 기준이 UTC이기 때문에 한국시간인 KST를 맞추기 위해 +9시간 추가
-
-      - name: Print Current Time
-        run: echo "Current Time=${{steps.current-time.outputs.formattedTime}}" # current-time 에서 지정한 포맷대로 현재 시간 출력
-        shell: bash
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: app.soolung/simblue-application
+          stage: main
+          yaml: |
+            name: simblue-server
+            app: java@11
+            options:
+              ports: 8080
+              env:
+                - name: DB_NAME
+                  value: ${{ secrets.DB_NAME }}
+                - name: DB_USERNAME
+                  value: ${{ secrets.DB_USERNAME }}
+                - name: DB_PASSWORD
+                  value: ${{ secrets.DB_PASSWORD }}
+                - name: DB_HOST
+                  value: ${{ secrets.DB_HOST }}
+                - name: DB_PORT
+                  value: ${{ secrets.DB_PORT }}
+                - name: JWT_SECRET
+                  value: ${{ secrets.JWT_SECRET }}
+                - name: GOOGLE_BASE_URL
+                  value: ${{ secrets.GOOGLE_BASE_URL }}
+                - name: GOOGLE_CLIENT
+                  value: ${{ secrets.GOOGLE_CLIENT }}
+                - name: GOOGLE_SECRET
+                  value: ${{ secrets.GOOGLE_SECRET }}
+                - name: SIMBLUE_GOOGLE_REDIRECT
+                  value: ${{ secrets.SIMBLUE_GOOGLE_REDIRECT }}
+                - name: SSAMBLUE_GOOGLE_REDIRECT
+                  value: ${{ secrets.SSAMBLUE_GOOGLE_REDIRECT }}
+                - name: BUCKET_NAME 
+                  value: ${{ secrets.BUCKET_NAME }}
+                - name: S3_REGION 
+                  value: ${{ secrets.S3_REGION }}
+                - name: S3_ACCESS_KEY
+                  value: ${{ secrets.S3_ACCESS_KEY }}
+                - name: S3_SECRET_KEY
+                  value: ${{ secrets.S3_SECRET_KEY }}
+                - name: REDIS_HOST
+                  value: ${{ secrets.REDIS_HOST }}
+                - name: REDIS_PORT
+                  value: ${{ secrets.REDIS_PORT }}
+                - name: REDIS_PASSWORD
+                  value: ${{ secrets.REDIS_PASSWORD }}
+                - name: SPRING_PROFILES_ACTIVE
+                  value: prod
+                - name: TZ
+                  value: Asia/Seoul
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
