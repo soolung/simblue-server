@@ -1,11 +1,3 @@
-name: Java CD with Gradle
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  CD:
 name: Deploy to cloudtype
 on:
   push:
