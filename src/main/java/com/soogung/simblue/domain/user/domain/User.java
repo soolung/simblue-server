@@ -58,10 +58,6 @@ public class User extends BaseTimeEntity {
         this.admissionYear = admissionYear;
     }
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
     public void updatePassword(String password) {
         this.password = password;
     }

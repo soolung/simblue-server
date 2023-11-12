@@ -12,9 +12,6 @@ import javax.validation.constraints.NotNull;
 public class UpdateStudentRequest {
 
     @NotBlank
-    private String name;
-
-    @NotBlank
     private String studentNumber;
 
     @Min(2021)

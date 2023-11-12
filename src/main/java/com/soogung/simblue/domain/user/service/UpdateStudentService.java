@@ -12,8 +12,6 @@ public class UpdateStudentService {
 
     @Transactional
     public void execute(User user, UpdateStudentRequest request) {
-        user.updateName(request.getName());
-
         user.updateStudentInformation(request.getStudentNumber(), request.getAdmissionYear());
     }
 }
