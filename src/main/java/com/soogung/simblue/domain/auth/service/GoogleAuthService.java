@@ -31,7 +31,7 @@ public class GoogleAuthService {
 
     @Transactional
     public TokenResponse execute(String code, AuthType type) {
-        boolean isLogin = true;
+        boolean isLogin = false;
         String accessToken = googleAuthClient.getAccessToken(
                 createGoogleAuthRequest(code, type)).getAccessToken();
         GoogleInformationResponse response = googleInformationClient.getUserInformation(accessToken);
@@ -41,8 +41,6 @@ public class GoogleAuthService {
         Optional<User> user = userRepository.findByEmail(email);
         
         if (user.isEmpty()) {
-            isLogin = false;
-
             userRepository.save(
                     User.builder()
                             .name(response.getName())
@@ -50,8 +48,11 @@ public class GoogleAuthService {
                             .authority(authority)
                             .build()
             );
-        } else if (authority.equals(Authority.ROLE_STUDENT) && Objects.isNull(user.get().getStudentNumber())) {
-            isLogin = false;
+        } else if (
+                user.get().isTeacher() ||
+                user.get().isStudent() && Objects.nonNull(user.get().getStudentNumber())
+        ) {
+            isLogin = true;
         }
 
         return TokenResponse.builder()

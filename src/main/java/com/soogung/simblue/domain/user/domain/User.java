@@ -65,4 +65,12 @@ public class User extends BaseTimeEntity {
     public void updatePassword(String password) {
         this.password = password;
     }
+
+    public boolean isTeacher() {
+        return this.authority.equals(Authority.ROLE_TEACHER);
+    }
+
+    public boolean isStudent() {
+        return this.authority.equals(Authority.ROLE_STUDENT);
+    }
 }
